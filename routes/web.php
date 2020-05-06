@@ -52,6 +52,14 @@ Route::get('/QuestionsFormRelation/{id}', 'InclusiveFormController@questionsForm
 Route::post('/QuestionsFormStore', 'InclusiveFormController@questionsFormStore')->name('QuestionsFormStore');
 
 
+//opciones de visualización y respuesta de formularios
+Route::get('/SelectForms', 'InclusiveFormController@selectForms')->name('SelectForms');
+Route::get('/PersonalizedFormView/{id}', 'InclusiveFormController@useForm')->name('PersonalizedFormView');
+Route::post('/AnswerFormUseStore', 'InclusiveFormController@answerFormUseStore')->name('AnswerFormUseStore');
+Route::get('/UseFormAnswers/{id}', 'InclusiveFormController@useFormAnswers')->name('UseFormAnswers');
+						
+						
+
 
 
 

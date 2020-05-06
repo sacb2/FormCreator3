@@ -8,12 +8,41 @@ use App\InclusiveMultipleAnswer;
 use App\InclusiveQuestionMultipleAnswer;
 use App\InclusiveForm;
 use App\InclusiveFormQuestion;
+use App\InclusiveAnswer;
 use Illuminate\Support\Facades\Route;
 use Session;
 
 
 class InclusiveFormController extends Controller
 {
+
+
+
+	//Valida RUT
+	function valida_rut($rut)
+	{
+		$rut = preg_replace('/[^k0-9]/i', '', $rut);
+		$dv  = substr($rut, -1);
+		$numero = substr($rut, 0, strlen($rut) - 1);
+		$i = 2;
+		$suma = 0;
+		foreach (array_reverse(str_split($numero)) as $v) {
+			if ($i == 8)
+				$i = 2;
+			$suma += $v * $i;
+			++$i;
+		}
+		$dvr = 11 - ($suma % 11);
+
+		if ($dvr == 11)
+			$dvr = 0;
+		if ($dvr == 10)
+			$dvr = 'K';
+		if ($dvr == strtoupper($dv))
+			return true;
+		else
+			return false;
+	}
 
 	//Formulario creacion de preguntas
 	public function createQuestion()
@@ -451,8 +480,8 @@ class InclusiveFormController extends Controller
 	//$request información de los formularios y  en el arreglo pickedDep[] id de preguntas seleccionadas 
 	public function questionsFormStore(Request $request)
 	{
-		//dd($request);
-		//validar formulario
+
+		//agregar validar formulario
 
 
 
@@ -461,7 +490,7 @@ class InclusiveFormController extends Controller
 		$formQuestions = InclusiveFormQuestion::where('id_formulario', $request->id_form)->get();
 
 
-
+		//en el caso que no haya creado antes (tambien se podria utilizar first or new en la sentencia anterior)
 		if ($formQuestions->isempty()) {
 
 
@@ -486,10 +515,10 @@ class InclusiveFormController extends Controller
 
 					}
 				}
-		} else //con productos
+		} else //con preguntas
 		{
 			if (isset($request->pickedDep)) {
-				//activar y crear los productos seleccionados
+				//activar y crear la relacion con las preguntas seleccionados
 				foreach ($request->pickedDep as $product) {
 					$newFormQuestions = InclusiveFormQuestion::where('id_formulario', $request->id_form)->where('id_pregunta', $product)->first();
 					if (!isset($newFormQuestions)) {
@@ -552,5 +581,118 @@ class InclusiveFormController extends Controller
 		return redirect()->route('ListForms');
 		//return view('beneficiaries.create')->with('success', 'Usuario Creado');
 
+	}
+
+	//listar formularios creados en el sistema
+	public function selectForms()
+	{
+		$forms = InclusiveForm::all();
+		return view('inclusive.forms.formsSelect', ['forms' => $forms]);
+	}
+
+	//Visualización de formulario personalizado creado y respuestas 
+	//$id identificador de formulario
+	public function useForm($id)
+	{
+		$formulario = InclusiveForm::find($id);
+		//		dd($formulario->products);
+		return view('inclusive.forms.formsUse', ['formulario' => $formulario]);
+	}
+
+
+	//guardar respuestas en el caso de responder un formulario personalizado
+	//$request si el formlario fue creado con utilizacion de RUT de otra forma solo las respuesta
+	public function AnswerFormUseStore(Request $request)
+	{
+		//	\Log::channel('decomlog')->info($request);
+		//si requiere rut
+		if ($request->type_form = 1) {
+
+			$validate_response = $request->validate([
+				'rut' => ['required', 'regex:/^[0-9]+[-|‐]{1}[0-9kK]{1}$/'],
+			]);
+
+
+			$rut = $request->rut;
+			$rut_validation = $this->valida_rut($request->rut);
+			if (!$rut_validation) {
+				Session::flash('alertSent', 'SelectDepartment');
+				Session::flash('message', 'RUT ' . $request->rut . ' formato no corresponde');
+
+				return Redirect::back();
+			}
+		}
+
+		$id = time();
+
+		if (isset($request->answers_text))
+			foreach ($request->answers_text as $key => $value) {
+
+				//			'id','id_pregunta','id_formulario','id_requerimiento','id_persona','respuesta_text','respuesta_number','tipo','estado'
+
+				$storeAnswer = new InclusiveAnswer;
+				$storeAnswer->id_pregunta = $key;
+				$storeAnswer->id_formulario = $request->id_form;
+				$storeAnswer->id_requerimiento = $id;
+				$storeAnswer->texto_respuesta = $value;
+				$storeAnswer->tipo = '0';
+				if ($request->type_form = 1)
+					$storeAnswer->rut_persona = strtoupper($rut);
+
+
+
+
+				try {
+					$storeAnswer->save();
+
+					//	Session::flash('alertSent', 'Derived');
+					//	Session::flash('message', "Respuestas guardadas exitosamente" );
+				} catch (\Exception $e) {
+					// do task when error
+					Session::flash('alert', 'error');
+					echo $e->getMessage();   // insert query
+
+				}
+			}
+		if (isset($request->answers_int))
+			foreach ($request->answers_int as $key => $value) {
+
+
+				$storeAnswer = new InclusiveAnswer;
+				$storeAnswer->id_pregunta = $key;
+				$storeAnswer->id_formulario = $request->id_form;
+				$storeAnswer->id_requerimiento = $id;
+				//$storeAnswer->id_persona=$request->rut;
+				$storeAnswer->valor_respuesta = $value;
+				$storeAnswer->tipo = '0';
+				if ($request->type_form = 1)
+					$storeAnswer->rut_persona = strtoupper($rut);
+
+
+
+
+				try {
+					$storeAnswer->save();
+
+					//	Session::flash('alertSent', 'Derived');
+					//	Session::flash('message', "Respuestas guardadas exitosamente" );
+				} catch (\Exception $e) {
+					// do task when error
+					Session::flash('alert', 'error');
+					echo $e->getMessage();   // insert query
+
+				}
+			}
+
+
+		return redirect()->route('SelectForms');
+	}
+
+	//muestra todas las respuestas ingresadas a un formulario
+	//$id identificador del formulario
+	public function useFormAnswers($id)
+	{
+		$storedAnswers = InclusiveAnswer::where('id_formulario', $id)->get();
+		dd($storedAnswers);
 	}
 }

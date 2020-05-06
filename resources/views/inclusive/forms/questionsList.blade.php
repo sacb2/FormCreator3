@@ -38,7 +38,7 @@
 
                             <td><a href="{{URL::to('/ViewQuestions/')}}/{{$question->id}}">Editar</a>
                                 @if($question->tipo==2)
-                                <a href="{{URL::to('/RelateAnswersQuestionsView/')}}/{{$question->id}}">Seleccionar
+                                <a href="{{URL::to('/AnswersQuestionRelation/')}}/{{$question->id}}">Seleccionar
                                     alternativas</a>
                                 @foreach($question->answers as $answer)
                                 {{$answer->valor_respuesta}}=

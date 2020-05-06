@@ -17,7 +17,7 @@ class InclusiveForm extends Model
   
       public $timestaps = true;
       
-      public function products(){
-                  return $this-> hasMany('App\InclusiveFormsQuestions','id_formulario');
+      public function questions(){
+                  return $this-> hasMany('App\InclusiveFormQuestion','id_formulario');
               }
 }

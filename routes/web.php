@@ -33,6 +33,24 @@ Route::post('/UpdateQuestions', 'InclusiveFormController@updateQuestions')->name
 Route::get('/CreateAnswers', 'InclusiveFormController@createAnswer')->name('CreateAnswer');
 Route::post('/StoreAnswers', 'InclusiveFormController@storeAnswer')->name('StoreAnswer');
 Route::get('/ListAnswers', 'InclusiveFormController@listAnswers')->name('ListAnswers');
+Route::get('/ViewAnswers/{id}', 'InclusiveFormController@viewAnswers')->name('ViewAnswers');
+Route::post('/UpdateAnswers', 'InclusiveFormController@updateAnswers')->name('UpdateAnswers');
+
+//Relacion entre Preguntas con selección multiple y respuestas
+Route::get('/AnswersQuestionRelation/{id}', 'InclusiveFormController@answersQuestionRelation')->name('AnswersQuestionRelation');
+Route::post('/AnswersQuestionStore', 'InclusiveFormController@answersQuestionStore')->name('AnswersQuestionStore');
+
+//Formularios
+Route::get('/CreateForms', 'InclusiveFormController@createForms')->name('CreateForms');
+Route::post('/StoreForms', 'InclusiveFormController@storeForms')->name('StoreForms');
+Route::get('/ListForms', 'InclusiveFormController@listForms')->name('ListForms');
+Route::post('/UpdateForms', 'InclusiveFormController@updateForms')->name('UpdateForms');
+Route::get('/ViewForms/{id}', 'InclusiveFormController@viewForms')->name('ViewForms');
+
+//Relacion entre preguntas y fromularios
+Route::get('/QuestionsFormRelation/{id}', 'InclusiveFormController@questionsFormRelation')->name('QuestionsFormRelation');
+Route::post('/QuestionsFormStore', 'InclusiveFormController@questionsFormStore')->name('QuestionsFormStore');
+
 
 
 

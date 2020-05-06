@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class InclusiveFormQuestion extends Model
 {
-    protected $table = 'inclusive_questions';
+    protected $table = 'inclusive_form_questions';
     	
 	  //primary key
     //public $primaryKey = 'id';

@@ -1,4 +1,4 @@
-## Proyecto de Forulario Inclusivo
+## Proyecto de Formulario Inclusivo
 
 El proyecto tiene como principal objetivo la creación de una plataforma de postulación que cumpla con las pautas básicas de inclusión tales como, colores, tamaño de fuente, eliminación de código complejo de leer por aplicaciones utilizadas por personas con discapacidad visual. Actualmente el proceso de postulación es llevado en forma manual en formato papel y contiene preguntas relacionadas con el postulante y documentos relacionados con el beneficiario. La implementación de la plataforma permitirá:
 Configuración de iniciativas (Postulación, evaluación).

@@ -63,6 +63,9 @@
                                                 <option value='' selected>Seleccionar...</option>
                                                 <option value='1'>Texto</option>
                                                 <option value='2'>Selección múltiple</option>
+                                                <option value='3'>Imagen</option>
+                                                <option value='4'>Documento</option>
+                                                <option value='5'>Archivo</option>
                                             </select>
                                         </div>
                                     </div>

@@ -9,6 +9,7 @@ use App\InclusiveQuestionMultipleAnswer;
 use App\InclusiveForm;
 use App\InclusiveFormQuestion;
 use App\InclusiveAnswer;
+use App\InclusiveDocument;
 use Illuminate\Support\Facades\Route;
 use Session;
 
@@ -604,6 +605,10 @@ class InclusiveFormController extends Controller
 	//$request si el formlario fue creado con utilizacion de RUT de otra forma solo las respuesta
 	public function AnswerFormUseStore(Request $request)
 	{
+		
+		$imageName="imagen";
+		$path=request()->answers_img;
+	//	dd($request,$path);
 		//	\Log::channel('decomlog')->info($request);
 		//si requiere rut
 		if ($request->type_form = 1) {
@@ -624,6 +629,42 @@ class InclusiveFormController extends Controller
 		}
 
 		$id = time();
+		//archivo adjunto
+		if (isset($request->answers_img))
+
+		
+			foreach ($request->answers_img as $key => $value) {
+				
+				
+				$img_id=$this->fileStore($value,'3',$request->id_form, $id);
+				$storeAnswer = new InclusiveAnswer;
+				$storeAnswer->id_pregunta = $key;
+				$storeAnswer->id_formulario = $request->id_form;
+				$storeAnswer->id_requerimiento = $id;
+				//$storeAnswer->id_persona=$request->rut;
+				$storeAnswer->valor_respuesta = $img_id;
+				$storeAnswer->tipo = '3';
+				if ($request->type_form = 1)
+					$storeAnswer->rut_persona = strtoupper($rut);
+
+
+
+
+				try {
+					$storeAnswer->save();
+
+					//	Session::flash('alertSent', 'Derived');
+					//	Session::flash('message', "Respuestas guardadas exitosamente" );
+				} catch (\Exception $e) {
+					// do task when error
+					Session::flash('alert', 'error');
+					echo $e->getMessage();   // insert query
+
+				}
+			}
+
+
+
 
 		if (isset($request->answers_text))
 			foreach ($request->answers_text as $key => $value) {
@@ -695,4 +736,30 @@ class InclusiveFormController extends Controller
 		$storedAnswers = InclusiveAnswer::where('id_formulario', $id)->get();
 		dd($storedAnswers);
 	}
+
+
+	//guarda el adjunto
+	//$attachment documento adjunto $id_type tipo de adjunto $id_form identificador de formulario $id_request identificador unico de respuesta
+	public function fileStore($attachment,$id_type,$id_form, $id_request){
+
+		
+		if($id_type==3){
+			$imageName = 'Adjunto_'.$id_form.time().'ID'.$id_request.'.'.$attachment->getClientOriginalExtension();
+			$path=$attachment->move(public_path('images'), $imageName);
+			$image= new InclusiveDocument;
+			$image->nombre= $imageName;
+			$image->tipo= $id_type;
+			$image->route= $path->getRealPath();
+			$image->save();
+			return $image->id;
+
+		}
+	
+							
+		
+	}
+
+
+
+
 }

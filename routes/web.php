@@ -22,13 +22,12 @@ use Illuminate\Support\Facades\Route;
 */
 Route::group(['middleware' => ['web']], function () {
 
-    Route::get('/', function () {
-        return view('welcome');
-    });
+    //Route::get('/', function () { return view('welcome');});
     
     Auth::routes();
-    
+    Route::get('/', 'HomeController@index')->name('home');
     Route::get('/home', 'HomeController@index')->name('home');
+    //Route::get('/register', 'HomeController@register')->name('register');
     Route::get('logout', 'HomeController@logout')->name('logout');
     
     //Preguntas
@@ -71,7 +70,11 @@ Route::group(['middleware' => ['web']], function () {
     //Creación de Usuarios registrados en la plataforma
     Route::get('/NewUser', 'NewUserController@createuser')->name('NewUser');
     Route::post('/StoreNewUser', 'NewUserController@stornewuser')->name('StoreNewUser');
-
+    Route::get('/ListNewUser', 'NewUserController@listnewuser')->name('ListNewUser'); 
+    Route::get('/EditNewUser/{id}', 'NewUserController@editnewuser')->name('EditNewUser'); 
+    Route::get('/ChangeStatusUser/{estado}/{id}', 'NewUserController@changestatususer')->name('ChangeStatusUser'); 
+    Route::post('/EditUniqueNewUser', 'NewUserController@edituniqueuser')->name('EditUniqueNewUser');
+    Route::get('/EditUniqueNewUserInd', 'NewUserController@edituniqueuserind')->name('EditUniqueNewUserInd');
 
 
 

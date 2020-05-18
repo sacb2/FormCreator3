@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Rules\ValidarRut;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -50,10 +51,23 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+                'name' => ['required', 'string', 'max:50'],
+                'surname' => ['required', 'string', 'max:50'],
+                'identifier' => ['required', 'string', 'regex:/^[0-9]+[-|‐]{1}[0-9kK]{1}$/', new ValidarRut, 'unique:users,rut'],
+                'address' => ['required', 'string', 'min:10', 'max:150'],
+                'phone' => ['required', 'min:9', 'max:9'],
+                'phone1' => ['min:9', 'max:9'],
+                'email' => ['required', 'string', 'email', 'max:50', 'unique:users,email'],
+                'password' => ['min:6', 'max:10', 'required_with:password_confirmation','same:password_confirmation'],
+            ],
+            [
+                'name.required' => 'newuser.nombre1',
+                'surname.required' => 'newuser.nombre2',
+                'identifier.required' => 'newuser.nombre3',
+                'address.required' => 'newuser.nombre5',
+                'phone.required' => 'newuser.nombre6',
+            ]
+        );
     }
 
     /**
@@ -64,9 +78,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $porciones = explode("/", $data['birthdate']);
+        $fecha = $porciones[2].'/'.$porciones[1].'/'.$porciones[0];
         return User::create([
-            'name' => $data['name'],
+            'nombres' => $data['name'],
+            'apellidos' => $data['surname'],
+            'rut' => $data['identifier'],
             'email' => $data['email'],
+            'direccion' => $data['address'],
+            'telefono1' => $data['phone'],
+            'telefono2' => $data['phone1'],
+            'fechnac' => $fecha,
+            'estado' => "activo",
+            'tipo1' => "si",
+            'tipo2' => "no",
+            'tipo3' => "no",
             'password' => Hash::make($data['password']),
         ]);
     }

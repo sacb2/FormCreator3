@@ -111,7 +111,7 @@
                                         @enderror
                                     </div>
                                     <script>window.addEventListener('load', function() {
-                                        $('#birthdate').datepicker({ format: 'dd/mm/yyyy',});
+                                        $('#birthdate').datepicker({ format: 'dd/mm/yyyy',language: '{{ str_replace('_', '-', app()->getLocale()) }}'});
                                     })</script>
                                 </div>
                                 <div class="form-group row">

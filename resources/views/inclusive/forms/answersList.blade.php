@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('layouts_template.app') <!-- template -->
+
 
 
 @section('content')
@@ -8,7 +9,7 @@
 
 
     <div class="panel panel-default">
-        <div class="panel-heading"><i class="fa fa-user"></i> Listar Respuestas</div>
+        <div class="panel-heading"><i class="fa fa-user"></i> Listar Respuestas | <a href="{{ route('CreateAnswer') }}"><i class="fa fa-save"></i> Crear</a></div>
         <div class="panel-body">
             <div class="table-responsive">
                 <table class="table table-hover">

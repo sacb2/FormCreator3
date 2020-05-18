@@ -17,8 +17,8 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-body">
-                                <form method="POST" action="{{ route('AnswerFormUseStore') }}">
-                                    @csrf
+                                <form method="POST"  action="{{ route('AnswerFormUseStore') }}" enctype="multipart/form-data">
+                                    {{ csrf_field() }}
 
 
                                     @if ($errors->any())
@@ -67,11 +67,11 @@
 
                                 <div class="form-group row">
 
-                                    <label for="answers[{{$pregunta->id}}]'"
+                                    <label for="answers[{{$pregunta->id}}]"
                                         class="col-md-4 col-form-label text-md-right">{{$pregunta->question->pregunta}}</label>
                                     <div class="col-md-6">
-                                        <select class="custom-select" id="answers_int[{{$pregunta->id}}]'"
-                                            name="answers_int[{{$pregunta->id}}]'" value="{{ old('state') }}">
+                                        <select class="custom-select" id="answers_int[{{$pregunta->id}}]"
+                                            name="answers_int[{{$pregunta->id}}]" value="{{ old('state') }}">
                                             <option value='' selected>Seleccionar...</option>
                                             @foreach($pregunta->question->answers as $answer)
                                             <option value='{{$answer->valor_respuesta}}'>{{$answer->texto_respuesta}}
@@ -83,6 +83,20 @@
                                     </div>
                                 </div>
 
+                                @elseif($pregunta->question->tipo==3)
+                                <div align="left" class="form-group{{ $errors->has('attachment') ? ' has-error' : '' }}">
+                                    <label for="attachment"  class="col-md-4 control-label">Adjuntar:</label>
+    
+                                    <div align="left" class="col-md-6">
+                                      Tamaño máximo de adjunto 7MB <input id="answers_img[{{$pregunta->id}}]" type="file" class="form-control" name="answers_img[{{$pregunta->id}}]" required>
+    
+                                        @if ($errors->has('attachment'))
+                                            <span class="help-block">
+                                            <strong>{{ $errors->first('attachment') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
                                 @else
                                 <div class="form-group">
                                     <label for="comment">{{$pregunta->question->pregunta}}</label>

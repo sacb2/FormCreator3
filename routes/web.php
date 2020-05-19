@@ -29,10 +29,10 @@ Route::get('/ListQuestions', 'InclusiveFormController@listQuestions')->name('Lis
 Route::get('/ViewQuestions/{id}', 'InclusiveFormController@viewQuestions')->name('ViewQuestions');
 Route::post('/UpdateQuestions', 'InclusiveFormController@updateQuestions')->name('UpdateQuestions');
 
-//Respuestas
+//RespuestasListAnswers
 Route::get('/CreateAnswers', 'InclusiveFormController@createAnswer')->name('CreateAnswer');
 Route::post('/StoreAnswers', 'InclusiveFormController@storeAnswer')->name('StoreAnswer');
-Route::get('/ListAnswers', 'InclusiveFormController@listAnswers')->name('ListAnswers');
+Route::get('/ListAnswers', 'InclusiveFormController@listAnswers')->name('ListAnswer');
 Route::get('/ViewAnswers/{id}', 'InclusiveFormController@viewAnswers')->name('ViewAnswers');
 Route::post('/UpdateAnswers', 'InclusiveFormController@updateAnswers')->name('UpdateAnswers');
 

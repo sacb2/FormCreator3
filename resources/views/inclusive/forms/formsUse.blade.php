@@ -86,7 +86,7 @@
 
                                 @elseif($pregunta->question->tipo==3)
                                 <div align="left" class="form-group{{ $errors->has('attachment') ? ' has-error' : '' }}">
-                                    <label for="attachment"  class="col-md-4 control-label">Adjuntar:</label>
+                                    <label for="attachment"  class="col-md-4 control-label">Adjuntar {{$pregunta->question->pregunta}}:</label>
     
                                     <div align="left" class="col-md-6">
                                       Tamaño máximo de adjunto 7MB <input id="answers_img[{{$pregunta->id}}]" type="file" class="form-control" name="answers_img[{{$pregunta->id}}]" required>

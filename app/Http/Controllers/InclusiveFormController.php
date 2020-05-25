@@ -10,6 +10,7 @@ use App\InclusiveForm;
 use App\InclusiveFormQuestion;
 use App\InclusiveAnswer;
 use App\InclusiveDocument;
+use Redirect;
 use Illuminate\Support\Facades\Route;
 use Session;
 
@@ -733,8 +734,20 @@ class InclusiveFormController extends Controller
 	//$id identificador del formulario
 	public function useFormAnswers($id)
 	{
-		$storedAnswers = InclusiveAnswer::where('id_formulario', $id)->get();
-		dd($storedAnswers);
+		$answerById=null;
+		$answers = InclusiveAnswer::where('id_formulario', $id)->groupBy('id_requerimiento')->pluck('id_requerimiento');
+		foreach($answers as $answer){
+			$answerById[$answer]=InclusiveAnswer::where('id_requerimiento', $answer)->get();
+		}
+		//dd($answerById);
+
+		$storedAnswers = InclusiveAnswer::where('id_formulario', $id)->groupBy('id_requerimiento')->get();
+/*		foreach($storedAnswers as $storeAnswer)
+			dd($storeAnswer->question->question->nombre);//pregunta nombre
+			dd($storeAnswer->question->question->pregunta);//pregunta pregunta*/
+		return view('inclusive.forms.answersUse', ['answers' => $storedAnswers,'answersById'=>$answerById]);
+
+		//dd($storedAnswers);
 	}
 
 
@@ -745,7 +758,7 @@ class InclusiveFormController extends Controller
 		
 		if($id_type==3){
 			$imageName = 'Adjunto_'.$id_form.time().'ID'.$id_request.'.'.$attachment->getClientOriginalExtension();
-			$path=$attachment->move(public_path('images'), $imageName);
+			$path=$attachment->move(public_path('images/'.$id_form), $imageName);
 			$image= new InclusiveDocument;
 			$image->nombre= $imageName;
 			$image->tipo= $id_type;

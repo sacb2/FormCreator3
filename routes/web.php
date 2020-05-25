@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 Route::get('logout', 'HomeController@logout')->name('logout');
 
 //Preguntas
@@ -57,7 +57,9 @@ Route::get('/SelectForms', 'InclusiveFormController@selectForms')->name('SelectF
 Route::get('/PersonalizedFormView/{id}', 'InclusiveFormController@useForm')->name('PersonalizedFormView');
 Route::post('/AnswerFormUseStore', 'InclusiveFormController@answerFormUseStore')->name('AnswerFormUseStore');
 Route::get('/UseFormAnswers/{id}', 'InclusiveFormController@useFormAnswers')->name('UseFormAnswers');
-						
+                    
+
+Route::get('/home', 'InclusiveFormController@selectForms')->name('home');
 						
 
 

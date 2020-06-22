@@ -32,7 +32,7 @@ Route::post('/UpdateQuestions', 'InclusiveFormController@updateQuestions')->name
 //RespuestasListAnswers
 Route::get('/CreateAnswers', 'InclusiveFormController@createAnswer')->name('CreateAnswer');
 Route::post('/StoreAnswers', 'InclusiveFormController@storeAnswer')->name('StoreAnswer');
-Route::get('/ListAnswers', 'InclusiveFormController@listAnswers')->name('ListAnswer');
+Route::get('/ListAnswers', 'InclusiveFormController@listAnswers')->name('ListAnswers');
 Route::get('/ViewAnswers/{id}', 'InclusiveFormController@viewAnswers')->name('ViewAnswers');
 Route::post('/UpdateAnswers', 'InclusiveFormController@updateAnswers')->name('UpdateAnswers');
 
@@ -57,9 +57,31 @@ Route::get('/SelectForms', 'InclusiveFormController@selectForms')->name('SelectF
 Route::get('/PersonalizedFormView/{id}', 'InclusiveFormController@useForm')->name('PersonalizedFormView');
 Route::post('/AnswerFormUseStore', 'InclusiveFormController@answerFormUseStore')->name('AnswerFormUseStore');
 Route::get('/UseFormAnswers/{id}', 'InclusiveFormController@useFormAnswers')->name('UseFormAnswers');
-                    
+//Respuesta
+Route::get('/PersonalizedFormAnswer/{id}', 'InclusiveFormController@personalizedFormAnswers')->name('personalizedFormAnswers');
+Route::get('/PersonalizedFormAnswerPage/{id}/{perPage}/{page}', 'InclusiveFormController@personalizedFormAnswers')->name('personalizedFormAnswersPage');
+Route::post('/PersonalizedFormAnswerSearch', 'InclusiveFormController@personalizedFormAnswersSearch')->name('personalizedFormAnswersSearch');
 
-Route::get('/home', 'InclusiveFormController@selectForms')->name('home');
+
+//Route::get('/home', 'InclusiveFormController@selectForms')->name('home');
+//Route::get('/home', 'InclusiveFormController@beneficiarieIndex')->name('home');
+
+//beneficiarie
+Route::get('/BeneficiarieIndex', 'InclusiveFormController@beneficiarieIndex')->name('BeneficiarieIndex');
+Route::get('/UseFormBeneficiarie/{id}', 'InclusiveFormController@useFormBeneficiarie')->name('UseFormBeneficiarie');
+
+Route::get('/home/', 'InclusiveFormController@beneficiarieIndex')->name('home');
+Route::post('/home/', 'InclusiveFormController@beneficiarieIndexPost')->name('home');
+
+Route::get('/BeneficiarieIndexStyle/{style}', 'InclusiveFormController@beneficiarieIndexStyle')->name('BeneficiarieIndexStyle');
+Route::get('/UseFormBeneficiarieStyle/{id}/{style}', 'InclusiveFormController@useFormBeneficiarieStyle')->name('UseFormBeneficiarieStyle');
+Route::get('/home/{style}', 'InclusiveFormController@beneficiarieIndex')->name('home');
+Route::post('/beneficiarieIndexPost', 'InclusiveFormController@beneficiarieIndexPost')->name('beneficiarieIndexPost');
+Route::post('/UseFormBeneficiariePost', 'InclusiveFormController@useFormBeneficiariePost')->name('UseFormBeneficiariePost');
+
+
+
+
 						
 
 

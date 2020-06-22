@@ -1,4 +1,4 @@
-@extends('layouts_template.app') <!-- template -->
+@extends('layouts.app_new') <!-- template -->
 
 @section('content')
 <div class="container">
@@ -9,8 +9,9 @@
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
-                        @csrf
-
+                        @csrf 
+                        <a class="sr-only sr-only-focusable">Registro de beneficiarios, aquí tendrá que escribir nombre de usuario, mail y contraseña.</a>
+                       
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 

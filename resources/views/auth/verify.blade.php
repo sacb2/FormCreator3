@@ -1,4 +1,4 @@
-@extends('layouts_template.app') <!-- template -->
+@extends('layouts.app') <!-- template -->
 
 
 @section('content')

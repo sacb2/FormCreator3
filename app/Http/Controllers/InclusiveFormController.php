@@ -52,6 +52,7 @@ class InclusiveFormController extends Controller
 		return view('inclusive.forms.create');
 	}
 
+
 	//Guardar pregunta 
 	//input $request datos de configuración de pregunta
 	public function storeQuestion(Request $request)
@@ -75,6 +76,7 @@ class InclusiveFormController extends Controller
 		$question->pregunta = $request->question;
 		$question->estado = $request->state;
 		$question->tipo = $request->type;
+		$question->size= $request->size;
 		try {
 			$question->save();
 			//Session::flash('alertSent', 'Derived');
@@ -126,6 +128,7 @@ class InclusiveFormController extends Controller
 		$question->estado = $request->state;
 		$question->pregunta = $request->question;
 		$question->tipo = $request->type;
+		$question->size= $request->size;
 
 
 		try {
@@ -585,6 +588,46 @@ class InclusiveFormController extends Controller
 
 	}
 
+		//
+	//listar formularios creados en el sistema y mostrarlos a los beneficiarios logeados
+	public function beneficiarieIndexPost(Request $request)
+	{
+		
+		
+		$forms = InclusiveForm::all();
+	
+		if(isset($request->style_color))
+		Session::put('color', $request->style_color);
+		else 
+		$request->style_color=Session::get('color');
+		if(isset($request->style_font))
+		Session::put('font', $request->style_font);
+		else
+		$request->style_font=Session::get('font');
+	
+		return view('inclusive.beneficiarie.list', ['style_color'=>$request->style_color,'style_font'=>$request->style_font,'forms' => $forms]);
+	}
+	//
+	//listar formularios creados en el sistema y mostrarlos a los beneficiarios logeados
+	public function beneficiarieIndex($style=null)
+	{
+		
+		
+		$forms = InclusiveForm::all();
+		//$style=1;
+	
+		return view('inclusive.beneficiarie.list', ['style'=>$style,'forms' => $forms]);
+	}
+		//listar formularios creados en el sistema y mostrarlos a los beneficiarios logeados
+		public function beneficiarieIndexStyle($style)
+		{
+			//dd($style);
+			$forms = InclusiveForm::all();
+			$style=1;
+		
+			return view('inclusive.beneficiarie.list', ['style'=>$style,'forms' => $forms]);
+		}
+
 	//listar formularios creados en el sistema
 	public function selectForms()
 	{
@@ -602,14 +645,51 @@ class InclusiveFormController extends Controller
 	}
 
 
+	//Visualización de formulario personalizado creado y respuestas 
+	//$id identificador de formulario
+	public function useFormBeneficiariePost(Request $request)
+	{
+
+		//dd($request);
+		$formulario = InclusiveForm::find($request->id);
+		if(isset($formulario))
+		Session::put('formulario', $formulario);
+		else
+		$formulario=Session::get('formulario');
+
+		if(isset($request->style_color))
+		Session::put('color', $request->style_color);
+		else 
+		$request->style_color=Session::get('color');
+		if(isset($request->style_font))
+		Session::put('font', $request->style_font);
+		else
+		$request->style_font=Session::get('font');
+		
+
+				//dd($request->style_color,$request->style_font);
+		
+		return view('inclusive.beneficiarie.answer', ['style_color'=>$request->style_color,'style_font'=>$request->style_font,'formulario' => $formulario]);
+	}
+
+	//Visualización de formulario personalizado creado y respuestas 
+	//$id identificador de formulario
+	public function useFormBeneficiarie($id)
+	{
+		$formulario = InclusiveForm::find($id);
+		//		dd($formulario->products);
+		return view('inclusive.beneficiarie.answer', ['formulario' => $formulario]);
+	}
+
+
 	//guardar respuestas en el caso de responder un formulario personalizado
 	//$request si el formlario fue creado con utilizacion de RUT de otra forma solo las respuesta
 	public function AnswerFormUseStore(Request $request)
 	{
-		
-		$imageName="imagen";
-		$path=request()->answers_img;
-	//	dd($request,$path);
+
+		$imageName = "imagen";
+		$path = request()->answers_img;
+		//	dd($request,$path);
 		//	\Log::channel('decomlog')->info($request);
 		//si requiere rut
 		if ($request->type_form = 1) {
@@ -633,11 +713,11 @@ class InclusiveFormController extends Controller
 		//archivo adjunto
 		if (isset($request->answers_img))
 
-		
+
 			foreach ($request->answers_img as $key => $value) {
-				
-				
-				$img_id=$this->fileStore($value,'3',$request->id_form, $id);
+
+
+				$img_id = $this->fileStore($value, '3', $request->id_form, $id);
 				$storeAnswer = new InclusiveAnswer;
 				$storeAnswer->id_pregunta = $key;
 				$storeAnswer->id_formulario = $request->id_form;
@@ -727,25 +807,45 @@ class InclusiveFormController extends Controller
 			}
 
 
-		return redirect()->route('SelectForms');
+		return redirect()->route('BeneficiarieIndex');
+	}
+
+		//muestra todas las respuestas ingresadas a un formulario
+	//$id identificador del formulario
+	public function useFormBeneficiarie_($id)
+	{
+		$answerById = null;
+		$answers = InclusiveAnswer::where('id_formulario', $id)->groupBy('id_requerimiento')->pluck('id_requerimiento');
+		foreach ($answers as $answer) {
+			$answerById[$answer] = InclusiveAnswer::where('id_requerimiento', $answer)->get();
+		}
+		//dd($answerById);
+
+		$storedAnswers = InclusiveAnswer::where('id_formulario', $id)->groupBy('id_requerimiento')->get();
+		/*		foreach($storedAnswers as $storeAnswer)
+			dd($storeAnswer->question->question->nombre);//pregunta nombre
+			dd($storeAnswer->question->question->pregunta);//pregunta pregunta*/
+		return view('inclusive.beneficiarie.answer', ['answers' => $storedAnswers, 'answersById' => $answerById]);
+
+		//dd($storedAnswers);
 	}
 
 	//muestra todas las respuestas ingresadas a un formulario
 	//$id identificador del formulario
 	public function useFormAnswers($id)
 	{
-		$answerById=null;
+		$answerById = null;
 		$answers = InclusiveAnswer::where('id_formulario', $id)->groupBy('id_requerimiento')->pluck('id_requerimiento');
-		foreach($answers as $answer){
-			$answerById[$answer]=InclusiveAnswer::where('id_requerimiento', $answer)->get();
+		foreach ($answers as $answer) {
+			$answerById[$answer] = InclusiveAnswer::where('id_requerimiento', $answer)->get();
 		}
 		//dd($answerById);
 
 		$storedAnswers = InclusiveAnswer::where('id_formulario', $id)->groupBy('id_requerimiento')->get();
-/*		foreach($storedAnswers as $storeAnswer)
+		/*		foreach($storedAnswers as $storeAnswer)
 			dd($storeAnswer->question->question->nombre);//pregunta nombre
 			dd($storeAnswer->question->question->pregunta);//pregunta pregunta*/
-		return view('inclusive.forms.answersUse', ['answers' => $storedAnswers,'answersById'=>$answerById]);
+		return view('inclusive.forms.answersUse', ['answers' => $storedAnswers, 'answersById' => $answerById]);
 
 		//dd($storedAnswers);
 	}
@@ -753,26 +853,129 @@ class InclusiveFormController extends Controller
 
 	//guarda el adjunto
 	//$attachment documento adjunto $id_type tipo de adjunto $id_form identificador de formulario $id_request identificador unico de respuesta
-	public function fileStore($attachment,$id_type,$id_form, $id_request){
+	public function fileStore($attachment, $id_type, $id_form, $id_request)
+	{
 
-		
-		if($id_type==3){
-			$imageName = 'Adjunto_'.$id_form.time().'ID'.$id_request.'.'.$attachment->getClientOriginalExtension();
-			$path=$attachment->move(public_path('images/'.$id_form), $imageName);
-			$image= new InclusiveDocument;
-			$image->nombre= $imageName;
-			$image->tipo= $id_type;
-			$image->route= $path->getRealPath();
+
+		if ($id_type == 3) {
+			$imageName = 'Adjunto_' . $id_form . time() . 'ID' . $id_request . '.' . $attachment->getClientOriginalExtension();
+			$path = $attachment->move(public_path('images/' . $id_form), $imageName);
+			$image = new InclusiveDocument;
+			$image->nombre = $imageName;
+			$image->tipo = $id_type;
+			$image->route = $path->getRealPath();
 			$image->save();
 			return $image->id;
-
 		}
-	
-							
-		
 	}
 
 
 
+	//mostrar respuestas realizadas en el formulario
+	public function personalizedFormAnswers($id, $perPage = 10, $page = 1)
+	{
 
+
+		$answerById = null;
+		$answers = InclusiveAnswer::where('id_formulario', $id)->groupBy('id_requerimiento')->pluck('id_requerimiento');
+		foreach ($answers as $answer) {
+			$answerById[$answer] = InclusiveAnswer::where('id_requerimiento', $answer)->get();
+		}
+
+
+
+		$storedAnswers = InclusiveAnswer::where('id_formulario', $id)->groupBy('id_requerimiento')->get();
+
+
+		//paginador se le entrega el arreglo que hay que pagina, cuantos por pagina y la pagina
+		$answerById_paginate = $this->paginate($answerById, $perPage, $page, $options = []);
+		//obtener la ultima pagina
+		if (count($answerById) > $perPage)
+			$lastPage = count($answerById) / $perPage;
+		else
+			$lastPage = 1;
+
+		$search = 0;
+
+		return view('inclusive.forms.responses', ['search' => $search, 'lastPage' => ceil($lastPage), 'page' => $page, 'perPage' => $perPage, 'id' => $id, 'page' => $page, 'answerById_paginate' => $answerById_paginate, 'answers' => $storedAnswers]);
+	}
+
+	//funcion que busca por rut entre los resultados
+	public function personalizedFormAnswersSearch(Request $request){
+
+		$id= $request->id;
+		$perPage=100;
+		$page = 1;
+		$answerById=null;
+		$answers = InclusiveAnswer::where('rut_persona', $request->Search)->where('id_formulario', $id)->groupBy('id_requerimiento')->pluck('id_requerimiento');
+		foreach($answers as $answer){
+			$answerById[$answer]=InclusiveAnswer::where('rut_persona', $request->Search)->where('id_requerimiento', $answer)->get();
+		}
+		
+	
+		$storedAnswers = InclusiveAnswer::where('rut_persona', $request->Search)->where('id_formulario', $id)->groupBy('id_requerimiento')->get();
+		
+		//no se contraron resultados
+		if(count($storedAnswers)==0){
+			$search='-1';
+			$lastPage=0;
+			$answerById_paginate=0;
+			return view('inclusive.forms.responses',['search'=>$search, 'lastPage'=>ceil($lastPage),'page'=>$page,'perPage'=>$perPage,'id'=>$id,'page'=>$page,'answerById_paginate'=>$answerById_paginate, 'answers' => $storedAnswers]);
+		}
+		
+	
+	
+		//paginador se le entrega el arreglo que hay que pagina, cuantos por pagina y la pagina
+		$answerById_paginate= $this->paginate($answerById,$perPage, $page, $options = []);
+		//obtener la ultima pagina
+		if(count($answerById)>$perPage)
+			$lastPage=count($answerById)/$perPage;
+		else
+			$lastPage=1;
+	
+			
+	
+			$search=1;
+			
+		//'answersById'=>$answerById
+		return view('inclusive.forms.responses',['search'=>$search, 'lastPage'=>ceil($lastPage),'page'=>$page,'perPage'=>$perPage,'id'=>$id,'page'=>$page,'answerById_paginate'=>$answerById_paginate, 'answers' => $storedAnswers]);
+	}
+
+	//funcion encargada de paginar los resultados, $item = componentes a pagunas; $perPAge, cuantos elementos por pagina,
+	//$page pagina inicial
+	public function paginate($items, $perPage = 15, $page = 0, $options = [])
+	{
+		//crear indices 
+		$i = 0;
+		foreach ($items as $key => $value) {
+
+			$item = $value;
+			$order_item[$i][$key] = $item;
+			$i++;
+		}
+
+
+
+		//ultimo valor que cargar en la pagina
+		if ($page <= 0)
+			$page = $perPage;
+		else
+			$page = $page * $perPage;
+		//cargar items en pagina
+		if ($i < $page) {
+			$page = $i;
+			//dd('aqui');
+		}
+		if ($i <= $perPage) {
+			$perPage = $i;
+		}
+		//cargar elementos en la pagina tomando el ultimo valor menos el tamaño de la pagina
+		for ($j = ($page - $perPage); $j < $page; $j++) {
+
+
+			$forPage[] = $order_item[$j];
+		}
+
+		return $forPage;
+	}
 }

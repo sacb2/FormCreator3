@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-  	<title>{{ config('app.name', 'Laravel') }}</title>
+  	<title> Postulaciones</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -28,7 +28,7 @@
               <a href="{{ route('ListQuestions') }}"><span class="fa fa-question"></span> Preguntas</a>
           </li>
           <li>
-            <a href="{{ route('ListAnswer') }}"><span class="fa fa-sticky-note"></span> Respuestas</a>
+            <a href="{{ route('ListAnswers') }}"><span class="fa fa-sticky-note"></span> Respuestas</a>
           </li>
           <li>
             <a href="#"><span class="fa fa-paper-plane"></span> Contacto</a>

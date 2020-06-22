@@ -2,6 +2,25 @@
 
 
 @section('content')
+<style>
+    #outer {
+        width: 100%;
+        text-align: center;
+    }
+
+    #inner {
+        display: inline-block;
+    }
+
+    #outerL {
+        width: 100%;
+        text-align: left;
+    }
+
+    #innerL {
+        display: inline-block;
+    }
+</style>
 
 <body>
 
@@ -73,7 +92,7 @@
 
                                     <div class="form-group row mb-0">
                                         <div class="col-md-8">
-                                            <a href="{{ URL::previous() }}" type="button" class="btn btn-warning"><i
+                                            <a href="{{ URL::previous() }}" type="button" role="button" class="btn btn-warning"><i
                                                     class="glyphicon glyphicon-menu-left"></i> Volver</a>
                                             <button type="submit" class="btn btn-info"><i
                                                     class="glyphicon glyphicon-ok-circle"></i>

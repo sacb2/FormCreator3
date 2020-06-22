@@ -70,15 +70,30 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+
+                                        <label for="state"
+                                            class="col-md-4 col-form-label text-md-right">{{ __('Tamaño respuesta') }}</label>
+                                        <div class="col-md-6">
+                                            <input id="size" type="number"
+                                                class="form-control @error('size') is-invalid @enderror" name="size"
+                                                value="{{ old('size') }}" required autocomplete="size" autofocus>
+                                            @error('size')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="form-group row mb-0">
                                         <div class="col-md-8">
-                                            <a href="{{ URL::previous() }}" type="button" class="btn btn-warning"><i
+                                            <a href="{{ URL::previous() }}" role="button" type="button" class="btn btn-warning"><i
                                                     class="glyphicon glyphicon-menu-left"></i> Volver</a>
-                                            <button type="submit" class="btn btn-info"><i
+                                            <button type="submit" role="button" class="btn btn-info"><i
                                                     class="glyphicon glyphicon-ok-circle"></i>
                                                 {{ __('Crear') }}
                                             </button>
-                                            <a href="{{ URL::current() }}" type="button" class="btn btn-danger"><i
+                                            <a href="{{ URL::current() }}"  role="button" type="button" class="btn btn-danger"><i
                                                     class="glyphicon glyphicon-ban-circle"></i> Cancelar</a>
                                         </div>
                                     </div>

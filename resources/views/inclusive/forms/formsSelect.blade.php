@@ -39,6 +39,8 @@
 									@endif
 									</td>
 								<td><a href="{{URL::to('/UseFormAnswers/')}}/{{$form->id}}">Respuestas</a></td>
+								<td><a href="{{URL::to('/PersonalizedFormAnswer/')}}/{{$form->id}}">Respuestas</a></td>
+
 						
 							</tr>
 							

@@ -123,12 +123,12 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8">
-                                <a href="{{ url('/SelectForms/') }}" type="button" class="btn btn-warning"><i
+                                <a href="{{ url('/SelectForms/') }}" role="button" type="button" class="btn btn-warning"><i
                                         class="glyphicon glyphicon-menu-left"></i> Volver</a>
-                                <button type="submit" class="btn btn-info"><i class="glyphicon glyphicon-ok-circle"></i>
+                                <button type="submit" role="button" class="btn btn-info"><i class="glyphicon glyphicon-ok-circle"></i>
                                     {{ __('Agregar') }}
                                 </button>
-                                <a href="{{ URL::current() }}" type="button" class="btn btn-danger"><i
+                                <a href="{{ URL::current() }}" role="button" type="button" class="btn btn-danger"><i
                                         class="glyphicon glyphicon-ban-circle"></i> Cancelar</a>
                             </div>
                         </div>

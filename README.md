@@ -24,3 +24,6 @@ La implementación de este proyecto permitirá obtener:
 7.	Sistematización de la información.
 8.	Trazabilidad del proceso.
 9.	Implementar mejora continua del proceso
+
+Requiere expotar a documentos
+composer require maatwebsite/excel

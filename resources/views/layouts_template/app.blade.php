@@ -19,7 +19,7 @@
         </a></h1>
         <ul class="list-unstyled components mb-5">
           <li class="active">
-            <a href="{{ route('login') }}"><span class="fa fa-home"></span> Inicio</a>
+            <a href="{{ route('SelectForms') }}"><span class="fa fa-home"></span> Inicio</a>
           </li>
           <li>
             <a href="{{ route('ListForms') }}"><span class="fa fa-user"></span> Formularios</a>

@@ -57,6 +57,9 @@ Route::get('/SelectForms', 'InclusiveFormController@selectForms')->name('SelectF
 Route::get('/PersonalizedFormView/{id}', 'InclusiveFormController@useForm')->name('PersonalizedFormView');
 Route::post('/AnswerFormUseStore', 'InclusiveFormController@answerFormUseStore')->name('AnswerFormUseStore');
 Route::get('/UseFormAnswers/{id}', 'InclusiveFormController@useFormAnswers')->name('UseFormAnswers');
+Route::get('/AnswersByDate/{id}', 'InclusiveFormController@answersByDate')->name('AnswersByDate');
+Route::post('requestsExportAnswers','ExportsController@requestsExportAnswers')->name('requestExportGenerateAnswers')->middleware('auth');
+
 //Respuesta
 Route::get('/PersonalizedFormAnswer/{id}', 'InclusiveFormController@personalizedFormAnswers')->name('personalizedFormAnswers');
 Route::get('/PersonalizedFormAnswerPage/{id}/{perPage}/{page}', 'InclusiveFormController@personalizedFormAnswers')->name('personalizedFormAnswersPage');

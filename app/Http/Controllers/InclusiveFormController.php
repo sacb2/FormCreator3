@@ -11,6 +11,8 @@ use App\InclusiveFormQuestion;
 use App\InclusiveAnswer;
 use App\InclusiveDocument;
 use Redirect;
+use DateTime;
+use DateInterval;
 use Illuminate\Support\Facades\Route;
 use Session;
 
@@ -939,6 +941,52 @@ class InclusiveFormController extends Controller
 			
 		//'answersById'=>$answerById
 		return view('inclusive.forms.responses',['search'=>$search, 'lastPage'=>ceil($lastPage),'page'=>$page,'perPage'=>$perPage,'id'=>$id,'page'=>$page,'answerById_paginate'=>$answerById_paginate, 'answers' => $storedAnswers]);
+	}
+
+
+		//obrtener fecha inicial y final de una semana
+function get_dates($year = 0, $week = 0)
+{
+    // Se crea objeto DateTime del 1/enero del año ingresado
+    $fecha = DateTime::createFromFormat('Y-m-d', $year . '-1-2');
+    $w = $fecha->format('W'); // Número de la semana
+    // Se agrega semanas hasta igualar
+    while ($week >= $w) {
+        $fecha->add(DateInterval::createfromdatestring('+1 week'));
+        $w = $fecha->format('W');
+    }
+    // Ahora $fecha pertenece a la semana buscada
+    // Se debe obtener el primer y el último día
+
+    // Si $fecha no es el primer día de la semana, se restan días
+    if ($fecha->format('N') > 1) {
+        $format = '-' . ($fecha->format('N') - 1) . ' day';
+        $fecha->add(DateInterval::createfromdatestring($format));
+    }
+    // Ahora $fecha es el primer día de esa semana
+
+    // Se clona la fecha en $fecha2 y se le agrega 6 días
+    $fecha2 = clone($fecha);
+    $fecha2->add(DateInterval::createfromdatestring('+6 day'));
+
+    // Devuelve un array con ambas fechas
+    return [$fecha, $fecha2];   
+}
+
+
+	//obtener reporte de respuestas por fecha
+	public function answersByDate($id){
+			
+        //$semanas= strtotime(date("W"));
+		$year= date("Y");
+		$semana_actual= date("W");
+		for($i=0;$i<=$semana_actual;$i++){
+		$semanas[$i] = $this->get_dates($year,$i );	
+		}
+		//foreach($semanas as $semana)
+		//dd($semana[0]->format('D d/m/Y') ,$semana[1]->format('D d/m/Y')
+		return view('inclusive.forms.reportByDate',['id'=>$id,'semanas'=>$semanas]);
+
 	}
 
 	//funcion encargada de paginar los resultados, $item = componentes a pagunas; $perPAge, cuantos elementos por pagina,

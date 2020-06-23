@@ -5,7 +5,10 @@ use Illuminate\Database\Seeder;
 class TestUsers extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run Seeder test on user
+     * 0 admin 2 valuador
+     * 1 profesional 3 evaluador exeterno
+     * 
      *
      * @return void
      */

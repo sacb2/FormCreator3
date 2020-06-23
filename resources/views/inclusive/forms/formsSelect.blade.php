@@ -38,7 +38,6 @@
 									<a href="{{URL::to('/PersonalizedFormView/')}}/{{$form->id}}">Responder</a>
 									@endif
 									</td>
-								<td><a href="{{URL::to('/UseFormAnswers/')}}/{{$form->id}}">Respuestas</a></td>
 								<td><a href="{{URL::to('/PersonalizedFormAnswer/')}}/{{$form->id}}">Respuestas</a></td>
 								<td><a href="{{URL::to('/AnswersByDate/')}}/{{$form->id}}">Reporte</a></td>
 

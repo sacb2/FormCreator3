@@ -82,6 +82,18 @@ Route::get('/home/{style}', 'InclusiveFormController@beneficiarieIndex')->name('
 Route::post('/beneficiarieIndexPost', 'InclusiveFormController@beneficiarieIndexPost')->name('beneficiarieIndexPost');
 Route::post('/UseFormBeneficiariePost', 'InclusiveFormController@useFormBeneficiariePost')->name('UseFormBeneficiariePost');
 
+//creación de profesionales
+
+Route::post('webStoreUsers', 'HomeController@storeUsers')->name('webStoreUsers')->middleware('auth');
+Route::get('/ContactCreateUser', 'HomeController@createUser')->name('ContactCreateUser');
+Route::get('/ContactListUser', 'HomeController@listUser')->name('ContactListUser');
+Route::get('/userView/{id}', 'HomeController@userView')->name('UserView');
+Route::post('/updateUsers', 'HomeController@updateUsers')->name('updateUsers');
+Route::get('/userCreate', 'HomeController@createUser')->name('UserCreate');
+Route::post('/storeUsers', 'HomeController@storeUsers')->name('storeUsers');
+
+
+
 
 
 

@@ -15,7 +15,7 @@ use DateTime;
 use DateInterval;
 use Illuminate\Support\Facades\Route;
 use Session;
-
+use Auth;
 
 class InclusiveFormController extends Controller
 {
@@ -51,6 +51,12 @@ class InclusiveFormController extends Controller
 	//Formulario creacion de preguntas
 	public function createQuestion()
 	{
+		//validar usuario
+		$type= Auth::user()->type_id;
+	if( $type>1||is_null($type)){
+			Auth::logout();
+			return view('welcome');
+		}
 		return view('inclusive.forms.create');
 	}
 
@@ -59,6 +65,12 @@ class InclusiveFormController extends Controller
 	//input $request datos de configuración de pregunta
 	public function storeQuestion(Request $request)
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 		//validar formulario
 
 		$validate_response = $request->validate(
@@ -95,6 +107,12 @@ class InclusiveFormController extends Controller
 	//listar preguntas en el sistema 
 	public function listQuestions()
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 		$questions = InclusiveQuestion::paginate(10);
 		return view('inclusive.forms.questionsList', ['questions' => $questions]);
 	}
@@ -102,6 +120,12 @@ class InclusiveFormController extends Controller
 	//$id identificador de la pregunta
 	public function viewQuestions($id)
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 		$question = InclusiveQuestion::find($id);
 		return view('inclusive.forms.questionsView', ['question' => $question]);
@@ -111,6 +135,12 @@ class InclusiveFormController extends Controller
 	public function updateQuestions(Request $request)
 	{
 
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 		//validación de los datos
 		$validate_response = $request->validate(
 			[
@@ -149,6 +179,12 @@ class InclusiveFormController extends Controller
 	//vista de creación de respuestas posibles a las preguntas de seleccion multiple
 	public function createAnswer()
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 		return view('inclusive.forms.createAnswer');
 	}
@@ -158,6 +194,12 @@ class InclusiveFormController extends Controller
 	public function storeAnswer(Request $request)
 	{
 
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 
 		$answer = new InclusiveMultipleAnswer;
@@ -182,6 +224,12 @@ class InclusiveFormController extends Controller
 	//lista de respuestas posibles a preguntas de selección multiple
 	public function listAnswers()
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 		$answers = InclusiveMultipleAnswer::all();
 
 
@@ -193,6 +241,12 @@ class InclusiveFormController extends Controller
 	public function  viewAnswers($id)
 	{
 
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 		$answer = InclusiveMultipleAnswer::find($id);
 
 		//dd($department);
@@ -204,6 +258,12 @@ class InclusiveFormController extends Controller
 	//$request contiene la informacion de la actualización y el id de la respuesta
 	public function updateAnswers(Request $request)
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 		//dd($request);
 		$validate_response = $request->validate(
@@ -251,6 +311,12 @@ class InclusiveFormController extends Controller
 	//$id identificador de la pregunta
 	public function answersQuestionRelation($id)
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 		$pregunta = InclusiveQuestion::find($id);
 		$respuestas = InclusiveMultipleAnswer::where('estado', '1')->get();
 		return view('inclusive.forms.answersQuestionRelation', ['pregunta' => $pregunta, 'respuestas' => $respuestas]);
@@ -260,6 +326,12 @@ class InclusiveFormController extends Controller
 	//$request en donde viene el id de la pregunta y un arreglo pickedDep con los id de respuestas seleccionadas
 	public function answersQuestionStore(Request $request)
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 		$respuestas = InclusiveQuestionMultipleAnswer::where('id_pregunta', $request->id)->get();
 		if ($respuestas->isempty()) {
@@ -363,6 +435,14 @@ class InclusiveFormController extends Controller
 	public function createForms()
 	{
 
+				//validar usuario
+				$type= Auth::user()->type_id;
+				dd($type);
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
+
 		return view('inclusive.forms.formsCreate');
 	}
 
@@ -371,6 +451,12 @@ class InclusiveFormController extends Controller
 	//$request  contiene la informacion relacionada con el formuarop
 	public function storeForms(Request $request)
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 		//validar formulario
 
@@ -398,6 +484,7 @@ class InclusiveFormController extends Controller
 		$form->nombre = $request->name;
 		$form->estado = $request->state;
 		$form->tipo = $request->type;
+		$form->qanswer = $request->qanswer;
 		try {
 			$form->save();
 			Session::flash('alertSent', 'Derived');
@@ -416,6 +503,15 @@ class InclusiveFormController extends Controller
 	//Listar formularios
 	public function listForms()
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+
+				
+				
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 		$forms = InclusiveForm::paginate(10);
 
 
@@ -426,6 +522,12 @@ class InclusiveFormController extends Controller
 	//$id identificado de formulario
 	public function viewForms($id)
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 		$form = InclusiveForm::find($id);
 		return view('inclusive.forms.formsView', ['form' => $form]);
@@ -435,6 +537,12 @@ class InclusiveFormController extends Controller
 	//$request información de actualización del formularios
 	public function updateForms(Request $request)
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 
 		$validate_response = $request->validate(
@@ -454,6 +562,8 @@ class InclusiveFormController extends Controller
 		$form->nombre = $request->name;
 		$form->estado = $request->state;
 		$form->tipo = $request->type;
+		$form->qanswer = $request->qanswer;
+
 
 		try {
 			$form->save();
@@ -475,6 +585,12 @@ class InclusiveFormController extends Controller
 	//$id identificador unico del  formulario
 	public function questionsFormRelation($id)
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 		$form = InclusiveForm::find($id);
 		//estado activos
@@ -487,6 +603,12 @@ class InclusiveFormController extends Controller
 	//$request información de los formularios y  en el arreglo pickedDep[] id de preguntas seleccionadas 
 	public function questionsFormStore(Request $request)
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>1||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 		//agregar validar formulario
 
@@ -688,18 +810,32 @@ class InclusiveFormController extends Controller
 	//$request si el formlario fue creado con utilizacion de RUT de otra forma solo las respuesta
 	public function AnswerFormUseStore(Request $request)
 	{
+			
+
+		
 
 		$imageName = "imagen";
 		$path = request()->answers_img;
 		//	dd($request,$path);
 		//	\Log::channel('decomlog')->info($request);
 		//si requiere rut
-		if ($request->type_form = 1) {
+		if ($request->type_form == 1) {
+			
 
 			$validate_response = $request->validate([
 				'rut' => ['required', 'regex:/^[0-9]+[-|‐]{1}[0-9kK]{1}$/'],
 			]);
 
+			$formsq= InclusiveAnswer::where('id_formulario',$request->id_form)->where('rut_persona',$request->rut)->groupBy('id_requerimiento')->count();
+			$form=InclusiveForm::find($request->id_form);
+			
+			if($form->qanswer<$formsq&&$form->qanswer>0){
+				Session::flash('alertSent', 'Alert');
+				Session::flash('message', 'RUT ' . $request->rut . ' Ha respondido '.$formsq.' veces');
+				return redirect()->route('BeneficiarieIndex');
+
+			}
+				
 
 			$rut = $request->rut;
 			$rut_validation = $this->valida_rut($request->rut);
@@ -707,7 +843,7 @@ class InclusiveFormController extends Controller
 				Session::flash('alertSent', 'SelectDepartment');
 				Session::flash('message', 'RUT ' . $request->rut . ' formato no corresponde');
 
-				return Redirect::back();
+				return redirect()->route('BeneficiarieIndex');
 			}
 		}
 
@@ -876,6 +1012,12 @@ class InclusiveFormController extends Controller
 	//mostrar respuestas realizadas en el formulario
 	public function personalizedFormAnswers($id, $perPage = 10, $page = 1)
 	{
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>3||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 
 		$answerById = null;
@@ -904,6 +1046,13 @@ class InclusiveFormController extends Controller
 
 	//funcion que busca por rut entre los resultados
 	public function personalizedFormAnswersSearch(Request $request){
+
+				//validar usuario
+				$type= Auth::user()->type_id;
+				if( $type>3||is_null($type)){
+						Auth::logout();
+						return view('welcome');
+					}
 
 		$id= $request->id;
 		$perPage=100;

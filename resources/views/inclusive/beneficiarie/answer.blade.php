@@ -243,8 +243,8 @@ $color='#636b6f';
                                     <label tabindex="0" role="contentinfo" for="comment">{{$pregunta->question->pregunta}}</label>
                                     @if(isset($pregunta->question->size)&&$pregunta->question->size>0)
                                     <a class="hide">El tamaño maximo de la respuesta es {{$pregunta->question->size}} caracteres y a continuación hay un contador de caracteres.</a>
-                                <textarea class="form-control" rows="5" maxlength="{{$pregunta->question->size}}"
-                                    onkeyup="textCounter(this,'counter1{{$pregunta->id}}',{{$pregunta->question->size}});"
+                                <textarea class="form-control" rows="5" maxlength="6666"
+                                    onkeyup="wordCounter(this,'counter1{{$pregunta->id}}',{{$pregunta->question->size}});"
                                         name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}"></textarea>
                                 <input readonly role="contentinfo" tabindex="0"  aria-label="Cantidad de Caracteres escritos" maxlength="3" size="3" value="{{$pregunta->question->size}}" id="counter1{{$pregunta->id}}">
 
@@ -303,6 +303,9 @@ $color='#636b6f';
     function textCounter(field,field2,maxlimit)
     {
      var countfield = document.getElementById(field2);
+     console.log(countfield);
+     
+     //str.split(' ').length;
      if ( field.value.length > maxlimit ) {
       field.value = field.value.substring( 0, maxlimit );
       return false;
@@ -311,4 +314,37 @@ $color='#636b6f';
      }
     }
     </script>
+    <script>
+        function wordCounter(field,field2,maxlimit)
+        {
+         var countfield = document.getElementById(field2);
+         console.log(field.value.split(' ').length);
+         var palabras = field.value.split(' ');
+         var count=0;
+         for(var i=0;i<maxlimit;i++){
+            if (typeof(palabras[i]) != "undefined"){
+                count=palabras[i].length +count;
+            }
+            if(field.value.split(' ').length>1){
+
+            }
+            //count=count+1;
+
+         }
+         if(field.value.split(' ').length>1){
+            count=count+field.value.split(' ').length-1;
+         }
+
+         console.log(count);
+    
+
+         //str.split(' ').length;
+         if ( field.value.split(' ').length > maxlimit +1 ) {
+          field.value = field.value.substring( 0, count -2 );
+          return false;
+         } else {
+          countfield.value = maxlimit - field.value.split(' ').length +1;
+         }
+        }
+        </script>
 @endsection

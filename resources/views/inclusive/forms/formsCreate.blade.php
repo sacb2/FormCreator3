@@ -74,6 +74,21 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+
+                                        <label for="state"
+                                            class="col-md-4 col-form-label text-md-right">{{ __('Cantidad de respuestas por usuario') }}</label>
+                                        <div class="col-md-6">
+                                            <input id="qanswer" type="number"
+                                                class="form-control @error('qanswer') is-invalid @enderror" name="qanswer"
+                                                value="{{ old('qanswer') }}" required autocomplete="qanswer" autofocus>
+                                            @error('qanswer')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="form-group row mb-0">
                                         <div class="col-md-8">
                                             <a href="{{ URL::previous() }}" type="button" class="btn btn-warning"><i

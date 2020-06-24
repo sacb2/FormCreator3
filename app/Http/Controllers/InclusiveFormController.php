@@ -437,7 +437,7 @@ class InclusiveFormController extends Controller
 
 				//validar usuario
 				$type= Auth::user()->type_id;
-				dd($type);
+			
 				if( $type>1||is_null($type)){
 						Auth::logout();
 						return view('welcome');
@@ -819,17 +819,20 @@ class InclusiveFormController extends Controller
 		//	dd($request,$path);
 		//	\Log::channel('decomlog')->info($request);
 		//si requiere rut
-		if ($request->type_form == 1) {
+		if ($request->type_form == '1') {
 			
 
 			$validate_response = $request->validate([
 				'rut' => ['required', 'regex:/^[0-9]+[-|‐]{1}[0-9kK]{1}$/'],
 			]);
 
-			$formsq= InclusiveAnswer::where('id_formulario',$request->id_form)->where('rut_persona',$request->rut)->groupBy('id_requerimiento')->count();
+			$formsq= InclusiveAnswer::where('id_formulario',$request->id_form)->where('rut_persona',$request->rut)->distinct('id_requerimiento')->count('id_requerimiento');
 			$form=InclusiveForm::find($request->id_form);
+				
 			
-			if($form->qanswer<$formsq&&$form->qanswer>0){
+			
+			if((int)$form->qanswer<(int)$formsq && $form->qanswer!='0'){
+			
 				Session::flash('alertSent', 'Alert');
 				Session::flash('message', 'RUT ' . $request->rut . ' Ha respondido '.$formsq.' veces');
 				return redirect()->route('BeneficiarieIndex');
@@ -840,7 +843,7 @@ class InclusiveFormController extends Controller
 			$rut = $request->rut;
 			$rut_validation = $this->valida_rut($request->rut);
 			if (!$rut_validation) {
-				Session::flash('alertSent', 'SelectDepartment');
+				Session::flash('alertSent', 'Alert');
 				Session::flash('message', 'RUT ' . $request->rut . ' formato no corresponde');
 
 				return redirect()->route('BeneficiarieIndex');
@@ -864,7 +867,7 @@ class InclusiveFormController extends Controller
 				$storeAnswer->valor_respuesta = $img_id;
 				$storeAnswer->tipo = '3';
 				if ($request->type_form = 1)
-					$storeAnswer->rut_persona = strtoupper($rut);
+					$storeAnswer->rut_persona = strtoupper($request->rut);
 
 
 
@@ -897,7 +900,7 @@ class InclusiveFormController extends Controller
 				$storeAnswer->texto_respuesta = $value;
 				$storeAnswer->tipo = '0';
 				if ($request->type_form = 1)
-					$storeAnswer->rut_persona = strtoupper($rut);
+					$storeAnswer->rut_persona = strtoupper($request->rut);
 
 
 
@@ -926,7 +929,7 @@ class InclusiveFormController extends Controller
 				$storeAnswer->valor_respuesta = $value;
 				$storeAnswer->tipo = '0';
 				if ($request->type_form = 1)
-					$storeAnswer->rut_persona = strtoupper($rut);
+					$storeAnswer->rut_persona = strtoupper($request->rut);
 
 
 

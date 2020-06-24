@@ -835,7 +835,10 @@ class InclusiveFormController extends Controller
 			
 				Session::flash('alertSent', 'Alert');
 				Session::flash('message', 'RUT ' . $request->rut . ' Ha respondido '.$formsq.' veces');
-				return redirect()->route('BeneficiarieIndex');
+				$forms=InclusiveForm::all();
+				//return view('inclusive.beneficiarie.list', ['style_color'=>$request->style_color,'style_font'=>$request->style_font,'forms' => $forms]);
+				return redirect('home/');
+				//->route('home');
 
 			}
 				
@@ -846,7 +849,7 @@ class InclusiveFormController extends Controller
 				Session::flash('alertSent', 'Alert');
 				Session::flash('message', 'RUT ' . $request->rut . ' formato no corresponde');
 
-				return redirect()->route('BeneficiarieIndex');
+				return redirect('home/');
 			}
 		}
 

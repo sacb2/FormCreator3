@@ -21,6 +21,8 @@ Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::get('logout', 'HomeController@logout')->name('logout');
+Route::post('LoginStyle', 'HomeController@loginStyle')->name('LoginStyle');
+Route::post('RegisterStyle', 'HomeController@registerStyle')->name('RegisterStyle');
 
 //Preguntas
 Route::get('/CreateQuestions', 'InclusiveFormController@createQuestion')->name('CreateQuestion');

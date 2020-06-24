@@ -21,7 +21,8 @@ class HomeController extends Controller
     {
 	
 		
-        $this->middleware('auth');
+	//	$this->middleware('auth');
+		$this->middleware('auth', ['except' => ['loginStyle','registerStyle']]);
     }
 
     /**
@@ -39,7 +40,36 @@ class HomeController extends Controller
         Auth::logout();
         Session::flush();
 		return view('home');
-    }
+	}
+	
+	public function loginStyle(Request $request){
+
+		if(isset($request->style_color))
+		Session::put('color', $request->style_color);
+		else 
+		$request->style_color=Session::get('color');
+		if(isset($request->style_font))
+		Session::put('font', $request->style_font);
+		else
+		$request->style_font=Session::get('font');
+	
+		return view('auth.login', ['style_color'=>$request->style_color,'style_font'=>$request->style_font]);
+
+	}
+	public function registerStyle(Request $request){
+
+		if(isset($request->style_color))
+		Session::put('color', $request->style_color);
+		else 
+		$request->style_color=Session::get('color');
+		if(isset($request->style_font))
+		Session::put('font', $request->style_font);
+		else
+		$request->style_font=Session::get('font');
+	
+		return view('auth.register', ['style_color'=>$request->style_color,'style_font'=>$request->style_font]);
+
+	}
 
     //vista crear usuario
 	public function createUser(){

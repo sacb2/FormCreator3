@@ -69,7 +69,7 @@
                                       
                                   
                                     
-                                    <form method="POST"  action="{{ URL::current() }}" enctype="multipart/form-data">
+                                    <form method="POST"  action="{{ route('LoginStyle') }}" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <button aria-hidden="true"  type="submit" name='style_font' value='1' role="button" class="btn btn-info"><i class="glyphicon glyphicon-ok-circle"></i>
                                             {{ __('Tamaño Fuente') }}

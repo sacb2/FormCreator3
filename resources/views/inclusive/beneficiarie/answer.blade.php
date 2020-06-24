@@ -264,6 +264,8 @@ $color='#636b6f';
 
                             </div>
                         </div>
+                        <input name="style_font" type="hidden" value="{{$style_font}}">
+<input name="style_color" type="hidden" value="{{$style_color}}">
  
                         <div class="form-group row mb-0">
                             <div class="col-md-8">

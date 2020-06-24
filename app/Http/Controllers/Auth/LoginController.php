@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
+use Session;
 class LoginController extends Controller
 {
     /*
@@ -34,7 +35,7 @@ class LoginController extends Controller
        
         // User role
         $role = Auth::user()->type_id;
-    //dd($role); 
+    
         
         // Check user role
             switch ($role) {
@@ -58,7 +59,7 @@ class LoginController extends Controller
         }
     
        
-    
+  
         /**
      * Create a new controller instance.
      *
@@ -66,6 +67,10 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+
+
+        //$color =Session::get('color');
+  //      dd($color);
         $this->middleware('guest')->except('logout');
     }
 }

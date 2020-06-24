@@ -128,6 +128,8 @@
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
+                               
+
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     
@@ -143,6 +145,11 @@
                                   
                                 </div>
                             </li>
+                            @if(isset(Auth::user()->type_id))
+                                @if(Auth::user()->type_id==1||Auth::user()->type_id==0||Auth::user()->type_id==3||Auth::user()->type_id==2)
+                                <a class="nav-link" href="{{ route('SelectForms') }}">{{ __('Acceso Profesionales') }}</a>
+                                @endif
+                                @endif
                         @endguest
                     </ul>
                 </div>

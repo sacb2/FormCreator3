@@ -718,7 +718,7 @@ class InclusiveFormController extends Controller
 	{
 		
 		
-		$forms = InclusiveForm::all();
+		$forms = InclusiveForm::where('estado','1')->get();
 	
 		if(isset($request->style_color))
 		Session::put('color', $request->style_color);

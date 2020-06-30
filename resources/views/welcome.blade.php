@@ -94,7 +94,7 @@
                     @auth
                         <a href="{{ url('/home') }}">Inicio</a>
                     @else
-                        <a href="{{ route('login') }}" role="Ingresar">Ingresar</a>
+                        <a href="{{ route('login') }}" role="Ingresar">Ya estoy registrado</a>
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}">Registrarse</a>
                         @endif

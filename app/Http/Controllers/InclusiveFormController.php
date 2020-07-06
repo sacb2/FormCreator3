@@ -950,7 +950,8 @@ class InclusiveFormController extends Controller
 				}
 			}
 
-
+			Session::flash('alertSent', 'Alert');
+			Session::flash('message', "Formulario respondido exitosamente con ID:".$key);
 		return redirect()->route('BeneficiarieIndex');
 	}
 

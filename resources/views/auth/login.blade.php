@@ -134,6 +134,10 @@ $color='#636b6f';
   color: #636b6f;
 
     }
+#colornew{
+	background-color: #fff;
+	color: #636b6f;
+}
 
 </style>
 @endif
@@ -159,6 +163,10 @@ $color='#636b6f';
    top: -9999px !important;
    left: -9999px !important;
 }
+#colornew{
+	background-color: {{$bcolor}};
+	color: {{$color}};
+}
 </style>
 @section('content')
 <div class="container">
@@ -168,7 +176,7 @@ $color='#636b6f';
                 <div class="card-header">{{ __('Login') }}</div>
 
                
-                <div class="card-body">
+                <div id=colornew class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

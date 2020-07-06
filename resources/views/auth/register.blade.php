@@ -77,7 +77,7 @@ $size='1.2em';
 <input name="style_font" type="hidden" value="3">
 <input name="style_color" type="hidden" value="{{$style_color}}">
 @php
-$size='1.3em';    
+$size='1.7em';    
 @endphp
 @else
 @php
@@ -199,12 +199,16 @@ $color='#636b6f';
                                 @enderror
                             </div>
                         </div>
+						
+						
 
                         <div class="form-group row">
-                            <label for="rut" class="col-md-4 col-form-label text-md-right">{{ __('R.U.T.') }}</label>
+                            <label for="rut" class="col-md-4 col-form-label text-md-right">{{ __('R.U.T.')}} Sin puntos y con digito verificador</label>
 
                             <div class="col-md-6">
-                                <input id="rut" type="text" class="form-control @error('rut') is-invalid @enderror" name="rut" value="{{ old('rut') }}" required autocomplete="rut" autofocus>
+                                <input id="rut"  style="text-transform:uppercase"
+								pattern="^[0-9]+[-|‐]{1}[0-9kK]{1}$" title="Sin puntos y con digito verificador Ej:123456-0" 
+								type="text" class="form-control @error('rut') is-invalid @enderror" name="rut" value="{{ old('rut') }}" required autocomplete="rut" autofocus>
 
                                 @error('rut')
                                     <span class="invalid-feedback" role="alert">
@@ -212,6 +216,7 @@ $color='#636b6f';
                                     </span>
                                 @enderror
                             </div>
+							
                         </div>
 
                         <div class="form-group row">
@@ -229,7 +234,7 @@ $color='#636b6f';
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }} (debe contener al menos 8 caracteres)</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">

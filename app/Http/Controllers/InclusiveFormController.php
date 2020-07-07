@@ -90,6 +90,7 @@ class InclusiveFormController extends Controller
 		$question->pregunta = $request->question;
 		$question->estado = $request->state;
 		$question->tipo = $request->type;
+		$question->orden = $request->orden;
 		$question->size= $request->size;
 		try {
 			$question->save();
@@ -161,6 +162,7 @@ class InclusiveFormController extends Controller
 		$question->pregunta = $request->question;
 		$question->tipo = $request->type;
 		$question->size= $request->size;
+		$question->orden= $request->orden;
 
 
 		try {
@@ -626,11 +628,14 @@ class InclusiveFormController extends Controller
 			if (isset($request->pickedDep))
 				foreach ($request->pickedDep as $product) {
 
+				
 
 					//Crear objeto
 					$newFormQuestions = new InclusiveFormQuestion;
 					$newFormQuestions->id_formulario = $request->id_form;
 					$newFormQuestions->id_pregunta = $product;
+					$pregunta=InclusiveQuestion::find($product);
+					$newFormQuestions->orden = $pregunta->orden;
 					$newFormQuestions->estado = 1;
 					try {
 
@@ -656,6 +661,8 @@ class InclusiveFormController extends Controller
 						$newFormQuestions = new InclusiveFormQuestion;
 						$newFormQuestions->id_formulario = $request->id_form;
 						$newFormQuestions->id_pregunta = $product;
+						$pregunta=InclusiveQuestion::find($product);
+						$newFormQuestions->orden = $pregunta->orden;
 						$newFormQuestions->estado = 1;
 						//guardar nuevo
 						try {
@@ -672,6 +679,8 @@ class InclusiveFormController extends Controller
 					} else {
 						$oldFormQuestions = InclusiveFormQuestion::find($newFormQuestions->id);
 						$oldFormQuestions->estado = 1;
+						$pregunta=InclusiveQuestion::find($product);
+						$newFormQuestions->orden = $pregunta->orden;
 						try {
 							$oldFormQuestions->save();
 						} catch (\Exception $e) {
@@ -756,6 +765,7 @@ class InclusiveFormController extends Controller
 	public function selectForms()
 	{
 		$forms = InclusiveForm::all();
+		
 		return view('inclusive.forms.formsSelect', ['forms' => $forms]);
 	}
 
@@ -776,6 +786,8 @@ class InclusiveFormController extends Controller
 
 		//dd($request);
 		$formulario = InclusiveForm::find($request->id);
+		
+		//ver formulario
 		if(isset($formulario))
 		Session::put('formulario', $formulario);
 		else

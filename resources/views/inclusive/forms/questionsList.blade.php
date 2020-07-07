@@ -19,6 +19,7 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Tipo</th>
+                            <th scope="col">Orden</th>
                             <th scope="col">Ver</th>
                         </tr>
                     </thead>
@@ -36,6 +37,7 @@
                             <td>{{$question->estado}}</td>
                             @endif
                             <td>{{$question->tipo}}</td>
+                            <td>{{$question->orden}}</td>
 
                             <td><a href="{{URL::to('/ViewQuestions/')}}/{{$question->id}}">Editar</a>
                                 @if($question->tipo==2)

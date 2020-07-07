@@ -201,7 +201,7 @@ $color='#636b6f';
 
 
 
-                                @foreach($formulario->questions as $pregunta)
+                                @foreach($formulario->questions->sortBy('orden') as $pregunta)
                                 @if($pregunta->estado==1)
                                 @if($pregunta->question->tipo==2)
 

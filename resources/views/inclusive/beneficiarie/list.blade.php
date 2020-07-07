@@ -46,7 +46,7 @@ $size='1.2em';
 <input name="style_font" type="hidden" value="3">
 <input name="style_color" type="hidden" value="{{$style_color}}">
 @php
-$size='1.3em';    
+$size='1.7em';    
 @endphp
 @else
 @php

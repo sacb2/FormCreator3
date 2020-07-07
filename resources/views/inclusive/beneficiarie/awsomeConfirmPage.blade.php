@@ -143,7 +143,7 @@ $color='#636b6f';
 
 
     
-        <div class="panel-heading col-md-8"><i class="fa fa-user"></i> Responder Formulario
+        <div class="panel-heading col-md-8"><i class="fa fa-user"></i> Respuesta de formulario
         
             <a role="contentinfo" class="hide">.Página de ingreso de respuestas: aquí tendrá que responder las preguntas señaladas. Dependiendo el tipo de pregunta se le solicitará responder de diferentes formas, con texto, seleccionar alternativas o adjuntar archivos.</a>
         </div>
@@ -201,7 +201,7 @@ $color='#636b6f';
 
 
 
-                                @foreach($formulario->questions->sortBy('orden') as $pregunta)
+                                @foreach($formulario->questions as $pregunta)
                                 @if($pregunta->estado==1)
                                 @if($pregunta->question->tipo==2)
 

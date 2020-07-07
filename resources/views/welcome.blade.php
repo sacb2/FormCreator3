@@ -83,33 +83,48 @@
           #inner {
             display: inline-block;
           }
+
       
         </style>
     </head>
     <div class="header">
-
-       <div>
+	<div>
+	
+	
             @if (Route::has('login'))
-                <div class="top-right links">
+                <div class="links">
                     @auth
                         <a href="{{ url('/home') }}">Inicio</a>
                     @else
-                        <a href="{{ route('login') }}" role="Ingresar">Ya estoy registrado</a>
+                        <a class="btn btn-primary"  href="{{ route('login') }}" role="Ingresar">Ya estoy registrado</a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Registrarse</a>
+                            <a href="{{ route('register') }}">Registrarme</a>
                         @endif
                     @endauth
                 </div>
             @endif
             </div>
+    
+       
             
             <div>
-            <h1>    <a href="{{URL::to('/home/')}}">Sistema de postulaciones</a></h1>
+            <h1>    <a href="{{URL::to('/home/')}}">Sistema de postulaciones:</a></h1>
+			<h1>    <a href="{{URL::to('/home/')}}">15° Concurso Metropolitano Inclusivo de Litratura</a></h1>
+			
             </div>
     </div>
        
     <body>
-        <a class="hide">Pagina de incio de sistema de inscripciones con opciones de accesibilidad, si ya tiene una cuenta presione en ingresar si no tiene una cuenta presione en registrase.</a>
+	            <!--<h2>    <a role="button"  href="{{URL::to('/home/')}}">Inicio</a></h2>-->
+				<div id=outer>
+					<div id=inner>
+				<h1>    <a role="button"  href="{{ route('login') }}">Ya estoy registrado</a></h1>
+				<h1>	<a role="button"  href="{{ route('register') }}">Registrarme</a> </h1>
+				</div>
+				</div>
+
+	
+	    <a tabindex="0" class="hide">Pagina de incio de sistema de inscripciones con opciones de accesibilidad, si ya tiene una cuenta presione en ingresar si no tiene una cuenta presione en "ya estoy registrado".</a>
         
 
 

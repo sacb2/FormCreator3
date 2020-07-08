@@ -823,7 +823,6 @@ class InclusiveFormController extends Controller
 	public function AnswerFormUseStore(Request $request)
 	{
 			
-
 		
 
 		$imageName = "imagen";
@@ -867,12 +866,10 @@ class InclusiveFormController extends Controller
 
 		$id = time();
 		//archivo adjunto
-		if (isset($request->answers_img))
-
-
+		if (isset($request->answers_img)){
 			foreach ($request->answers_img as $key => $value) {
 
-
+				//dd($request->answers_img,$key,$value);
 				$img_id = $this->fileStore($value, '3', $request->id_form, $id);
 				$storeAnswer = new InclusiveAnswer;
 				$storeAnswer->id_pregunta = $key;
@@ -882,7 +879,7 @@ class InclusiveFormController extends Controller
 				$storeAnswer->id_persona=Auth::user()->id;
 				$storeAnswer->valor_respuesta = $img_id;
 				$storeAnswer->tipo = '3';
-				if ($request->type_form = 1)
+				if ($request->type_form == 1)
 					$storeAnswer->rut_persona = strtoupper($request->rut);
 
 
@@ -901,7 +898,7 @@ class InclusiveFormController extends Controller
 				}
 			}
 
-
+		}
 
 
 		if (isset($request->answers_text))
@@ -917,7 +914,7 @@ class InclusiveFormController extends Controller
 				if(Auth::user())
 				$storeAnswer->id_persona=Auth::user()->id;
 				$storeAnswer->tipo = '0';
-				if ($request->type_form = 1)
+				if ($request->type_form ==1)
 					$storeAnswer->rut_persona = strtoupper($request->rut);
 
 
@@ -947,7 +944,7 @@ class InclusiveFormController extends Controller
 				$storeAnswer->id_persona=Auth::user()->id;
 				$storeAnswer->valor_respuesta = $value;
 				$storeAnswer->tipo = '0';
-				if ($request->type_form = 1)
+				if ($request->type_form == 1)
 					$storeAnswer->rut_persona = strtoupper($request->rut);
 
 
@@ -1016,10 +1013,10 @@ class InclusiveFormController extends Controller
 	//$attachment documento adjunto $id_type tipo de adjunto $id_form identificador de formulario $id_request identificador unico de respuesta
 	public function fileStore($attachment, $id_type, $id_form, $id_request)
 	{
+//dd($attachment, $id_type, $id_form, $id_request,$attachment->getClientOriginalName());
 
-
-		if ($id_type == 3) {
-			$imageName = 'Adjunto_' . $id_form . time() . 'ID' . $id_request . '.' . $attachment->getClientOriginalExtension();
+		if ($id_type == '3') {
+			$imageName = 'Adjunto_' . $id_form . time() . 'ID' . $id_request .$attachment->getClientOriginalName(). '.' . $attachment->getClientOriginalExtension();
 			$path = $attachment->move(public_path('images/' . $id_form), $imageName);
 			$image = new InclusiveDocument;
 			$image->nombre = $imageName;

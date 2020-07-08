@@ -240,7 +240,7 @@ label {
 
 
                         <div class="form-group row">
-                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
+                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Teléfono') }}</label>
 
                             <div class="col-md-6">
                                 <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
@@ -253,9 +253,9 @@ label {
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="birth_date" class="col-2 col-form-label">Fecha de Nacimiento</label>
-                            <div class="col-10">
+                        <div class="form-group row">
+                            <label for="birth_date" class="col-md-4 col-form-label text-md-right">Fecha de Nacimiento</label>
+                            <div class="col-md-6">
                                 <input class="form-control" value= "" type="date" name="birth_date"  id="birth_date">
                             </div>
                             </div>

@@ -99,16 +99,16 @@ $color='#636b6f';
 <input name="style_font" type="hidden" value="{{$style_font}}">
 <input name="style_color" type="hidden" value="5">
 @php
-$bcolor='#abc3c9';
-$color='#0f2080';
+$bcolor='#FFC20A';
+$color='#0C7BDC';
 @endphp
 @elseif($style_color==6)
 {{ Session::put('color','6')}}
 <input name="style_font" type="hidden" value="{{$style_font}}">
 <input name="style_color" type="hidden" value="6">
 @php
-$bcolor='#f5793a';
-$color='#382119';
+$bcolor='#E66100';
+$color='#5D3A9B';
 @endphp
 @else
 @php
@@ -158,6 +158,11 @@ $color='#636b6f';
    position: absolute !important;
    top: -9999px !important;
    left: -9999px !important;
+}
+label {
+	color: {{$color}};
+    font-weight: bold;
+
 }
 </style>
 @section('content')
@@ -233,6 +238,27 @@ $color='#636b6f';
                             </div>
                         </div>
 
+
+                        <div class="form-group row">
+                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
+
+                                @error('phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="birth_date" class="col-2 col-form-label">Fecha de Nacimiento</label>
+                            <div class="col-10">
+                                <input class="form-control" value= "" type="date" name="birth_date"  id="birth_date">
+                            </div>
+                            </div>
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }} (debe contener al menos 8 caracteres)</label>
 
@@ -268,4 +294,51 @@ $color='#636b6f';
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    var date = new Date();
+    var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    
+    var optSimple = {
+      format: 'mm-dd-yyyy',
+      todayHighlight: true,
+      orientation: 'bottom right',
+      autoclose: true,
+      container: '#sandbox'
+    };
+    
+    var optComponent = {
+      format: 'mm-dd-yyyy',
+      container: '#datePicker',
+      orientation: 'auto top',
+      todayHighlight: true,
+      autoclose: true
+    };
+    
+    // SIMPLE
+    $( '#simple' ).datepicker( optSimple );
+    
+    // COMPONENT
+    $( '#datePicker' ).datepicker( optComponent );
+    
+    // ===================================
+    
+    $( '#datepicker1' ).datepicker({
+      format: "mm : dd : yyyy",
+      todayHighlight: true,
+      autoclose: true,
+      container: '#box1',
+      orientation: 'top right'
+    });
+    
+    $( '#datepicker2' ).datepicker({
+      format: 'mm \\ dd \\ yyyy',
+      todayHighlight: true,
+      autoclose: true,
+      container: '#box2',
+      orientation: 'top right'
+    });
+    
+    $( '#datepicker1, #datepicker2, #simple, #datePicker' ).datepicker( 'setDate', today );
+    </script>
 @endsection

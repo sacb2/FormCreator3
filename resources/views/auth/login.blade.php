@@ -99,16 +99,16 @@ $color='#636b6f';
 <input name="style_font" type="hidden" value="{{$style_font}}">
 <input name="style_color" type="hidden" value="5">
 @php
-$bcolor='#abc3c9';
-$color='#0f2080';
+$bcolor='#FFC20A';
+$color='#0C7BDC';
 @endphp
 @elseif($style_color==6)
 {{ Session::put('color','6')}}
 <input name="style_font" type="hidden" value="{{$style_font}}">
 <input name="style_color" type="hidden" value="6">
 @php
-$bcolor='#f5793a';
-$color='#382119';
+$bcolor='#E66100';
+$color='#5D3A9B';
 @endphp
 @else
 @php
@@ -138,7 +138,11 @@ $color='#636b6f';
 	background-color: #fff;
 	color: #636b6f;
 }
+label {
+	color: {{$color}};
+    font-weight: bold;
 
+}
 </style>
 @endif
 <style>

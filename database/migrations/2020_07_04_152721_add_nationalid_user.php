@@ -15,7 +15,7 @@ class AddNationalidUser extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
     
-            $table->integer('rut')->nullable();
+            $table->string('rut',11)->nullable();
 
 		});
     }

@@ -66,15 +66,15 @@ $color='#636b6f';
 <input name="style_font" type="hidden" value="{{$style_font}}">
 <input name="style_color" type="hidden" value="5">
 @php
-$bcolor='#abc3c9';
-$color='#0f2080';
+$bcolor='#FFC20A';
+$color='#0C7BDC';
 @endphp
 @elseif($style_color==6)
 <input name="style_font" type="hidden" value="{{$style_font}}">
 <input name="style_color" type="hidden" value="6">
 @php
-$bcolor='#f5793a';
-$color='#382119';
+$bcolor='#E66100';
+$color='#5D3A9B';
 @endphp
 @else
 @php
@@ -109,7 +109,15 @@ $color='#636b6f';
                 height: 300vh;
                 margin: 0;
     }
+	#colornew{
+	background-color: {{$bcolor}};
+	color: {{$color}};
+}
+label {
+	color: {{$color}};
+    font-weight: bold;
 
+}
 </style>
 <body>
 
@@ -121,7 +129,7 @@ $color='#636b6f';
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-body">
-  <div class="table-responsive">
+  <div id=colornew  class="table-responsive">
 	<a class="sr-only sr-only-focusable">Aquí se muestran las diferentes postulaciones en las cuales debera seleccionar la que quiere completar el formulario</a>
     	<table  class="table table-hover">
 						<thead >

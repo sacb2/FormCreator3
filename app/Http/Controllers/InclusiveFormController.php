@@ -878,7 +878,8 @@ class InclusiveFormController extends Controller
 				$storeAnswer->id_pregunta = $key;
 				$storeAnswer->id_formulario = $request->id_form;
 				$storeAnswer->id_requerimiento = $id;
-				//$storeAnswer->id_persona=$request->rut;
+				if(Auth::user())
+				$storeAnswer->id_persona=Auth::user()->id;
 				$storeAnswer->valor_respuesta = $img_id;
 				$storeAnswer->tipo = '3';
 				if ($request->type_form = 1)
@@ -913,6 +914,8 @@ class InclusiveFormController extends Controller
 				$storeAnswer->id_formulario = $request->id_form;
 				$storeAnswer->id_requerimiento = $id;
 				$storeAnswer->texto_respuesta = $value;
+				if(Auth::user())
+				$storeAnswer->id_persona=Auth::user()->id;
 				$storeAnswer->tipo = '0';
 				if ($request->type_form = 1)
 					$storeAnswer->rut_persona = strtoupper($request->rut);
@@ -940,7 +943,8 @@ class InclusiveFormController extends Controller
 				$storeAnswer->id_pregunta = $key;
 				$storeAnswer->id_formulario = $request->id_form;
 				$storeAnswer->id_requerimiento = $id;
-				//$storeAnswer->id_persona=$request->rut;
+				if(Auth::user())
+				$storeAnswer->id_persona=Auth::user()->id;
 				$storeAnswer->valor_respuesta = $value;
 				$storeAnswer->tipo = '0';
 				if ($request->type_form = 1)
@@ -963,7 +967,7 @@ class InclusiveFormController extends Controller
 			}
 
 			Session::flash('alertSent', 'Alert');
-			Session::flash('message', "Formulario respondido exitosamente con ID:".$key);
+			Session::flash('message', "Formulario respondido exitosamente con ID: ".$id);
 		return redirect()->route('BeneficiarieIndex');
 	}
 

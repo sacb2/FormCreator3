@@ -25,6 +25,11 @@
   margin-top: -20px;
   margin-right: 5px;
 }
+label {
+	color: {{$color}};
+    font-weight: bold;
+
+}
 </style>
 @if(!isset($style_font)||$style_font==null)
 @php
@@ -77,15 +82,15 @@ $color='#636b6f';
 <input name="style_font" type="hidden" value="{{$style_font}}">
 <input name="style_color" type="hidden" value="5">
 @php
-$bcolor='#abc3c9';
-$color='#0f2080';
+$bcolor='#FFC20A';
+$color='#0C7BDC';
 @endphp
 @elseif($style_color==6)
 <input name="style_font" type="hidden" value="{{$style_font}}">
 <input name="style_color" type="hidden" value="6">
 @php
-$bcolor='#f5793a';
-$color='#382119';
+$bcolor='#E66100';
+$color='#5D3A9B';
 @endphp
 @else
 @php

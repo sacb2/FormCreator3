@@ -112,6 +112,7 @@ $color='#636b6f';
 	#colornew{
 	background-color: {{$bcolor}};
 	color: {{$color}};
+	font-weight: bold;
 }
 label {
 	color: {{$color}};
@@ -131,7 +132,7 @@ label {
                             <div class="card-body">
   <div id=colornew  class="table-responsive">
 	<a class="sr-only sr-only-focusable">Aquí se muestran las diferentes postulaciones en las cuales debera seleccionar la que quiere completar el formulario</a>
-    	<table  class="table table-hover">
+    	<table id=colornew class="table table-hover">
 						<thead >
 							<tr>
 								<th scope="col">Nombre</th>

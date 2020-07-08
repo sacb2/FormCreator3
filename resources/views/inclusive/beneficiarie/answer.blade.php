@@ -145,6 +145,11 @@ $color='#636b6f';
 	background-color: {{$bcolor}};
 	color: {{$color}};
 }
+label {
+	color: {{$color}};
+    font-weight: bold;
+
+}
 </style>
 <body>
    

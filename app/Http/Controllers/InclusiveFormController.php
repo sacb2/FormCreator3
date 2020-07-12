@@ -696,7 +696,7 @@ class InclusiveFormController extends Controller
 						$oldFormQuestions = InclusiveFormQuestion::find($newFormQuestions->id);
 						$oldFormQuestions->estado = 1;
 						$pregunta=InclusiveQuestion::find($product);
-						$newFormQuestions->orden = $pregunta->orden;
+						$oldFormQuestions->orden = $pregunta->orden;
 						try {
 							$oldFormQuestions->save();
 						} catch (\Exception $e) {

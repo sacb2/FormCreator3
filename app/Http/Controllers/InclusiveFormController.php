@@ -94,6 +94,8 @@ class InclusiveFormController extends Controller
 		$question->size= $request->size;
 		$question->group= $request->group;
 		$question->edad= $request->edad;
+		$question->required= $request->required;
+
 		try {
 			$question->save();
 			//Session::flash('alertSent', 'Derived');
@@ -167,6 +169,7 @@ class InclusiveFormController extends Controller
 		$question->orden= $request->orden;
 		$question->group= $request->group;
 		$question->edad= $request->edad;
+		$question->required= $request->required;
 
 
 
@@ -806,13 +809,23 @@ class InclusiveFormController extends Controller
 		//		dd($formulario->products);
 		return view('inclusive.forms.formsUse', ['formulario' => $formulario]);
 	}
-
-
 	//Visualización de formulario personalizado creado y respuestas 
 	//$id identificador de formulario
 	public function useFormBeneficiariePost(Request $request)
 	{
+		
+//edad de la persona registrada
+$edad=null;
+		if(Auth::user() &&Auth::user()->birth_date!=null){
+			$user=Auth::user()->birth_date;
+ $date = new DateTime($user);
+ $now = new DateTime();
+ $interval = $now->diff($date);
+ $edad=$interval->y;
+ 
+		}
 
+		
 		//dd($request);
 		$formulario = InclusiveForm::find($request->id);
 		
@@ -834,13 +847,14 @@ class InclusiveFormController extends Controller
 
 				//dd($request->style_color,$request->style_font);
 		
-		return view('inclusive.beneficiarie.answer', ['style_color'=>$request->style_color,'style_font'=>$request->style_font,'formulario' => $formulario]);
+		return view('inclusive.beneficiarie.answer', ['edad'=>$edad,'style_color'=>$request->style_color,'style_font'=>$request->style_font,'formulario' => $formulario]);
 	}
 
 	//Visualización de formulario personalizado creado y respuestas 
 	//$id identificador de formulario
 	public function useFormBeneficiarie($id)
 	{
+	
 		$formulario = InclusiveForm::find($id);
 		//		dd($formulario->products);
 		return view('inclusive.beneficiarie.answer', ['formulario' => $formulario]);
@@ -1001,12 +1015,14 @@ class InclusiveFormController extends Controller
 	//$id identificador del formulario
 	public function useFormBeneficiarie_($id)
 	{
+		
 		$answerById = null;
 		$answers = InclusiveAnswer::where('id_formulario', $id)->groupBy('id_requerimiento')->pluck('id_requerimiento');
 		foreach ($answers as $answer) {
 			$answerById[$answer] = InclusiveAnswer::where('id_requerimiento', $answer)->get();
 		}
 		//dd($answerById);
+
 
 		$storedAnswers = InclusiveAnswer::where('id_formulario', $id)->groupBy('id_requerimiento')->get();
 		/*		foreach($storedAnswers as $storeAnswer)

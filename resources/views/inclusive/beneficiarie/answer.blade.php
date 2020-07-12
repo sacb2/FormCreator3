@@ -157,8 +157,9 @@ label {
 
 
     
-        <div class="panel-heading col-md-8"><i class="fa fa-user"></i> Responder Formulario
-        
+        <div class="panel-heading col-md-8"><i class="fa fa-user"></i> Responder Formulario : {{$formulario->nombre}}
+
+
             <a role="contentinfo" class="hide">.Página de ingreso de respuestas: aquí tendrá que responder las preguntas señaladas. Dependiendo el tipo de pregunta se le solicitará responder de diferentes formas, con texto, seleccionar alternativas o adjuntar archivos.</a>
         </div>
 
@@ -216,8 +217,15 @@ label {
 
 
                                 @foreach($formulario->questions->sortBy('orden') as $pregunta)
+        
+                           
+
+
                                 @if($pregunta->estado==1)
                                 @if($pregunta->question->tipo==2)
+                             <!-- restriccion de edad -->
+                                @if($pregunta->question->edad!=null&&$pregunta->question->edad!=0&&$pregunta->question->edad>$edad)
+
 
                                 <div class="form-group row">
 
@@ -236,8 +244,31 @@ label {
                                         </select>
                                     </div>
                                 </div>
+                                @elseif($pregunta->question->edad==null||$pregunta->question->edad==0)
+                                <div class="form-group row">
+
+<label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
+    class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
+<div class="col-md-6">
+    <select class="custom-select" id="answers_int[{{$pregunta->id}}]"
+        name="answers_int[{{$pregunta->id}}]" value="{{ old('state') }}">
+        <option value='' selected>Seleccionar...</option>
+        @foreach($pregunta->question->answers as $answer)
+        <option value='{{$answer->valor_respuesta}}'>{{$answer->texto_respuesta}}
+        </option>
+        @endforeach
+
+
+    </select>
+</div>
+</div>
+                                @endif
 
                                 @elseif($pregunta->question->tipo==3)
+                                <!-- restriccion de edad -->
+                                @if($pregunta->question->edad!=null&&$pregunta->question->edad!=0&&$pregunta->question->edad>$edad)
+
+
                                 <div align="left" class="form-group row{{ $errors->has('attachment') ? ' has-error' : '' }}">
                                     <label role="contentinfo" tabindex="0" for="attachment"  class="col-md-4 col-form-label">Adjuntar {{$pregunta->question->pregunta}}:</label>
     
@@ -252,7 +283,29 @@ label {
                                     </div>
                 
                                 </div>
+                                @elseif($pregunta->question->edad==null||$pregunta->question->edad==0)
+
+
+                                <div align="left" class="form-group row{{ $errors->has('attachment') ? ' has-error' : '' }}">
+                                    <label role="contentinfo" tabindex="0" for="attachment"  class="col-md-4 col-form-label">Adjuntar {{$pregunta->question->pregunta}}:</label>
+    
+                                    <div align="left" class="col-md-6">
+                                      Tamaño máximo de adjunto 7MB <input role="button" id="answers_img[{{$pregunta->id}}]" type="file" class="form-control" name="answers_img[{{$pregunta->id}}]" required>
+    
+                                        @if ($errors->has('attachment'))
+                                            <span class="help-block">
+                                            <strong>{{ $errors->first('attachment') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                
+                                </div>
+                                @endif
                                 @else
+                                <!-- restriccion de edad -->
+                                @if($pregunta->question->edad!=null&&$pregunta->question->edad!=0&&$pregunta->question->edad>$edad)
+
+
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo" for="comment">{{$pregunta->question->pregunta}}</label>
                                     @if(isset($pregunta->question->size)&&$pregunta->question->size>0)
@@ -268,6 +321,23 @@ label {
                                     @endif
                                 
                                 </div>
+                                @elseif($pregunta->question->edad==null||$pregunta->question->edad==0)
+                                <div class="form-group">
+                                    <label tabindex="0" role="contentinfo" for="comment">{{$pregunta->question->pregunta}}</label>
+                                    @if(isset($pregunta->question->size)&&$pregunta->question->size>0)
+                                    <a class="hide">El tamaño maximo de la respuesta es {{$pregunta->question->size}} caracteres y a continuación hay un contador de caracteres.</a>
+                                <textarea class="form-control" rows="5" maxlength="6666"
+                                    onkeyup="wordCounter(this,'counter1{{$pregunta->id}}',{{$pregunta->question->size}});"
+                                        name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}"></textarea>
+                                <input readonly role="contentinfo" tabindex="0"  aria-label="Cantidad de Caracteres escritos" maxlength="3" size="3" value="{{$pregunta->question->size}}" id="counter1{{$pregunta->id}}">
+
+                                    @else
+                                    <textarea class="form-control" rows="5" maxlength="6666"
+                                        name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}"></textarea>
+                                    @endif
+                                
+                                </div>
+                                @endif
                                 @endif
                                 @endif
                                 @endforeach

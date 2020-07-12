@@ -54,6 +54,19 @@
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label for="required"
+                                            class="col-md-4 col-form-label text-md-right">{{ __('Requerida') }}</label>
+                                        <div class="col-md-6">
+                                            <select class="custom-select" id="required" name="required"
+                                                value="{{ old('required') }}">
+                                                <option value='' selected>Seleccionar...</option>
+                                                <option value='1'>Activo</option>
+                                                <option value='2'>Inactivo</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="form-group row">
 
                                         <label for="state"

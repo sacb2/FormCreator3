@@ -92,6 +92,22 @@
                                         <div class="col-md-6">
                                             <input id="size" type="number"
                                                 class="form-control @error('orden') is-invalid @enderror" name="orden"
+                                                value="{{ old('group') }}" required autocomplete="orden" autofocus>
+                                            @error('group')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+
+                                        <label for="state"
+                                            class="col-md-4 col-form-label text-md-right">{{ __('Grupo') }}</label>
+                                        <div class="col-md-6">
+                                            <input id="size" type="number"
+                                                class="form-control @error('group') is-invalid @enderror" name="group"
                                                 value="{{ old('orden') }}" required autocomplete="orden" autofocus>
                                             @error('orden')
                                             <span class="invalid-feedback" role="alert">

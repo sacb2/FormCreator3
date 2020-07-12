@@ -95,15 +95,50 @@
                                             @foreach($form->questions as $selectedQ)
                                             @if($question->id==$selectedQ->id_pregunta&&$selectedQ->estado==1)
                                             <input checked type="checkbox" name="pickedDep[]" id="pickedDep1"
-                                                value='{{$question->id}}'> {{$question->nombre}}</input><br>
+                                                value='{{$question->id}}'> {{$question->nombre}}</input>
+
+                                      
+                                               @if($form->grouped==1)
+                                                    <label for="group"
+                                                        class="col-md-4 col-form-label text-md-right">{{ __('Agrupación') }}</label>
+                                                    <div class="col-md-6">
+                                                        <input id="group" type="number"
+                                                            class="form-control @error('group') is-invalid @enderror" name="groupDep[{{$question->id}}]"
+                                                            value='{{$selectedQ->group}}' required autocomplete="group" autofocus>
+                                                        @error('group')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                        @enderror
+                                                </div>
+                                               
+                                                @endif
+                                                <br>
                                             @php
                                             $a=1;
                                             @endphp
                                             @endif
                                             @endforeach
                                             @if($a==0)
+                                           
                                             <input type="checkbox" name="pickedDep[]" id="pickedDep1"
-                                                value='{{$question->id}}'> {{$question->nombre}}</input><br>
+                                                value='{{$question->id}}'> {{$question->nombre}}</input>
+                                                @if($form->grouped==1)
+                                                    <label for="group"
+                                                        class="col-md-4 col-form-label text-md-right">{{ __('Agrupación') }}</label>
+                                                    <div class="col-md-6"> 
+                                                        <input id="group" type="number"
+                                                            class="form-control @error('group') is-invalid @enderror" name="groupDep[{{$question->id}}]"
+                                                            value='' autocomplete="group" autofocus>
+                                                        @error('group')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                        @enderror
+                                                </div>
+                                               
+                                                @endif
+                                                <br>
                                             @endif
 
 

@@ -112,6 +112,33 @@
                                     </div>
 
                                     <div class="form-group row">
+                                   
+                                        <label for="grouped"
+                                            class="col-md-4 col-form-label text-md-right">{{ __('Agrupado') }}</label>
+                                        <div class="col-md-6">
+                                            <select class="custom-select" id="grouped" name="grouped"
+                                                value="{{$form->grouped}}" ??"{{ old('grouped') }}">
+                                                @if($form->grouped == 1)
+                                                <option value=''>Seleccionar...</option>
+                                                <option value='1' selected>Activo</option>
+                                                <option value='2'>Inactivo</option>
+
+                                                @elseif($form->grouped== 2)
+                                                <option value=''>Seleccionar...</option>
+                                                <option value='1'>Activo</option>
+                                                <option value='2' selected>Inactivo</option>
+                                                @else
+                                                <option value='' selected>Seleccionar...</option>
+                                                <option value='1'>Activo</option>
+                                                <option value='2'>Inactivo</option>
+
+
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
 
                                         <label for="state"
                                             class="col-md-4 col-form-label text-md-right">{{ __('Cantidad de respuestas por usuario') }}</label>

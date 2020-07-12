@@ -92,6 +92,7 @@ class InclusiveFormController extends Controller
 		$question->tipo = $request->type;
 		$question->orden = $request->orden;
 		$question->size= $request->size;
+		$question->group= $request->group;
 		try {
 			$question->save();
 			//Session::flash('alertSent', 'Derived');
@@ -163,6 +164,8 @@ class InclusiveFormController extends Controller
 		$question->tipo = $request->type;
 		$question->size= $request->size;
 		$question->orden= $request->orden;
+		$question->group= $request->group;
+
 
 
 		try {
@@ -486,6 +489,7 @@ class InclusiveFormController extends Controller
 		$form->nombre = $request->name;
 		$form->estado = $request->state;
 		$form->tipo = $request->type;
+		$form->grouped = $request->grouped;
 		$form->qanswer = $request->qanswer;
 		try {
 			$form->save();
@@ -565,6 +569,8 @@ class InclusiveFormController extends Controller
 		$form->estado = $request->state;
 		$form->tipo = $request->type;
 		$form->qanswer = $request->qanswer;
+		$form->grouped = $request->grouped;
+
 
 
 		try {
@@ -605,6 +611,8 @@ class InclusiveFormController extends Controller
 	//$request información de los formularios y  en el arreglo pickedDep[] id de preguntas seleccionadas 
 	public function questionsFormStore(Request $request)
 	{
+
+
 				//validar usuario
 				$type= Auth::user()->type_id;
 				if( $type>1||is_null($type)){
@@ -660,6 +668,7 @@ class InclusiveFormController extends Controller
 
 						$newFormQuestions = new InclusiveFormQuestion;
 						$newFormQuestions->id_formulario = $request->id_form;
+					//	$newFormQuestions->group = $request->group;
 						$newFormQuestions->id_pregunta = $product;
 						$pregunta=InclusiveQuestion::find($product);
 						$newFormQuestions->orden = $pregunta->orden;
@@ -715,6 +724,22 @@ class InclusiveFormController extends Controller
 			}
 		}
 
+
+		//actualizar grupo de las preguntas
+
+		$formQuestions = InclusiveFormQuestion::where('id_formulario', $request->id_form)->first();
+		if ($formQuestions->form->grouped==1)
+		foreach ($request->groupDep as $key => $value) {
+			$questionRelated=null;
+			$questionRelated= InclusiveFormQuestion::where('id_formulario', $request->id_form)->where('id_pregunta', $key)->first();
+			if($questionRelated!=null){
+				$questionRelated->group= $value;
+			$questionRelated->save();
+			}
+			
+			
+		
+		}
 
 		return redirect()->route('ListForms');
 		//return view('beneficiaries.create')->with('success', 'Usuario Creado');

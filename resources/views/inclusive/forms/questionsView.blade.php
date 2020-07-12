@@ -127,15 +127,23 @@
                                                 <option value=''>Seleccionar...</option>
                                                 <option value='1' selected>Texto</option>
                                                 <option value='2'>Selección múltiple</option>
+                                                <option value='3'>Imagen</option>
 
                                                 @elseif($question->tipo== 2)
                                                 <option value=''>Seleccionar...</option>
                                                 <option value='1'>Texto</option>
                                                 <option value='2' selected>Selección múltiple</option>
+                                                <option value='3'>Imagen</option>
+                                                @elseif($question->tipo== 3)
+                                                <option value='' >Seleccionar...</option>
+                                                <option value='1'>Texto</option>
+                                                <option value='2'>Selección múltiple</option>
+                                                <option value='3' selected>Imagen</option>
                                                 @else
                                                 <option value='' selected>Seleccionar...</option>
                                                 <option value='1'>Texto</option>
                                                 <option value='2'>Selección múltiple</option>
+                                                <option value='3'>Imagen</option>
 
                                                 @endif
 

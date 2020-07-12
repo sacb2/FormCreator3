@@ -93,6 +93,7 @@ class InclusiveFormController extends Controller
 		$question->orden = $request->orden;
 		$question->size= $request->size;
 		$question->group= $request->group;
+		$question->edad= $request->edad;
 		try {
 			$question->save();
 			//Session::flash('alertSent', 'Derived');
@@ -165,6 +166,9 @@ class InclusiveFormController extends Controller
 		$question->size= $request->size;
 		$question->orden= $request->orden;
 		$question->group= $request->group;
+		$question->edad= $request->edad;
+
+
 
 
 

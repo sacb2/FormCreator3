@@ -12,7 +12,7 @@ class InclusiveQuestion extends Model
   //public $primaryKey = 'id';
 
       protected $fillable = [
-      'id','nombre','pregunta','tipo','estado', 'size','orden','group'
+      'id','nombre','pregunta','tipo','estado', 'size','orden','group','edad'
   ];	
   
       public $timestaps = true;

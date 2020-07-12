@@ -129,6 +129,23 @@
                                                 @enderror
                                             </div>
                                         </div>
+
+                                    <div class="form-group row">
+
+                                        <label for="edad"
+                                            class="col-md-4 col-form-label text-md-right">{{ __('Edad<') }}</label>
+                                        <div class="col-md-6">
+                                            <input id="size" type="number"
+                                                class="form-control @error('edad') is-invalid @enderror" name="edad"
+                                                value="{{$question->edad}}" required autocomplete="edad" autofocus>
+                                            @error('edad')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
                                         <div class="form-group row">
 
                                             <label for="state"

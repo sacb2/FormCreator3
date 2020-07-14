@@ -774,14 +774,23 @@ class InclusiveFormController extends Controller
 	}
 	//
 	//listar formularios creados en el sistema y mostrarlos a los beneficiarios logeados
-	public function beneficiarieIndex($style=null)
+	public function beneficiarieIndex(Request $request)
 	{
+		$forms = InclusiveForm::where('estado','1')->get();
+	
+		if(isset($request->style_color))
+		Session::put('color', $request->style_color);
+		else 
+		$request->style_color=Session::get('color');
+		if(isset($request->style_font))
+		Session::put('font', $request->style_font);
+		else
+		$request->style_font=Session::get('font');
 		
-		
-		$forms = InclusiveForm::all();
+		//$forms = InclusiveForm::all();
 		//$style=1;
 	
-		return view('inclusive.beneficiarie.list', ['style'=>$style,'forms' => $forms]);
+		return view('inclusive.beneficiarie.list', ['style_color'=>$request->style_color,'style_font'=>$request->style_font,'forms' => $forms]);
 	}
 		//listar formularios creados en el sistema y mostrarlos a los beneficiarios logeados
 		public function beneficiarieIndexStyle($style)

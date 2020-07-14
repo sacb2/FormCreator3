@@ -73,6 +73,8 @@ Route::post('/PersonalizedFormAnswerSearch', 'InclusiveFormController@personaliz
 
 //beneficiarie
 Route::get('/BeneficiarieIndex', 'InclusiveFormController@beneficiarieIndex')->name('BeneficiarieIndex');
+Route::post('/BeneficiarieIndex', 'InclusiveFormController@beneficiarieIndex')->name('BeneficiarieIndex');
+
 Route::get('/UseFormBeneficiarie/{id}', 'InclusiveFormController@useFormBeneficiarie')->name('UseFormBeneficiarie');
 
 Route::get('/home/', 'InclusiveFormController@beneficiarieIndex')->name('home')->middleware('auth');

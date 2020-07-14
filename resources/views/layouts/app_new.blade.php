@@ -2,23 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <!doctype html>
   
-    <style>
-    
-        @if(!isset($style_font)||$style_font==null)
-            @php
-                $style_font='1';
-                $size='1em';    
-            @endphp
-        @endif
-        @if(!isset($style_color)||$style_color==null)
-            @php
-                $style_color='4';
-                $bcolor='#fff';
-                $color='#636b6f';
-            @endphp
-        @endif
-        
-        </style> 
+
    
 <head>
     <!--fontAwesom -->
@@ -44,6 +28,7 @@
 </head>
 <body>
     <div id="app">
+        
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -58,18 +43,13 @@
                     <ul class="navbar-nav mr-auto">
 
                     </ul>
-
+                    
                     <div id="outer">  
                         <div id="inner">
                             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                 <div class="btn-group mr-2" role="group" aria-label="First group">
                                    
-                                  
-                                    
-                                      
-                                  
-                                    
-                                    <form method="POST"  action="{{ URL::current() }}" enctype="multipart/form-data">
+                                   <form method="POST"  action="{{ URL::current() }}" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <button aria-hidden="true"  type="submit" name='style_font' value='1' role="button" class="btn btn-info"><i class="glyphicon glyphicon-ok-circle"></i>
                                             {{ __('Tamaño Fuente') }}
@@ -103,6 +83,13 @@
                             </div>
                     </div>
                 </div>
+            </div>
+           
+      
+                       <!-- Page Content  -->
+                  
+    
+                       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -124,20 +111,20 @@
                         <li><i class="fas fa-globe-americas">ES</i></li>
                         <li><i class="fas fa-globe-europe">EN</i></li> -->
                             <li class="nav-item dropdown">
+                            
                                
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
                                
 
-
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                              
+                              <a class="dropdown-item" href="{{ route('logout') }}"
+                                 onclick="event.preventDefault();
+                                               document.getElementById('logout-form').submit();">
+                                  {{ __('Logout') }}
+                              </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
@@ -149,11 +136,11 @@
                                 @if(Auth::user()->type_id==1||Auth::user()->type_id==0||Auth::user()->type_id==3||Auth::user()->type_id==2)
                                 <a class="nav-link" href="{{ route('SelectForms') }}">{{ __('Acceso Profesionales') }}</a>
                                 @endif
-                                @endif
+                            @endif
                         @endguest
                     </ul>
-                </div>
-            </div>
+                 
+                       </div>
         </nav>
     
 
@@ -170,5 +157,10 @@
           
         </main>
     </div>
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/popper.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+
 </body>
 </html>

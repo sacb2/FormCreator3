@@ -28,6 +28,9 @@ class InclusiveAnswer extends Model
       public function document(){
         return $this-> hasOne('App\InclusiveDocument','id','valor_respuesta');
     }
+    public function persona(){
+      return $this-> hasOne('App\User','id','id_persona');
+  }
   
       public $timestaps = true;
 

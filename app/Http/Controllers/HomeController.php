@@ -80,7 +80,7 @@ class HomeController extends Controller
 			return view('welcome');
 		}
 		$types= InclusiveUserTypes::all();
-		return view('professionals.create', ['types'=>$types]);
+		return view('users.create', ['types'=>$types]);
 	}
 	
 	//guardar usuario
@@ -127,7 +127,7 @@ class HomeController extends Controller
 		}
 		$users = User::all();
 		$users = User::paginate(10);
-		return view('professionals.list', ['users'=>$users]);
+		return view('users.list', ['users'=>$users]);
 
     }
 	
@@ -143,7 +143,7 @@ class HomeController extends Controller
 			$users = User::all();
 			$users = User::paginate(10);
 	
-		return view('professionals.list', ['users'=>$users]);
+		return view('users.list', ['users'=>$users]);
 		
     }
 	
@@ -160,7 +160,7 @@ class HomeController extends Controller
               $users = User::find($id);
               
       
-          return view('professionals.view', ['user'=>$users]);
+          return view('users.view', ['user'=>$users]);
           
       }
 
@@ -196,7 +196,7 @@ class HomeController extends Controller
 		echo $e->getMessage();   // insert query
 		
 		}
-				return view('professionals.view', ['user'=>$user]);
+				return view('users.view', ['user'=>$user]);
 
 
     }

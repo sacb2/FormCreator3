@@ -1,4 +1,4 @@
-@extends('layouts.app_new') <!-- template -->
+@extends('layouts.app_new_new') <!-- template -->
 
 
 

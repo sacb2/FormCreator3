@@ -93,8 +93,9 @@
 								</a>
 							   
 							   @elseif($answer->question->question->tipo==2)
+							  
 							   @if(isset($answer->answer_number->texto_respuesta))
-							   {{$answer->answer_number->texto_respuesta}}
+							    {{$answer->answer_number->texto_respuesta}}
 								@endif
 							   
 							   @elseif($answer->question->question->tipo==1)

@@ -75,7 +75,10 @@
                                             name="answers_int[{{$pregunta->id}}]" value="{{ old('state') }}">
                                             <option value='' selected>Seleccionar...</option>
                                             @foreach($pregunta->question->answers as $answer)
-                                            <option value='{{$answer->valor_respuesta}}'>{{$answer->texto_respuesta}}
+                                            @php
+                                            $answer_data = json_encode(array('value'=>$answer->valor_respuesta,'id'=>$answer->id));
+                                            @endphp
+                                            <option value='{{$answer_data}}'>{{$answer->texto_respuesta}}
                                             </option>
                                             @endforeach
 

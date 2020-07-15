@@ -14,7 +14,7 @@ class InclusiveAnswer extends Model
   //public $primaryKey = 'id';
 
       protected $fillable = [
-      'id','id_pregunta','id_formulario','id_requerimiento','id_persona','texto_respuesta','valor_respuesta','tipo','rut_persona'
+      'id','id_pregunta','id_formulario','id_requerimiento','id_persona','texto_respuesta','valor_respuesta','tipo','rut_persona','answer_id'
   ];	
   //pregutnas
       public function question(){
@@ -22,7 +22,7 @@ class InclusiveAnswer extends Model
               }
               //solucionar problema en asignacion de respuestas a preguntas
       public function answer_number(){
-                              return $this-> hasOne('App\InclusiveQuestionMultipleAnswer','id_pregunta','id_pregunta','valor_respuesta','valor_respuesta');
+                              return $this-> hasOne('App\InclusiveQuestionMultipleAnswer','id_respuesta','answer_id');
 
       }
       public function document(){

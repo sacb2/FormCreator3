@@ -986,7 +986,7 @@ $edad=null;
 			}
 		if (isset($request->answers_int))
 			foreach ($request->answers_int as $key => $value) {
-
+//dd($request->answers_int,$key,json_decode($value),json_decode($value)->value, json_decode($value)->id);
 
 				$storeAnswer = new InclusiveAnswer;
 				$storeAnswer->id_pregunta = $key;
@@ -994,8 +994,9 @@ $edad=null;
 				$storeAnswer->id_requerimiento = $id;
 				if(Auth::user())
 				$storeAnswer->id_persona=Auth::user()->id;
-				$storeAnswer->valor_respuesta = $value;
-				$storeAnswer->tipo = '0';
+				$storeAnswer->valor_respuesta = json_decode($value)->value; //identificador unico de la respuesta
+				$storeAnswer->answer_id= json_decode($value)->id; //valor de respuesta asignado en configuracion
+				$storeAnswer->tipo = '2';
 				if ($request->type_form == 1)
 					$storeAnswer->rut_persona = strtoupper($request->rut);
 

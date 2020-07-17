@@ -65,6 +65,8 @@ class InclusiveFormController extends Controller
 	//input $request datos de configuración de pregunta
 	public function storeQuestion(Request $request)
 	{
+
+		
 				//validar usuario
 				$type= Auth::user()->type_id;
 				if( $type>1||is_null($type)){
@@ -83,6 +85,19 @@ class InclusiveFormController extends Controller
 				'state.required' => 'Debes elegir un estado'
 			]
 		);
+		if ($request->type == '6') {
+			$validate_response = $request->validate(
+				[
+					'attachment' => 'required',
+					
+				],
+				[
+					
+					'attachment.required' => 'Debes seleccionar un arhivo a adjuntar'
+				]
+			);
+
+		}
 
 		//Crear objeto
 		$question = new InclusiveQuestion;
@@ -93,8 +108,23 @@ class InclusiveFormController extends Controller
 		$question->orden = $request->orden;
 		$question->size= $request->size;
 		$question->group= $request->group;
-		$question->edad= $request->edad;
+		$question->edad_max= $request->edad_max;
+		$question->edad_min= $request->edad_min;
 		$question->required= $request->required;
+
+		if ($request->type == '6') {
+			$imageName = 'Adjunto_'. time() . 'ID' . $request->attachment->getClientOriginalName(). '.' . $request->attachment->getClientOriginalExtension();
+			$path = $request->attachment->move(public_path('images/' .'questions'), $imageName);
+			$image = new InclusiveDocument;
+			$image->nombre = $imageName;
+			$image->tipo = $request->type;
+			$image->route = $path->getRealPath();
+			$image->save();
+			$question->document_name=$imageName;
+			$question->document_id=$image->id;
+			
+		}
+		
 
 		try {
 			$question->save();
@@ -147,6 +177,8 @@ class InclusiveFormController extends Controller
 						return view('welcome');
 					}
 		//validación de los datos
+
+
 		$validate_response = $request->validate(
 			[
 				'question' => 'required',
@@ -168,11 +200,22 @@ class InclusiveFormController extends Controller
 		$question->size= $request->size;
 		$question->orden= $request->orden;
 		$question->group= $request->group;
-		$question->edad= $request->edad;
+		$question->edad_max= $request->edad_max;
+		$question->edad_min= $request->edad_min;
 		$question->required= $request->required;
-
-
-
+		if ($request->type == '6') {
+			$imageName = 'Adjunto_'. time() . 'ID' . $request->attachment->getClientOriginalName(). '.' . $request->attachment->getClientOriginalExtension();
+			$path = $request->attachment->move(public_path('images/' .'questions'), $imageName);
+			$image = new InclusiveDocument;
+			$image->nombre = $imageName;
+			$image->tipo = $request->type;
+			$image->route = $path->getRealPath();
+			$image->save();
+			$question->document_name=$imageName;
+		$question->document_id=$image->id;
+			
+		}
+		
 
 
 		try {

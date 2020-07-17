@@ -12,12 +12,15 @@ class InclusiveForm extends Model
   //public $primaryKey = 'id';
 
       protected $fillable = [
-      'id','nombre','descripcion','tipo','estado','qanswer','grouped'
+      'id','nombre','descripcion','tipo','estado','qanswer','grouped','document_id'
   ];	
   
-      public $timestaps = true;
+    public $timestaps = true;
       
-      public function questions(){
+    public function questions(){
                   return $this-> hasMany('App\InclusiveFormQuestion','id_formulario');
               }
+    public function document(){
+                return $this-> hasOne('App\InclusiveDocument','id','document_id');
+            }
 }

@@ -23,7 +23,7 @@
 
 
                             <div class="card-body">
-                                <form method="POST" action="{{ route('UpdateQuestions') }}">
+                                <form enctype="multipart/form-data" method="POST" action="{{ route('UpdateQuestions') }}">
                                     @csrf
 
 
@@ -128,22 +128,32 @@
                                                 <option value='1' selected>Texto</option>
                                                 <option value='2'>Selección múltiple</option>
                                                 <option value='3'>Imagen</option>
+                                                <option value='6'>Info</option>
 
                                                 @elseif($question->tipo== 2)
                                                 <option value=''>Seleccionar...</option>
                                                 <option value='1'>Texto</option>
                                                 <option value='2' selected>Selección múltiple</option>
                                                 <option value='3'>Imagen</option>
+                                                <option value='6'>Info</option>
                                                 @elseif($question->tipo== 3)
                                                 <option value='' >Seleccionar...</option>
                                                 <option value='1'>Texto</option>
                                                 <option value='2'>Selección múltiple</option>
                                                 <option value='3' selected>Imagen</option>
+                                                <option value='6'>Info</option>
+                                                @elseif($question->tipo== 6)
+                                                <option value='' >Seleccionar...</option>
+                                                <option value='1'>Texto</option>
+                                                <option value='2'>Selección múltiple</option>
+                                                <option value='3'>Imagen</option>
+                                                <option value='6' selected>Info</option>
                                                 @else
                                                 <option value='' selected>Seleccionar...</option>
                                                 <option value='1'>Texto</option>
                                                 <option value='2'>Selección múltiple</option>
                                                 <option value='3'>Imagen</option>
+                                                <option value='6'>Info</option>
 
                                                 @endif
 
@@ -170,10 +180,10 @@
                                         <label for="edad"
                                             class="col-md-4 col-form-label text-md-right">{{ __('Edad<') }}</label>
                                         <div class="col-md-6">
-                                            <input id="size" type="number"
-                                                class="form-control @error('edad') is-invalid @enderror" name="edad"
-                                                value="{{$question->edad}}" required autocomplete="edad" autofocus>
-                                            @error('edad')
+                                            <input id="edad_max" type="number"
+                                                class="form-control @error('edad') is-invalid @enderror" name="edad_max"
+                                                value="{{$question->edad_max}}" required autocomplete="edad_max" autofocus>
+                                            @error('edad_max')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -196,6 +206,24 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        <div align="left"
+                                        class="form-group row{{ $errors->has('attachment') ? ' has-error' : '' }}">
+                                        <label role="contentinfo" tabindex="0" for="attachment"
+                                            class="col-md-4 col-form-label">Adjuntar:</label>
+    
+                                        <div align="left" class="col-md-6">
+                                            Tamaño máximo de adjunto 7MB <input role="button"
+                                                id="attachment" type="file" class="form-control"
+                                                name="attachment">
+    
+                                            @if ($errors->has('attachment'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('attachment') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+    
+                                    </div>
                                     </div>
                                     </br>
 
@@ -211,6 +239,7 @@
                                                     class="glyphicon glyphicon-ban-circle"></i> Cancelar</a>
                                         </div>
                                     </div>
+       
 
 
 

@@ -11,7 +11,7 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-body">
-                                <form method="POST" action="{{ route('StoreQuestion') }}">
+                                <form enctype="multipart/form-data" method="POST" action="{{ route('StoreQuestion') }}">
                                     @csrf
                                     @if ($errors->any())
                                     <div class="alert alert-danger">
@@ -80,6 +80,7 @@
                                                 <option value='3'>Imagen</option>
                                                 <option value='4'>Documento</option>
                                                 <option value='5'>Archivo</option>
+                                                <option value='6'>Info</option>
                                             </select>
                                         </div>
                                     </div>
@@ -132,19 +133,53 @@
 
                                     <div class="form-group row">
 
-                                        <label for="edad"
+                                        <label for="edad_max"
                                             class="col-md-4 col-form-label text-md-right">{{ __('Edad<') }}</label>
                                         <div class="col-md-6">
-                                            <input id="size" type="number"
-                                                class="form-control @error('edad') is-invalid @enderror" name="edad"
-                                                value="{{ old('edad') }}" required autocomplete="edad" autofocus>
-                                            @error('edad')
+                                            <input id="edad_max" type="number"
+                                                class="form-control @error('edad_max') is-invalid @enderror" name="edad_max"
+                                                value="{{ old('edad_max') }}" required autocomplete="edad_max" autofocus>
+                                            @error('edad_max')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                             @enderror
                                         </div>
                                     </div>
+
+                                    <div class="form-group row">
+
+                                        <label for="edad_min"
+                                            class="col-md-4 col-form-label text-md-right">{{ __('Edad>') }}</label>
+                                        <div class="col-md-6">
+                                            <input id="edad_min" type="number"
+                                                class="form-control @error('edad_min') is-invalid @enderror" name="edad_min"
+                                                value="{{ old('edad_min') }}" required autocomplete="edad_min" autofocus>
+                                            @error('edad_min')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div align="left"
+                                    class="form-group row{{ $errors->has('attachment') ? ' has-error' : '' }}">
+                                    <label role="contentinfo" tabindex="0" for="attachment"
+                                        class="col-md-4 col-form-label">Adjuntar:</label>
+
+                                    <div align="left" class="col-md-6">
+                                        Tamaño máximo de adjunto 7MB <input role="button"
+                                            id="attachment" type="file" class="form-control"
+                                            name="attachment">
+
+                                        @if ($errors->has('attachment'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('attachment') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+
+                                </div>
 
 
 

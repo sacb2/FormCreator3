@@ -215,7 +215,24 @@ $color='#636b6f';
 <body>
 
 
-
+	<!-- mensaje de error -->  
+          @if($errors->any())
+          <div class="alert alert-dark alert-dismissible fade show" role="alert">
+            <h4>{{$errors->first()}}</h4>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          @endif
+          @if(Session::has('message'))
+          <div class="alert alert-dark alert-dismissible fade show" role="alert">
+            <h4>{{ Session::get('message')}}</h4>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          @endif
+          <!-- mensaje de error -->
 
 
     <div class="panel-heading col-md-8"><i class="fa fa-user"></i> Responder Formulario : {{$formulario->nombre}}

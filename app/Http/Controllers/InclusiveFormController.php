@@ -1061,6 +1061,8 @@ $edad=null;
 
 			Session::flash('alertSent', 'Alert');
 			Session::flash('message', "Formulario respondido exitosamente con ID: ".$id);
+			//return redirect()->back()->withErrors(["Formulario respondido exitosamente con ID: ".$id]);
+	
 		return redirect()->route('BeneficiarieIndex');
 	}
 

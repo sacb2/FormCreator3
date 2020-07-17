@@ -288,7 +288,7 @@ $color='#636b6f';
                                 @if($pregunta->estado==1)
                                 @if($pregunta->question->tipo==2)
                                 <!-- restriccion de edad -->
-                                @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad)
+                                @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
 
 
                                 <div class="form-group row">
@@ -309,7 +309,7 @@ $color='#636b6f';
                                         </select>
                                     </div>
                                 </div>
-                                @elseif($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)
+                                @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
                                 <div class="form-group row">
 
                                     <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
@@ -347,7 +347,7 @@ $color='#636b6f';
 
                                 @elseif($pregunta->question->tipo==3)
                                 <!-- restriccion de edad -->
-                                @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad)
+                                @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
 
 
                                 <div align="left"
@@ -369,9 +369,9 @@ $color='#636b6f';
                                     </div>
 
                                 </div>
-                                @elseif($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)
+                                @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
 
-
+                                  
                                 <div align="left"
                                     class="form-group row{{ $errors->has('attachment') ? ' has-error' : '' }}">
                                     <label role="contentinfo" tabindex="0" for="attachment"
@@ -394,8 +394,7 @@ $color='#636b6f';
                                 @endif
                                 @else
                                 <!-- restriccion de edad -->
-                                @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad)
-
+                                @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
 
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo"
@@ -416,7 +415,7 @@ $color='#636b6f';
                                     @endif
 
                                 </div>
-                                @elseif($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)
+                                @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo"
                                         for="comment">{{$pregunta->question->pregunta}}</label>

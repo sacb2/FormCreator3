@@ -334,6 +334,8 @@ $color='#636b6f';
                                 </div>
                                 @endif
                                 @elseif($pregunta->question->tipo==6)
+                                <!-- restriccion de edad -->
+                                @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
 
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo"
@@ -345,7 +347,18 @@ $color='#636b6f';
 								</a>
 
                                 </div>
+                                @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
+                                <div class="form-group">
+                                    <label tabindex="0" role="contentinfo"
+                                        for="comment">{{$pregunta->question->pregunta}}</label>
+                                        
+								<a role="contentinfo" title="Descargar documentación" href="/images/questions/{{$pregunta->question->document_name}}" download='{{$pregunta->question->document_name}}'> 
+                                    <i class="fas fa-clipboard-list"> Descargar </i>
+							   
+								</a>
 
+                                </div>
+                                @endif
                                 @elseif($pregunta->question->tipo==3)
                                 <!-- restriccion de edad -->
                                 @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)

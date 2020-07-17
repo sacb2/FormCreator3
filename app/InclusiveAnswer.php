@@ -22,7 +22,7 @@ class InclusiveAnswer extends Model
               }
               //solucionar problema en asignacion de respuestas a preguntas
       public function answer_number(){
-                              return $this-> hasOne('App\InclusiveQuestionMultipleAnswer','id_respuesta','answer_id');
+                              return $this-> hasOne('App\InclusiveQuestionMultipleAnswer','id','answer_id');
 
       }
       public function document(){

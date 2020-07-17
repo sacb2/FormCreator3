@@ -339,8 +339,9 @@ $color='#636b6f';
                                     <label tabindex="0" role="contentinfo"
                                         for="comment">{{$pregunta->question->pregunta}}</label>
                                         
-								<a href="/images/questions/{{$pregunta->question->document_name}}" download='{{$pregunta->question->document_name}}'> 
-							   <img width="100" height="100" src="/images/questions/{{$pregunta->question->document_name}}" alt="/images/questions/{{$pregunta->question->document_name}}" class="img-thumbnail">
+								<a role="contentinfo" title="Descargar documentación" href="/images/questions/{{$pregunta->question->document_name}}" download='{{$pregunta->question->document_name}}'> 
+                                    <i class="fas fa-clipboard-list"> Descargar </i>
+							   
 								</a>
 
                                 </div>

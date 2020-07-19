@@ -16,6 +16,9 @@ use DateInterval;
 use Illuminate\Support\Facades\Route;
 use Session;
 use Auth;
+//mail
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FormSendMail;
 
 class InclusiveFormController extends Controller
 {
@@ -1062,6 +1065,10 @@ $edad=null;
 			Session::flash('alertSent', 'Alert');
 			Session::flash('message', "Formulario respondido exitosamente con ID: ".$id);
 			//return redirect()->back()->withErrors(["Formulario respondido exitosamente con ID: ".$id]);
+			if(Auth::user()){
+				$mail=Auth::user()->email;
+				$this->sendMailToTeam("Reporte automatico a mail",'Sistema de postulacion',$mail,'Reporte de envío de formulario con ID: '.$id,$request->id_form);
+			}
 	
 		return redirect()->route('BeneficiarieIndex');
 	}
@@ -1295,4 +1302,29 @@ function get_dates($year = 0, $week = 0)
 
 		return $forPage;
 	}
+
+
+	 //funcion que encolará mails para ser enviados
+	 public function sendMailToTeam($receiver,$id_program, $mail, $observation, $id_requirement)
+	 {
+ 
+	 //enviar mail  a usuarios relacionados con el  programa
+ 
+	 $objDemo = new \stdClass();
+	 $objDemo->program =$id_program;
+	 $objDemo->demo_one = $observation;
+	 $objDemo->requirement_id = $id_requirement;
+	 $objDemo->derivator_name = "Plataforma DECOM";
+	 $objDemo->responsable = "Envio de mail DECOM";
+	 $objDemo->demo_two = "Complementar información";
+	 $objDemo->receiver = $receiver;
+	 $objDemo->sender = 'Plataforma de Postulaciones Decom';
+  
+	  Mail::to($mail)->send(new FormSendMail($objDemo));
+//	 \Log::channel('decomlog')->info(json_encode($objDemo));
+ 
+
+	 }
+
+
 }

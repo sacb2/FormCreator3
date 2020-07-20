@@ -123,12 +123,15 @@ label {
 <body>
 	<!-- mensaje de error -->  
           @if($errors->any())
+		
           <div class="alert alert-dark alert-dismissible fade show" role="alert">
+		
             <h4>{{$errors->first()}}</h4>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
+		
           @endif
           @if(Session::has('message'))
           <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -153,7 +156,7 @@ label {
 						<thead >
 							<tr>
 								<th scope="col">Nombre</th>
-							
+								<th scope="col">Descripcion</th>
 								<th scope="col">Ver</th>
 							</tr>
 						</thead>
@@ -163,6 +166,7 @@ label {
 						
 							<tr>
 								<td>{{$form->nombre}}</td>
+								<td>{{$form->description}}</td>
 								@if($form->estado==1)
 									<td>
 										<form method="POST"  action="{{ route('UseFormBeneficiariePost') }}" enctype="multipart/form-data">

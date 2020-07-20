@@ -85,6 +85,7 @@ Route::get('/UseFormBeneficiarieStyle/{id}/{style}', 'InclusiveFormController@us
 Route::get('/home/{style}', 'InclusiveFormController@beneficiarieIndex')->name('home');
 Route::post('/beneficiarieIndexPost', 'InclusiveFormController@beneficiarieIndexPost')->name('beneficiarieIndexPost');
 Route::post('/UseFormBeneficiariePost', 'InclusiveFormController@useFormBeneficiariePost')->name('UseFormBeneficiariePost');
+Route::get('/UseFormBeneficiariePost', 'InclusiveFormController@useFormBeneficiariePost')->name('UseFormBeneficiariePost');
 
 //creación de profesionales
 

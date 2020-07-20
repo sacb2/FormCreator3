@@ -271,6 +271,7 @@ $color='#636b6f';
 
 
 
+
                         <div>
                             <p class="text-justify">Preguntas: </p>
                             <div>
@@ -295,17 +296,38 @@ $color='#636b6f';
 
 
 
+                                <input name="formQuestions" type="hidden" value="{{$formulario->questions}}">
 
 
                                 @foreach($formulario->questions->sortBy('orden') as $pregunta)
 
 
+<!--Pregunta requerida -->
+@if($pregunta->question->required==1)
+    @php
+        $required="required";
+    @endphp
+@else 
+    @php
+    $required="";
+    @endphp
+@endif
+<!--Pregunta requerida -->
 
 
                                 @if($pregunta->estado==1)
                                 @if($pregunta->question->tipo==2)
                                 <!-- restriccion de edad -->
                                 @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
+                                @if($pregunta->question->required==1)
+                                Requerida
+                                <input name="answers_req[]" type="hidden" value="{{$pregunta->id}}">
+                                @endif
+                                <input name="questions[]" type="hidden" value="answers_int[{{$pregunta->id}}]">
+
+
+
+
 
 
                                 <div class="form-group row">
@@ -313,7 +335,7 @@ $color='#636b6f';
                                     <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
                                         class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
                                     <div class="col-md-6">
-                                        <select class="custom-select" id="answers_int[{{$pregunta->id}}]"
+                                        <select  class="custom-select" id="answers_int[{{$pregunta->id}}]"
                                             name="answers_int[{{$pregunta->id}}]" value="{{ old('state') }}">
                                             <option value='' selected>Seleccionar...</option>
                                             @foreach($pregunta->question->answers as $answer)
@@ -327,12 +349,17 @@ $color='#636b6f';
                                     </div>
                                 </div>
                                 @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
+                                <input name="questions[]" type="hidden" value="answers_int[{{$pregunta->id}}]">
+                                @if($pregunta->question->required==1)
+                                Requerida
+                                <input name="answers_req[]" type="hidden" value="{{$pregunta->id}}">
+                                @endif
                                 <div class="form-group row">
 
                                     <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
                                         class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
                                     <div class="col-md-6">
-                                        <select class="custom-select" id="answers_int[{{$pregunta->id}}]"
+                                        <select  class="custom-select" id="answers_int[{{$pregunta->id}}]"
                                             name="answers_int[{{$pregunta->id}}]" value="{{ old('state') }}">
                                             <option value='' selected>Seleccionar...</option>
                                             @foreach($pregunta->question->answers as $answer)
@@ -365,6 +392,7 @@ $color='#636b6f';
 
                                 </div>
                                 @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
+                                
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo"
                                         for="comment">{{$pregunta->question->pregunta}}</label>
@@ -379,7 +407,11 @@ $color='#636b6f';
                                 @elseif($pregunta->question->tipo==3)
                                 <!-- restriccion de edad -->
                                 @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
-
+                                <input name="questions[]" type="hidden" value="answers_img[{{$pregunta->id}}]">
+                                @if($pregunta->question->required==1)
+                                Requerida
+                                <input name="img_req[]" type="hidden" value="{{$pregunta->id}}">
+                                @endif
 
                                 <div align="left"
                                     class="form-group row{{ $errors->has('attachment') ? ' has-error' : '' }}">
@@ -390,7 +422,7 @@ $color='#636b6f';
                                     <div align="left" class="col-md-6">
                                         Tamaño máximo de adjunto 7MB <input role="button"
                                             id="answers_img[{{$pregunta->id}}]" type="file" class="form-control"
-                                            name="answers_img[{{$pregunta->id}}]" required>
+                                            name="answers_img[{{$pregunta->id}}]" >
 
                                         @if ($errors->has('attachment'))
                                         <span class="help-block">
@@ -401,8 +433,12 @@ $color='#636b6f';
 
                                 </div>
                                 @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
+                                <input name="questions[]" type="hidden" value="answers_img[{{$pregunta->id}}]">
+                                @if($pregunta->question->required==1)
+                                Requerida
+                                <input name="img_req[]" type="hidden" value="{{$pregunta->id}}">
+                                @endif
 
-                                  
                                 <div align="left"
                                     class="form-group row{{ $errors->has('attachment') ? ' has-error' : '' }}">
                                     <label role="contentinfo" tabindex="0" for="attachment"
@@ -412,7 +448,7 @@ $color='#636b6f';
                                     <div align="left" class="col-md-6">
                                         Tamaño máximo de adjunto 7MB <input role="button"
                                             id="answers_img[{{$pregunta->id}}]" type="file" class="form-control"
-                                            name="answers_img[{{$pregunta->id}}]" required>
+                                            name="answers_img[{{$pregunta->id}}]" >
 
                                         @if ($errors->has('attachment'))
                                         <span class="help-block">
@@ -426,16 +462,20 @@ $color='#636b6f';
                                 @else
                                 <!-- restriccion de edad -->
                                 @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
-
+                                <input name="questions[]" type="hidden" value="answers_text[{{$pregunta->id}}]">
+                                @if($pregunta->question->required==1)
+                                Requerida
+                                <input name="text_req[]" type="hidden" value="{{$pregunta->id}}">
+                                @endif
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo"
                                         for="comment">{{$pregunta->question->pregunta}}</label>
                                     @if(isset($pregunta->question->size)&&$pregunta->question->size>0)
                                     <a class="hide">El tamaño maximo de la respuesta es {{$pregunta->question->size}}
                                         caracteres y a continuación hay un contador de caracteres.</a>
-                                    <textarea class="form-control" rows="5" maxlength="6666"
+                                    <textarea   class="form-control" rows="5" maxlength="6666"
                                         onkeyup="wordCounter(this,'counter1{{$pregunta->id}}',{{$pregunta->question->size}});"
-                                        name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}"></textarea>
+                                        name="answers_text[{{$pregunta->id}}]" id="{{$pregunta->id}}"></textarea>
                                     <input readonly role="contentinfo" tabindex="0"
                                         aria-label="Cantidad de Caracteres escritos" maxlength="3" size="3"
                                         value="{{$pregunta->question->size}}" id="counter1{{$pregunta->id}}">
@@ -447,13 +487,18 @@ $color='#636b6f';
 
                                 </div>
                                 @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
+                                <input name="questions[]" type="hidden" value="answers_text[{{$pregunta->id}}]">
+                                @if($pregunta->question->required==1)
+                                Requerida
+                                <input name="tex_req[]" type="hidden" value="{{$pregunta->id}}">
+                                @endif
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo"
                                         for="comment">{{$pregunta->question->pregunta}}</label>
                                     @if(isset($pregunta->question->size)&&$pregunta->question->size>0)
                                     <a class="hide">El tamaño maximo de la respuesta es {{$pregunta->question->size}}
                                         caracteres y a continuación hay un contador de caracteres.</a>
-                                    <textarea class="form-control" rows="5" maxlength="6666"
+                                    <textarea  class="form-control" rows="5" maxlength="6666"
                                         onkeyup="wordCounter(this,'counter1{{$pregunta->id}}',{{$pregunta->question->size}});"
                                         name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}"></textarea>
                                     <input readonly role="contentinfo" tabindex="0"
@@ -461,7 +506,7 @@ $color='#636b6f';
                                         value="{{$pregunta->question->size}}" id="counter1{{$pregunta->id}}">
 
                                     @else
-                                    <textarea class="form-control" rows="5" maxlength="6666"
+                                    <textarea  class="form-control" rows="5" maxlength="6666"
                                         name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}"></textarea>
                                     @endif
 

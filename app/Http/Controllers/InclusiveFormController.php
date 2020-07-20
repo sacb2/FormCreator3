@@ -542,6 +542,7 @@ class InclusiveFormController extends Controller
 		$form->nombre = $request->name;
 		$form->estado = $request->state;
 		$form->tipo = $request->type;
+		$form->description = $request->description;
 		$form->grouped = $request->grouped;
 		$form->qanswer = $request->qanswer;
 		try {
@@ -623,6 +624,7 @@ class InclusiveFormController extends Controller
 		$form->tipo = $request->type;
 		$form->qanswer = $request->qanswer;
 		$form->grouped = $request->grouped;
+		$form->description = $request->description;
 
 
 
@@ -920,8 +922,140 @@ $edad=null;
 	//$request si el formlario fue creado con utilizacion de RUT de otra forma solo las respuesta
 	public function AnswerFormUseStore(Request $request)
 	{
+	//	dd(json_decode($request->questions));
 			
+	$error=null;
+//Revisar si la pregunta requerida fue respondida
+	if (isset($request->img_req))
+		foreach($request->img_req as $img_reqs){
+			$key_answer=0;
+			if (isset($request->answers_img)){
+
+			
+				foreach ($request->answers_img as $key => $value) {
+					if($key==$img_reqs)
+						$key_answer=1;
+				
+					if($key==$img_reqs&&$value==null){
+						
+						//dd($key,$img_reqs,$value);
+						$error.="Cargar las imagenes requeridas ".$img_reqs.".\n";
+					//	dd("aqui");
+					//	return redirect()->route('BeneficiarieIndex');
+
+					}
+						
+
+				}
+				if($key_answer==0){
+					$error.="Cargar las imagenes requeridas ".$img_reqs.".\n";
+					//dd("aca");
+					//return redirect()->route('BeneficiarieIndex');
+				}
+					
+				$key_answer=0;
+			}
+				else{
+					$error.="Cargar las imagenes requeridas ".$img_reqs.".\n";
+					//dd("ahí");
+					//return redirect()->route('BeneficiarieIndex');
+				}
+				
+
+			
+		}
+//		dd("despues de validación",$key,$img_reqs,$value);	
+
+
+//Revisar si la pregunta requerida fue respondida
+if (isset($request->answers_req))
+foreach($request->answers_req as $answers_reqs){
+	$key_answer=0;
+	if (isset($request->answers_int)){
+
+	
+		foreach ($request->answers_int as $key => $value) {
+			if($key==$answers_reqs)
+				$key_answer=1;
 		
+			if($key==$answers_reqs&&$value==null){
+				
+				//dd($key,$img_reqs,$value);
+				$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+				//dd("aqui");
+				//return redirect()->route('BeneficiarieIndex');
+
+			}
+				
+
+		}
+		if($key_answer==0){
+			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+			//dd("aca");
+			//return redirect()->route('BeneficiarieIndex');
+		}
+			
+		$key_answer=0;
+	}
+		else{
+			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+			//dd("ahí");
+			//return redirect()->route('BeneficiarieIndex');
+		}
+		
+
+	
+}
+
+
+//Revisar si la pregunta requerida fue respondida
+if (isset($request->tex_req))
+foreach($request->tex_req as $tex_reqs){
+	$key_answer=0;
+	if (isset($request->answers_text)){
+
+	
+		foreach ($request->answers_text as $key => $value) {
+			if($key==$tex_reqs)
+				$key_answer=1;
+		
+			if($key==$tex_reqs&&$value==null){
+				
+				$error.="Responder preguntas de text ".$key.".\n";
+				//dd($key,$img_reqs,$value);
+				//dd("aqui");
+				//return redirect()->route('BeneficiarieIndex');
+
+			}
+				
+
+		}
+		if($key_answer==0){
+			$error.="Responder preguntas de text ".$tex_reqs.".\n";
+			//dd("aca");
+			//return redirect()->route('BeneficiarieIndex');
+		}
+			
+		$key_answer=0;
+	}
+		else{
+			$error.="Responder preguntas de text ".$tex_reqs.".\n";
+			//dd("ahí");
+			//return redirect()->route('BeneficiarieIndex');
+		}
+		
+
+	
+}
+
+//$a[0]=['rut' => $request->rut];
+//$a[1]=['rut' => $request->rut];
+//foreach( $request->img_req)
+if($error!=null){
+	return back()->withInput(['rut' => $request->rut])->withErrors($error);
+
+//			return redirect()->back()->withErrors($error);
+}
 
 		$imageName = "imagen";
 		$path = request()->answers_img;
@@ -933,7 +1067,10 @@ $edad=null;
 
 			$validate_response = $request->validate([
 				'rut' => ['required', 'regex:/^[0-9]+[-|‐]{1}[0-9kK]{1}$/'],
+			
+
 			]);
+
 
 			$formsq= InclusiveAnswer::where('id_formulario',$request->id_form)->where('rut_persona',$request->rut)->distinct('id_requerimiento')->count('id_requerimiento');
 			$form=InclusiveForm::find($request->id_form);
@@ -1033,7 +1170,7 @@ $edad=null;
 		if (isset($request->answers_int))
 			foreach ($request->answers_int as $key => $value) {
 //dd($request->answers_int,$key,json_decode($value),json_decode($value)->value, json_decode($value)->id);
-
+if($value){
 				$storeAnswer = new InclusiveAnswer;
 				$storeAnswer->id_pregunta = $key;
 				$storeAnswer->id_formulario = $request->id_form;
@@ -1042,11 +1179,15 @@ $edad=null;
 				$storeAnswer->id_persona=Auth::user()->id;
 				$storeAnswer->valor_respuesta = json_decode($value)->value; //identificador unico de la respuesta
 				$storeAnswer->answer_id= json_decode($value)->id; //valor de respuesta asignado en configuracion
+			
+			
+					
+				
 				$storeAnswer->tipo = '2';
 				if ($request->type_form == 1)
 					$storeAnswer->rut_persona = strtoupper($request->rut);
 
-
+				
 
 
 				try {
@@ -1060,6 +1201,7 @@ $edad=null;
 					echo $e->getMessage();   // insert query
 
 				}
+}
 			}
 
 			Session::flash('alertSent', 'Alert');

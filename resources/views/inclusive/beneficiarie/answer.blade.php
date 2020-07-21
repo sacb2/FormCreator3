@@ -287,7 +287,7 @@ $color='#636b6f';
                                         <input required name="rut"
                                             title="Sin puntos y con digito verificador Ejemplo:123456-0"
                                             pattern="^[0-9]+[-|‐]{1}[0-9kK]{1}$" type="text" maxlength="10"
-                                            value="{{ old('rut') }}" style="text-transform:uppercase"
+                                            value="{{$rut ?? ''}}" style="text-transform:uppercase"
                                             class="form-control" placeholder="rut">
                                     </div>
                                     <span class="help-block" id="error"></span>
@@ -438,6 +438,7 @@ $color='#636b6f';
                                 Requerida
                                 <input name="img_req[]" type="hidden" value="{{$pregunta->id}}">
                                 @endif
+           
 
                                 <div align="left"
                                     class="form-group row{{ $errors->has('attachment') ? ' has-error' : '' }}">
@@ -467,6 +468,13 @@ $color='#636b6f';
                                 Requerida
                                 <input name="text_req[]" type="hidden" value="{{$pregunta->id}}">
                                 @endif
+                                @php
+                                if(isset($old[$pregunta->id])){
+                                    $pregunta_old=$old[$pregunta->id];
+                                }else
+                                $pregunta_old=null;
+                                @endphp
+                               
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo"
                                         for="comment">{{$pregunta->question->pregunta}}</label>
@@ -475,14 +483,25 @@ $color='#636b6f';
                                         caracteres y a continuación hay un contador de caracteres.</a>
                                     <textarea   class="form-control" rows="5" maxlength="6666"
                                         onkeyup="wordCounter(this,'counter1{{$pregunta->id}}',{{$pregunta->question->size}});"
-                                        name="answers_text[{{$pregunta->id}}]" id="{{$pregunta->id}}"></textarea>
+                                        name="answers_text[{{$pregunta->id}}]" id="{{$pregunta->id}}">{{$old[$pregunta->id]?? ''}}</textarea>
                                     <input readonly role="contentinfo" tabindex="0"
                                         aria-label="Cantidad de Caracteres escritos" maxlength="3" size="3"
                                         value="{{$pregunta->question->size}}" id="counter1{{$pregunta->id}}">
 
                                     @else
+                                    @php
+                                if(isset($old[$pregunta->id])){
+                                    $pregunta_old=$old[$pregunta->id];
+                                }
+                                @endphp
+                               @if(isset($old[$pregunta->id]))
+                                {{$old[$pregunta->id]}}
+                                else
+                                $pregunta_old=null;
+                                @endif
+                                preguntae{{$e}}
                                     <textarea class="form-control" rows="5" maxlength="6666"
-                                        name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}"></textarea>
+                                        name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}">{{$pregunta_old}}</textarea>
                                     @endif
 
                                 </div>
@@ -492,22 +511,40 @@ $color='#636b6f';
                                 Requerida
                                 <input name="tex_req[]" type="hidden" value="{{$pregunta->id}}">
                                 @endif
+                                @php
+                                if(isset($old[$pregunta->id])){
+                                    $pregunta_old=$old[$pregunta->id];
+                                }else
+                                $pregunta_old=null;
+                                @endphp
+                             
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo"
                                         for="comment">{{$pregunta->question->pregunta}}</label>
                                     @if(isset($pregunta->question->size)&&$pregunta->question->size>0)
                                     <a class="hide">El tamaño maximo de la respuesta es {{$pregunta->question->size}}
                                         caracteres y a continuación hay un contador de caracteres.</a>
-                                    <textarea  class="form-control" rows="5" maxlength="6666"
+                                    <textarea  class="form-control" rows="5" maxlength="6666" value="{{$pregunta->id}}"
                                         onkeyup="wordCounter(this,'counter1{{$pregunta->id}}',{{$pregunta->question->size}});"
-                                        name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}"></textarea>
+                                        name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}">{{$pregunta_old}}</textarea>
                                     <input readonly role="contentinfo" tabindex="0"
                                         aria-label="Cantidad de Caracteres escritos" maxlength="3" size="3"
                                         value="{{$pregunta->question->size}}" id="counter1{{$pregunta->id}}">
 
                                     @else
+                                    @php
+                                    
+                                if(isset($old[$pregunta->id])){
+                                    $pregunta_old=$old[$pregunta->id];
+                                }else
+                                $pregunta_old=null;
+                                @endphp
+                              
+                               
+                              
                                     <textarea  class="form-control" rows="5" maxlength="6666"
-                                        name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}"></textarea>
+                                        name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}">{{$pregunta_old}}
+                                        </textarea>
                                     @endif
 
                                 </div>

@@ -296,7 +296,7 @@ class InclusiveFormController extends Controller
 
 	//vista de edición respuestas que pueden utilizadas en respuestas multiples
 	//$id identificador de la respuesta
-	public function  viewAnswers($id)
+	public function viewAnswers($id)
 	{
 
 				//validar usuario
@@ -323,7 +323,6 @@ class InclusiveFormController extends Controller
 						return view('welcome');
 					}
 
-		//dd($request);
 		$validate_response = $request->validate(
 			[
 				'answertext' => 'required',
@@ -396,7 +395,6 @@ class InclusiveFormController extends Controller
 			if (isset($request->pickedDep))
 				foreach ($request->pickedDep as $respuesta) {
 					$respuestaDatos = InclusiveMultipleAnswer::where('id', $respuesta)->first();
-					//	dd($respuestaDatos);
 					$respuestasMultiples = new InclusiveQuestionMultipleAnswer;
 					$respuestasMultiples->id_pregunta = $request->id;
 					$respuestasMultiples->id_respuesta = $respuesta;
@@ -404,7 +402,6 @@ class InclusiveFormController extends Controller
 					$respuestasMultiples->texto_respuesta = $respuestaDatos->texto_respuesta;
 
 					$respuestasMultiples->estado = 1;
-					//dd($respuesta);
 					try {
 						$respuestasMultiples->save();
 						//Session::flash('alertSent', 'Derived');
@@ -423,7 +420,6 @@ class InclusiveFormController extends Controller
 				if (!isset($respuestaGuardada)) {
 
 					$respuestaDatos = InclusiveMultipleAnswer::where('id', $respuesta)->first();
-					//	dd($respuestaDatos);
 					$respuestasMultiples = new InclusiveQuestionMultipleAnswer;
 					$respuestasMultiples->id_pregunta = $request->id;
 					$respuestasMultiples->id_respuesta = $respuesta;
@@ -723,7 +719,6 @@ class InclusiveFormController extends Controller
 
 						$newFormQuestions = new InclusiveFormQuestion;
 						$newFormQuestions->id_formulario = $request->id_form;
-					//	$newFormQuestions->group = $request->group;
 						$newFormQuestions->id_pregunta = $product;
 						$pregunta=InclusiveQuestion::find($product);
 						$newFormQuestions->orden = $pregunta->orden;
@@ -922,8 +917,13 @@ $edad=null;
 	//$request si el formlario fue creado con utilizacion de RUT de otra forma solo las respuesta
 	public function AnswerFormUseStore(Request $request)
 	{
+		//foreach($request->answers_text as $key => $value)
+		//$a["old".$key]=$value;
+		//dd($a);
 	//	dd(json_decode($request->questions));
 			
+	//foreach($request->answers_text as $key => $value)
+	
 	$error=null;
 //Revisar si la pregunta requerida fue respondida
 	if (isset($request->img_req))
@@ -991,16 +991,14 @@ foreach($request->answers_req as $answers_reqs){
 		}
 		if($key_answer==0){
 			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
-			//dd("aca");
-			//return redirect()->route('BeneficiarieIndex');
+			
 		}
 			
 		$key_answer=0;
 	}
 		else{
 			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
-			//dd("ahí");
-			//return redirect()->route('BeneficiarieIndex');
+			
 		}
 		
 
@@ -1049,13 +1047,61 @@ foreach($request->tex_req as $tex_reqs){
 }
 
 //$a[0]=['rut' => $request->rut];
+$a['rut']=$request->rut;
+//foreach($request->answers_text as $key => $value)
+foreach($request->answers_text as $key => $value)
+	$a['old'.$key]=$value;
+
+	//foreach($request->answers_text as $key => $value)
+foreach($request->answers_text as $key => $value)
+$old[$key]=$value;
+//dd($a);
+
 //$a[1]=['rut' => $request->rut];
 //foreach( $request->img_req)
 if($error!=null){
-	return back()->withInput(['rut' => $request->rut])->withErrors($error);
+	//return back()->withInput($a)->withErrors($error);
+
+	//cargar nuevamente los datos 
+
+	//edad de la persona registrada
+$edad=null;
+if(Auth::user() &&Auth::user()->birth_date!=null){
+	$user=Auth::user()->birth_date;
+$date = new DateTime($user);
+$now = new DateTime();
+$interval = $now->diff($date);
+$edad=$interval->y;
+
+}
+
+
+//dd($request);
+$formulario = InclusiveForm::find($request->id_form);
+
+//ver formulario
+if(isset($formulario))
+Session::put('formulario', $formulario);
+else
+$formulario=Session::get('formulario');
+
+if(isset($request->style_color))
+Session::put('color', $request->style_color);
+else 
+$request->style_color=Session::get('color');
+if(isset($request->style_font))
+Session::put('font', $request->style_font);
+else
+$request->style_font=Session::get('font');
+
+
+		//dd($request->style_color,$request->style_font);
+
+return view('inclusive.beneficiarie.answer', ['errors'=>$error,'old'=>$old,'rut'=>$request->rut,'edad'=>$edad,'style_color'=>$request->style_color,'style_font'=>$request->style_font,'formulario' => $formulario])->withErrors($error);
 
 //			return redirect()->back()->withErrors($error);
 }
+
 
 		$imageName = "imagen";
 		$path = request()->answers_img;

@@ -1049,10 +1049,12 @@ foreach($request->tex_req as $tex_reqs){
 //$a[0]=['rut' => $request->rut];
 $a['rut']=$request->rut;
 //foreach($request->answers_text as $key => $value)
+if(isset($request->answers_text))
 foreach($request->answers_text as $key => $value)
 	$a['old'.$key]=$value;
 
 	//foreach($request->answers_text as $key => $value)
+if(isset($request->answers_text))
 foreach($request->answers_text as $key => $value)
 $old[$key]=$value;
 //dd($a);
@@ -1118,20 +1120,37 @@ return view('inclusive.beneficiarie.answer', ['errors'=>$error,'old'=>$old,'rut'
 			]);
 
 
-			$formsq= InclusiveAnswer::where('id_formulario',$request->id_form)->where('rut_persona',$request->rut)->distinct('id_requerimiento')->count('id_requerimiento');
+			$formsq_rut= InclusiveAnswer::where('id_formulario',$request->id_form)->where('rut_persona',$request->rut)->distinct('id_requerimiento')->count('id_requerimiento');
+			$formsq_id= InclusiveAnswer::where('id_formulario',$request->id_form)->where('id_persona',Auth::user()->id)->distinct('id_requerimiento')->count('id_requerimiento');
+		
 			$form=InclusiveForm::find($request->id_form);
+			//if((int)$form->qanswer<(int)$formsq_rut && $form->qanswer!='0')
+		//	if((int)$form->qanswer<(int)$formsq_id && $form->qanswer!='0')
+			
+		//		dd($form->qanswer,$request->id_form,$request->id_form,$formsq_id,$formsq_rut,$form,Auth::user()->id,$request->rut);
+			
+			
+			if((int)$form->qanswer<(int)$formsq_rut && $form->qanswer!='0'){
 				
 			
-			
-			if((int)$form->qanswer<(int)$formsq && $form->qanswer!='0'){
-			
+				//['errors'=>$error
 				Session::flash('alertSent', 'Alert');
-				Session::flash('message', 'RUT ' . $request->rut . ' Ha respondido '.$formsq.' veces');
+				Session::flash('message', 'RUT ' . $request->rut . ' ya ha respondido '.$form->qanswer.' la cantidad máxima de respuestas');
 				$forms=InclusiveForm::all();
 				//return view('inclusive.beneficiarie.list', ['style_color'=>$request->style_color,'style_font'=>$request->style_font,'forms' => $forms]);
 				return redirect('home/');
 				//->route('home');
 
+			}
+			if((int)$form->qanswer<(int)$formsq_id && $form->qanswer!='0'){
+				$user=find(Auth::user()->id);
+				//['errors'=>$error
+				Session::flash('alertSent', 'Alert');
+				Session::flash('message', 'El usuario logeado con RUT ' . $user->rut . ' ya ha respondido '.$form->qanswer.' la cantidad máxima de respuestas');
+				$forms=InclusiveForm::all();
+				//return view('inclusive.beneficiarie.list', ['style_color'=>$request->style_color,'style_font'=>$request->style_font,'forms' => $forms]);
+				return redirect('home/');
+				//->route('home');
 			}
 				
 

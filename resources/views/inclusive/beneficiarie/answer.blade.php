@@ -1,4 +1,4 @@
-@extends('layouts.app_new')
+@extends('layouts.app_new_new')
 <!-- template -->
 <input name="formulario" type="hidden" value="{{$formulario}}">
 @section('content')
@@ -100,116 +100,38 @@ $color='#636b6f';
 
 @if(!isset($style_font)&&!isset($style_color))
 <style>
-    main {
-        background-color: #fff;
-        color: #636b6f;
-        font-family: 'Nunito', sans-serif;
-        font-weight: 300;
-        font-size: 1em;
-        height: 300vh;
-        margin: 0;
+	main {
+                background-color: #fff;
+                color: #636b6f;
+                font-family: 'Nunito', sans-serif;
+				font-weight: 300;
+				font-size: 1em;
+                height: 300vh;
+                margin: 0;
     }
 
-    body {
-        color: #636b6f;
-
-    }
-
-    label {
-        color: {
-                {
-                $color
-            }
-        }
-
-        ;
-        font-weight: bold;
-
-    }
 </style>
 @endif
 <style>
-    main {
-        background-color: {
-                {
-                $bcolor
-            }
-        }
-
-        ;
-
-        color: {
-                {
-                $color
-            }
-        }
-
-        ;
-        font-family: 'Nunito',
-        sans-serif;
-        font-weight: 300;
-
-        font-size: {
-                {
-                $size
-            }
-        }
-
-        ;
-        height: 300vh;
-        margin: 0;
+	main {
+                background-color:{{$bcolor}};
+                color: {{$color}};
+                font-family: 'Nunito', sans-serif;
+				font-weight: 300;
+				font-size: {{$size}};
+                height: 300vh;
+                margin: 0;
     }
+	#colornew{
+	background-color: {{$bcolor}};
+	color: {{$color}};
+	font-weight: bold;
+}
+label {
+	color: {{$color}};
+    font-weight: bold;
 
-    body {
-        color: {
-                {
-                $color
-            }
-        }
-
-        ;
-        background-color: #636b6f;
-    }
-
-    panel-body {
-        background-color: #636b6f;
-    }
-
-    .hide {
-        position: absolute !important;
-        top: -9999px !important;
-        left: -9999px !important;
-    }
-
-    #colornew {
-        background-color: {
-                {
-                $bcolor
-            }
-        }
-
-        ;
-
-        color: {
-                {
-                $color
-            }
-        }
-
-        ;
-    }
-
-    label {
-        color: {
-                {
-                $color
-            }
-        }
-
-        ;
-        font-weight: bold;
-
-    }
+}
 </style>
 
 <body>
@@ -238,12 +160,10 @@ $color='#636b6f';
     <div class="panel-heading col-md-8"><i class="fa fa-user"></i> Responder Formulario : {{$formulario->nombre}}
 
 
-        <a role="contentinfo" class="hide">.Página de ingreso de respuestas: aquí tendrá que responder las preguntas
+        <a role="contentinfo" class="sr-only sr-only-focusable">.Página de ingreso de respuestas: aquí tendrá que responder las preguntas
             señaladas. Dependiendo el tipo de pregunta se le solicitará responder de diferentes formas, con texto,
             seleccionar alternativas o adjuntar archivos.</a>
     </div>
-
-
 
 
 

@@ -484,12 +484,41 @@ label {
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8">
-                                <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button"
+                            @if($style_font==1)
+
+                               
+                            <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button" 
                                     class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver</a>
-                                <button type="submit" role="button" class="btn btn-info"><i
+                                <button  type="submit" role="button" class="btn btn-info"><i
                                         class="glyphicon glyphicon-ok-circle"></i>
                                     {{ __('Enviar') }}
                                 </button>
+                                @elseif($style_font==2)
+                                <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button" style="font-size : 20px; width: 50%; height: 50px;"
+                                    class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver</a>
+                                <button  style="font-size : 20px; width: 50%; height: 50px;" type="submit" role="button" class="btn btn-info"><i
+                                        class="glyphicon glyphicon-ok-circle"></i>
+                                    {{ __('Enviar') }}
+                                </button>
+
+                                @elseif($style_font==3)
+                                <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button" style="font-size : 30px; width: 70%; height: 70px;"
+                                    class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver</a>
+                                <button style="font-size : 30px; width: 70%; height: 70px;" type="submit" role="button" class="btn btn-info"><i
+                                        class="glyphicon glyphicon-ok-circle"></i>
+                                    {{ __('Enviar') }}
+                                </button>
+                                @else
+                                <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button"
+                                    class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver</a>
+                                <button  type="submit" role="button" class="btn btn-info"><i
+                                        class="glyphicon glyphicon-ok-circle"></i>
+                                    {{ __('Enviar') }}
+                                </button>
+                                @endif
+
+                                
+
 
                             </div>
                         </div>

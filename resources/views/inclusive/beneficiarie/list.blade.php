@@ -156,7 +156,7 @@ label {
 						<thead >
 							<tr>
 								<th scope="col">Nombre</th>
-								<th scope="col">Descripcion</th>
+								<th scope="col">Descripción</th>
 								<th scope="col">Ver</th>
 							</tr>
 						</thead>

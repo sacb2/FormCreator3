@@ -197,7 +197,7 @@ label {
 
                         @if($formulario->grouped==1)
                     
-                            {{$formulario->questions->max('group')}}
+                         
                             <nav class="nav nav-pills nav-justified">
                             @for ($i = $formulario->questions->min('group'); $i <=$formulario->questions->max('group'); $i++)
                             

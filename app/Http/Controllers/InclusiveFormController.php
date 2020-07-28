@@ -869,13 +869,13 @@ class InclusiveFormController extends Controller
 		
 		
 //edad de la persona registrada
-$edad=null;
+		$edad=null;
 		if(Auth::user() &&Auth::user()->birth_date!=null){
 			$user=Auth::user()->birth_date;
- $date = new DateTime($user);
- $now = new DateTime();
- $interval = $now->diff($date);
- $edad=$interval->y;
+ 			$date = new DateTime($user);
+ 			$now = new DateTime();
+ 			$interval = $now->diff($date);
+ 			$edad=$interval->y;
  
 		}
 
@@ -929,10 +929,33 @@ $edad=null;
 			$edad=$interval->y;
 
 		}
+	//recuperar preguntas de formulario
+	$formulario = InclusiveForm::find($request->id_form);
 
 
-	//dd($answers,$request->answers);
-	$formulario = InclusiveForm::find($request->id);
+		if ($request->type_form == '1'&& $group==$formulario->questions->min('group')) 
+		{
+			
+
+			$validate_response = $request->validate([
+				'rut' => ['required', 'regex:/^[0-9]+[-|‐]{1}[0-9kK]{1}$/'],
+			
+
+			]);
+
+			$rut = $request->rut;
+			$rut_validation = $this->valida_rut($request->rut);
+			if (!$rut_validation) {
+				Session::flash('alertSent', 'Alert');
+				Session::flash('message', 'RUT ' . $request->rut . ' formato no corresponde');
+
+				return redirect()->back();
+			}
+		}
+		
+
+
+
 		
 	//ver formulario
 	if(isset($formulario))
@@ -961,10 +984,10 @@ $edad=null;
 			$storeAnswer=$this->store_answer_int($request->answer_id,$request->answers_int,$request->id_form,$request->type_form,$request->rut);
 
 
-		//dd($storeAnswer);
+	
 		
 		///Realizar guardado
-//dd($answers_text,$answers_img,$img_req,$answers_req,$answers_ind);
+
 //presionar boton enviar
 if($request->send==1){
 	$answers=InclusiveAnswer::where('id_requerimiento',$request->answer_id)->get();

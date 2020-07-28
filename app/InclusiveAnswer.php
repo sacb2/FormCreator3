@@ -14,7 +14,7 @@ class InclusiveAnswer extends Model
   //public $primaryKey = 'id';
 
       protected $fillable = [
-      'id','id_pregunta','id_formulario','id_requerimiento','id_persona','texto_respuesta','valor_respuesta','tipo','rut_persona','answer_id'
+      'id','id_pregunta','id_formulario','id_requerimiento','id_persona','texto_respuesta','valor_respuesta','tipo','rut_persona','answer_id','state_id'
   ];	
   //pregutnas
       public function question(){

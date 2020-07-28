@@ -58,7 +58,13 @@ Route::post('/QuestionsFormStore', 'InclusiveFormController@questionsFormStore')
 Route::get('/SelectForms', 'InclusiveFormController@selectForms')->name('SelectForms');
 Route::get('/PersonalizedFormView/{id}', 'InclusiveFormController@useForm')->name('PersonalizedFormView');
 Route::post('/AnswerFormUseStore', 'InclusiveFormController@answerFormUseStore')->name('AnswerFormUseStore');
+Route::post('/AnswerFormUseStoreGroup', 'InclusiveFormController@answerFormUseStoreGroup')->name('AnswerFormUseStoreGroup');
+Route::post('/AwesomerAnswersStoreGroup', 'InclusiveFormController@awesomerAnswersStoreGroup')->name('AwesomerAnswersStoreGroup');
+Route::post('/ConfirmAnswersStoreGroup', 'InclusiveFormController@confirmAnswersStoreGroup')->name('ConfirmAnswersStoreGroup');
+
+
 Route::get('/UseFormAnswers/{id}', 'InclusiveFormController@useFormAnswers')->name('UseFormAnswers');
+
 Route::get('/AnswersByDate/{id}', 'InclusiveFormController@answersByDate')->name('AnswersByDate');
 Route::post('requestsExportAnswers','ExportsController@requestsExportAnswers')->name('requestExportGenerateAnswers')->middleware('auth');
 
@@ -90,12 +96,12 @@ Route::get('/UseFormBeneficiariePost', 'InclusiveFormController@useFormBeneficia
 //creación de profesionales
 
 Route::post('webStoreUsers', 'HomeController@storeUsers')->name('webStoreUsers')->middleware('auth');
-Route::get('/ContactCreateUser', 'HomeController@createUser')->name('ContactCreateUser');
-Route::get('/ContactListUser', 'HomeController@listUser')->name('ContactListUser');
-Route::get('/userView/{id}', 'HomeController@userView')->name('UserView');
-Route::post('/updateUsers', 'HomeController@updateUsers')->name('updateUsers');
-Route::get('/userCreate', 'HomeController@createUser')->name('UserCreate');
-Route::post('/storeUsers', 'HomeController@storeUsers')->name('storeUsers');
+Route::get('/ContactCreateUser', 'HomeController@createUser')->name('ContactCreateUser')->middleware('auth');
+Route::get('/ContactListUser', 'HomeController@listUser')->name('ContactListUser')->middleware('auth');
+Route::get('/userView/{id}', 'HomeController@userView')->name('UserView')->middleware('auth');
+Route::post('/updateUsers', 'HomeController@updateUsers')->name('updateUsers')->middleware('auth');
+Route::get('/userCreate', 'HomeController@createUser')->name('UserCreate')->middleware('auth');
+Route::post('/storeUsers', 'HomeController@storeUsers')->name('storeUsers')->middleware('auth');
 
 
 

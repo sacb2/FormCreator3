@@ -188,6 +188,7 @@ label {
                         <input name="type_form" type="hidden" value="{{$formulario->tipo}}">
                         <input name="formulario" type="hidden" value="{{$formulario}}">
                         <input name="group" type="hidden" value="{{$group}}">
+                        <input name="answer_id" type="hidden" value="{{$answer_id}}">
                         @if(isset($answers_ind))
                         <input name="answers_ind_stored" type="hidden" value="{{$answers_ind}}">
                         @endif
@@ -515,12 +516,19 @@ label {
                                         class="glyphicon glyphicon-ok-circle"></i>
                                     {{ __('Anterior') }}
                                 </button>
-                  
+                                @if($formulario->questions->max('group')==$group)
+                                <button  type="submit" name="send" value="1" role="button" class="btn btn-info"><i
+                                        class="glyphicon glyphicon-ok-circle"></i>
+                                    {{ __('Enviar') }}
+                                </button>
+
+                                @else
+                                
                                 <button  type="submit" name="next" value="1" role="button" class="btn btn-info"><i
                                         class="glyphicon glyphicon-ok-circle"></i>
                                     {{ __('Siguiente') }}
                                 </button>
-                   
+                                @endif
 
 
                             </div>

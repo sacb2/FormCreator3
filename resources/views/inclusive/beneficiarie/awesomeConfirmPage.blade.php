@@ -171,7 +171,7 @@ label {
         <div class="col-md-8">
             <div class="card">
                 <div id="colornew" class="card-body">
-                    <form method="POST" action="{{ route('AnswerFormUseStore') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('AwesomerAnswersStoreGroup') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
 
@@ -187,10 +187,7 @@ label {
                         <input name="id_form" type="hidden" value="{{$formulario->id}}">
                         <input name="type_form" type="hidden" value="{{$formulario->tipo}}">
                         <input name="formulario" type="hidden" value="{{$formulario}}">
-
-
-
-                             
+                                                     
 
                         <div>
                             <p class="text-justify">Preguntas: </p>

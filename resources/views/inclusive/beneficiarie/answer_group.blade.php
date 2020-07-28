@@ -171,7 +171,7 @@ label {
         <div class="col-md-8">
             <div class="card">
                 <div id="colornew" class="card-body">
-                    <form method="POST" action="{{ route('AnswerFormUseStore') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('AnswerFormUseStoreGroup') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
 
@@ -187,10 +187,30 @@ label {
                         <input name="id_form" type="hidden" value="{{$formulario->id}}">
                         <input name="type_form" type="hidden" value="{{$formulario->tipo}}">
                         <input name="formulario" type="hidden" value="{{$formulario}}">
+                        <input name="group" type="hidden" value="{{$group}}">
+                        @if(isset($answers_ind))
+                        <input name="answers_ind_stored" type="hidden" value="{{$answers_ind}}">
+                        @endif
 
 
 
-                             
+                        @if($formulario->grouped==1)
+                    
+                            {{$formulario->questions->max('group')}}
+                            <nav class="nav nav-pills nav-justified">
+                            @for ($i = $formulario->questions->min('group'); $i <=$formulario->questions->max('group'); $i++)
+                            
+                            @if($i==$group)
+                                <a class="nav-item nav-link active" href="#">Paso {{$i}}</a>
+                            @else
+                                <a class="nav-item nav-link inactive" href="#">Paso {{$i}}</a>
+                            @endif
+
+                            @endfor
+                            </nav>
+
+                     
+                        
 
                         <div>
                             <p class="text-justify">Preguntas: </p>
@@ -199,7 +219,7 @@ label {
 
                             <div>
 
-                                @if($formulario->tipo==1)
+                                @if($formulario->tipo==1&&$group==1)
                                 <a class="hide">Ingrese su número de rut sin puntos y con guión</a>
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo" for="id_label"
@@ -207,7 +227,7 @@ label {
                                     <div class="input-group">
                                         <div class="input-group-addon"><span
                                                 class="glyphicon glyphicon-list-alt"></span></div>
-                                        <input required name="rut"
+                                        <input name="rut"
                                             title="Sin puntos y con digito verificador Ejemplo:123456-0"
                                             pattern="^[0-9]+[-|‐]{1}[0-9kK]{1}$" type="text" maxlength="10"
                                             value="{{$rut ?? ''}}" style="text-transform:uppercase"
@@ -222,7 +242,7 @@ label {
                                 <input name="formQuestions" type="hidden" value="{{$formulario->questions}}">
 
 
-                                @foreach($formulario->questions->sortBy('orden') as $pregunta)
+                                @foreach($formulario->questions->sortBy('orden')->where('group',$group) as $pregunta)
 
 
 <!--Pregunta requerida -->
@@ -487,45 +507,25 @@ label {
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8">
-                            @if($style_font==1)
+                           
 
-                               
-                            <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button" 
-                                    class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver</a>
-                                <button  type="submit" role="button" class="btn btn-info"><i
-                                        class="glyphicon glyphicon-ok-circle"></i>
-                                    {{ __('Enviar') }}
-                                </button>
-                                @elseif($style_font==2)
-                                <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button" style="font-size : 20px; width: 50%; height: 50px;"
-                                    class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver</a>
-                                <button  style="font-size : 20px; width: 50%; height: 50px;" type="submit" role="button" class="btn btn-info"><i
-                                        class="glyphicon glyphicon-ok-circle"></i>
-                                    {{ __('Enviar') }}
-                                </button>
-
-                                @elseif($style_font==3)
-                                <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button" style="font-size : 30px; width: 70%; height: 70px;"
-                                    class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver</a>
-                                <button style="font-size : 30px; width: 70%; height: 70px;" type="submit" role="button" class="btn btn-info"><i
-                                        class="glyphicon glyphicon-ok-circle"></i>
-                                    {{ __('Enviar') }}
-                                </button>
-                                @else
-                                <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button"
-                                    class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver</a>
-                                <button  type="submit" role="button" class="btn btn-info"><i
-                                        class="glyphicon glyphicon-ok-circle"></i>
-                                    {{ __('Enviar') }}
-                                </button>
-                                @endif
 
                                 
+                                <button  type="submit" name="previous" value="1" role="button" class="btn btn-warning"><i
+                                        class="glyphicon glyphicon-ok-circle"></i>
+                                    {{ __('Anterior') }}
+                                </button>
+                  
+                                <button  type="submit" name="next" value="1" role="button" class="btn btn-info"><i
+                                        class="glyphicon glyphicon-ok-circle"></i>
+                                    {{ __('Siguiente') }}
+                                </button>
+                   
 
 
                             </div>
                         </div>
-                      
+                        @endif
 
                 </div>
             </div>

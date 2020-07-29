@@ -918,6 +918,8 @@ class InclusiveFormController extends Controller
 ////////////////////////////////////////////////////////////////////////////////
 	//Store form grouped form
 	public function answerFormUseStoreGroup(Request $request){
+
+		//dd($request);
 		$group=$request->group;
 
 		$edad=null;
@@ -973,18 +975,100 @@ class InclusiveFormController extends Controller
 	$request->style_font=Session::get('font');
 
 
-	
-	
-		///Realizar guardado
-		if (isset($request->answers_text))
+$error=null;	
+//	dd($request->text_req);
+		///Realizar guardado y verificación de requeridos
+	//	dd($request->text_req);
+		if (isset($request->text_req)){
+			$error.=$this->validate_answer_text($request->answers_text,$request->text_req);
+		}
+			
+		if (isset($request->answers_text)&&$error==null){
 			$storeAnswer=$this->store_answer_text($request->answer_id,$request->answers_text,$request->id_form,$request->type_form,$request->rut);
-		if (isset($request->answers_img))
+		}
+			
+		
+		
+		if (isset($request->img_req)){
+			$error.=$this->validate_answer_img($request->answers_img,$request->img_req);
+		}
+			
+		if (isset($request->answers_img)&&$error==null){
 			$storeAnswer=$this->store_answer_img($request->answer_id,$request->answers_img,$request->id_form,$request->type_form,$request->rut);
-		if (isset($request->answers_int))
+		}
+			
+		
+		
+		if (isset($request->answers_req)){
+			$error.=$this->validate_answer_int($request->answers_req,$request->answers_int);
+		}
+			
+		if (isset($request->answers_int)&&$error==null){
 			$storeAnswer=$this->store_answer_int($request->answer_id,$request->answers_int,$request->id_form,$request->type_form,$request->rut);
+		}
+			
+		
 
 
-	
+// revision de errores
+
+$a['rut']=$request->rut;
+//foreach($request->answers_text as $key => $value)
+if(isset($request->answers_text))
+foreach($request->answers_text as $key => $value)
+	$a['old'.$key]=$value;
+$old=null;
+	//foreach($request->answers_text as $key => $value)
+if(isset($request->answers_text))
+foreach($request->answers_text as $key => $value)
+$old[$key]=$value;
+
+
+if($error!=null){
+	//return back()->withInput($a)->withErrors($error);
+
+	//cargar nuevamente los datos 
+
+	//edad de la persona registrada
+$edad=null;
+if(Auth::user() &&Auth::user()->birth_date!=null){
+	$user=Auth::user()->birth_date;
+$date = new DateTime($user);
+$now = new DateTime();
+$interval = $now->diff($date);
+$edad=$interval->y;
+
+}
+
+
+//dd($request);
+$formulario = InclusiveForm::find($request->id_form);
+
+//ver formulario
+if(isset($formulario))
+Session::put('formulario', $formulario);
+else
+$formulario=Session::get('formulario');
+
+if(isset($request->style_color))
+Session::put('color', $request->style_color);
+else 
+$request->style_color=Session::get('color');
+if(isset($request->style_font))
+Session::put('font', $request->style_font);
+else
+$request->style_font=Session::get('font');
+
+
+		//dd($request->style_color,$request->style_font);
+
+return view('inclusive.beneficiarie.answer_group', ['answer_id'=>$request->answer_id,'group'=>$group,'errors'=>$error,'old'=>$old,'rut'=>$request->rut,'edad'=>$edad,'style_color'=>$request->style_color,'style_font'=>$request->style_font,'formulario' => $formulario])->withErrors($error);
+
+//			return redirect()->back()->withErrors($error);
+}
+
+
+			
 		
 		///Realizar guardado
 
@@ -1076,7 +1160,7 @@ public function store_answer_int($id,$answers_int, $id_form, $type_form,$rut=nul
 					}
 				}
 			}
-			return $storeAnswer->id;
+			//return $storeAnswer->id;
 }
 
 
@@ -1122,7 +1206,7 @@ public function store_answer_text($id,$answers_text, $id_form, $type_form,$rut=n
 		}
 	}
 
-	return $storeAnswer->id;
+	//return $storeAnswer->id;
 }
 
 //guardar repuesta de texto
@@ -1131,8 +1215,9 @@ public function store_answer_text($id,$answers_text, $id_form, $type_form,$rut=n
 //$rut =
 //$id= identificador unico de requerimiento
 //type_form= tipo de formulario (si requiere run o no)
+//$img_req= lista de requeridos
 public function store_answer_img($id,$answers_img, $id_form, $type_form,$rut=null){
-
+//dd("aquí");
 	//archivo adjunto
 	if (isset($answers_img)){
 		foreach ($answers_img as $key => $value) {
@@ -1168,7 +1253,131 @@ public function store_answer_img($id,$answers_img, $id_form, $type_form,$rut=nul
 		}
 
 	}
-	return $storeAnswer->id;	
+
+	//return $storeAnswer->id;	
+
+}
+
+//validar textos requeridos
+
+
+//Revisar si la pregunta requerida fue respondida
+public function validate_answer_text($answers_text,$tex_req ){
+	$error=null;
+if (isset($tex_req))
+foreach($tex_req as $tex_reqs){
+	$key_answer=0;
+	if (isset($answers_text)){
+
+	
+		foreach ($answers_text as $key => $value) {
+			if($key==$tex_reqs)
+				$key_answer=1;
+		
+			if($key==$tex_reqs&&$value==null){
+				
+				$error.="Responder preguntas de text ".$key.".\n";
+				
+
+			}
+				
+
+		}
+		if($key_answer==0){
+			$error.="Responder preguntas de text ".$tex_reqs.".\n";
+			
+		}
+			
+		$key_answer=0;
+	}
+		else{
+			$error.="Responder preguntas de text ".$tex_reqs.".\n";
+			
+		}
+		
+
+	
+}
+return $error;
+}
+//revisar preguntas con alternativas
+//Revisar si la pregunta requerida fue respondida
+public function validate_answer_int($answers_req,$answers_int ){
+	$error=null;
+if (isset($answers_req))
+foreach($answers_req as $answers_reqs){
+	$key_answer=0;
+	if (isset($answers_int)){
+
+	
+		foreach ($answers_int as $key => $value) {
+			if($key==$answers_reqs)
+				$key_answer=1;
+		
+			if($key==$answers_reqs&&$value==null){
+				
+				//dd($key,$img_reqs,$value);
+				$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+				//dd("aqui");
+				//return redirect()->route('BeneficiarieIndex');
+
+			}
+				
+
+		}
+		if($key_answer==0){
+			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+			
+		}
+			
+		$key_answer=0;
+	}
+		else{
+			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+			
+		}
+		
+
+	
+}
+return $error;
+}
+
+//revisar imagenes requeridas
+public function validate_answer_img($answers_img,$img_req ){
+	$error=null;
+	//Revisar si la pregunta requerida fue respondida
+
+		if (isset($img_req))
+			foreach($img_req as $img_reqs){
+				$key_answer=0;
+				if (isset($answers_img)){
+	
+				
+					foreach ($answers_img as $key => $value) {
+						if($key==$img_reqs)
+							$key_answer=1;
+					
+						if($key==$img_reqs&&$value==null){
+							
+							$error.="Cargar las imagenes requeridas ".$img_reqs.".\n";
+						}
+					}
+					if($key_answer==0){
+						$error.="Cargar las imagenes requeridas ".$img_reqs.".\n";
+					}
+						
+					$key_answer=0;
+				}
+				else{
+						$error.="Cargar las imagenes requeridas ".$img_reqs.".\n";
+						
+					}
+					
+	
+				
+			}
+	return $error;
 
 }
 
@@ -1710,7 +1919,7 @@ $a['rut']=$request->rut;
 if(isset($request->answers_text))
 foreach($request->answers_text as $key => $value)
 	$a['old'.$key]=$value;
-
+$old=null;
 	//foreach($request->answers_text as $key => $value)
 if(isset($request->answers_text))
 foreach($request->answers_text as $key => $value)

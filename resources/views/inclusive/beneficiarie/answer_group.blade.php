@@ -220,7 +220,7 @@ label {
 
                             <div>
 
-                                @if($formulario->tipo==1&&$group==1)
+                                @if($formulario->tipo==1&&$formulario->questions->min('group')==$group)
                                 <a class="hide">Ingrese su número de rut sin puntos y con guión</a>
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo" for="id_label"
@@ -453,7 +453,7 @@ label {
                                 <input name="questions[]" type="hidden" value="answers_text[{{$pregunta->id}}]">
                                 @if($pregunta->question->required==1)
                                 Requerida
-                                <input name="tex_req[]" type="hidden" value="{{$pregunta->id}}">
+                                <input name="text_req[]" type="hidden" value="{{$pregunta->id}}">
                                 @endif
                                 @php
                                 if(isset($old[$pregunta->id])){
@@ -511,11 +511,15 @@ label {
                            
 
 
-                                
+                                @if($formulario->questions->min('group')==$group)
+                                <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button" 
+                                    class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver</a>
+                                @else
                                 <button  type="submit" name="previous" value="1" role="button" class="btn btn-warning"><i
                                         class="glyphicon glyphicon-ok-circle"></i>
                                     {{ __('Anterior') }}
                                 </button>
+                                @endif
                                 @if($formulario->questions->max('group')==$group)
                                 <button  type="submit" name="send" value="1" role="button" class="btn btn-info"><i
                                         class="glyphicon glyphicon-ok-circle"></i>

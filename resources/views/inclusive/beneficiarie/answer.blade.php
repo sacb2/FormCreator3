@@ -432,7 +432,7 @@ label {
                                 <input name="questions[]" type="hidden" value="answers_text[{{$pregunta->id}}]">
                                 @if($pregunta->question->required==1)
                                 Requerida
-                                <input name="tex_req[]" type="hidden" value="{{$pregunta->id}}">
+                                <input name="text_req[]" type="hidden" value="{{$pregunta->id}}">
                                 @endif
                                 @php
                                 if(isset($old[$pregunta->id])){

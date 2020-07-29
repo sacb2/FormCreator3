@@ -55,7 +55,7 @@
 					<tbody>
 					@foreach($answerById_paginate as $answersById)
                         @foreach($answersById as $answers)
-                            @foreach($answers as $answer)
+                            @foreach($answers->WhereNotIn('state_id',1) as $answer)
 						<tr>
 							<td>{{$answer->id_requerimiento}}</td>
 							<td>{{$answer->updated_at}}</td>

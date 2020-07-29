@@ -976,11 +976,17 @@ class InclusiveFormController extends Controller
 
 
 $error=null;	
-//	dd($request->text_req);
+
 		///Realizar guardado y verificación de requeridos
-	//	dd($request->text_req);
+	
 		if (isset($request->text_req)){
 			$error.=$this->validate_answer_text($request->answers_text,$request->text_req);
+		}
+		if (isset($request->img_req)){
+			$error.=$this->validate_answer_img($request->answers_img,$request->img_req);
+		}
+		if (isset($request->answers_req)){
+			$error.=$this->validate_answer_int($request->answers_req,$request->answers_int);
 		}
 			
 		if (isset($request->answers_text)&&$error==null){
@@ -989,9 +995,7 @@ $error=null;
 			
 		
 		
-		if (isset($request->img_req)){
-			$error.=$this->validate_answer_img($request->answers_img,$request->img_req);
-		}
+		
 			
 		if (isset($request->answers_img)&&$error==null){
 			$storeAnswer=$this->store_answer_img($request->answer_id,$request->answers_img,$request->id_form,$request->type_form,$request->rut);
@@ -999,9 +1003,7 @@ $error=null;
 			
 		
 		
-		if (isset($request->answers_req)){
-			$error.=$this->validate_answer_int($request->answers_req,$request->answers_int);
-		}
+	
 			
 		if (isset($request->answers_int)&&$error==null){
 			$storeAnswer=$this->store_answer_int($request->answer_id,$request->answers_int,$request->id_form,$request->type_form,$request->rut);

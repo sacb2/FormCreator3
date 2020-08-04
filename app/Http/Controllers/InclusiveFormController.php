@@ -542,6 +542,7 @@ class InclusiveFormController extends Controller
 		$form->description = $request->description;
 		$form->grouped = $request->grouped;
 		$form->qanswer = $request->qanswer;
+		$form->evaluacion = $request->evaluacion;
 		try {
 			$form->save();
 			Session::flash('alertSent', 'Derived');
@@ -622,6 +623,8 @@ class InclusiveFormController extends Controller
 		$form->qanswer = $request->qanswer;
 		$form->grouped = $request->grouped;
 		$form->description = $request->description;
+		$form->evaluacion = $request->evaluacion;
+
 
 
 
@@ -2401,6 +2404,111 @@ function get_dates($year = 0, $week = 0)
  
 
 	 }
+
+public function optionsForm(){
+
+	return view('inclusive.beneficiarie.index');
+}
+
+//funcion que busca por rut entre los resultados
+public function beneficirieStatus(Request $request){
+	
+
+		//validar usuario
+		/*$type= Auth::user()->type_id;
+		if( $type>3||is_null($type)){
+				Auth::logout();
+				return view('welcome');
+			}*/
+
+$id= $request->id;
+$perPage=100;
+$page = 1;
+$answerById=null;
+$answers = InclusiveAnswer::where('rut_persona', $request->Search)->groupBy('id_requerimiento')->pluck('id_requerimiento');
+foreach($answers as $answer){
+	$answerById[$answer]=InclusiveAnswer::where('rut_persona', $request->Search)->where('id_requerimiento', $answer)->get();
+}
+
+
+$storedAnswers = InclusiveAnswer::where('rut_persona', $request->Search)->groupBy('id_requerimiento')->get();
+
+//no se contraron resultados
+if(count($storedAnswers)==0){
+	$search='-1';
+	$lastPage=0;
+	$answerById_paginate=0;
+	return view('inclusive.forms.responses',['search'=>$search, 'lastPage'=>ceil($lastPage),'page'=>$page,'perPage'=>$perPage,'id'=>$id,'page'=>$page,'answerById_paginate'=>$answerById_paginate, 'answers' => $storedAnswers]);
+}
+
+
+
+//paginador se le entrega el arreglo que hay que pagina, cuantos por pagina y la pagina
+$answerById_paginate= $this->paginate($answerById,$perPage, $page, $options = []);
+//obtener la ultima pagina
+if(count($answerById)>$perPage)
+	$lastPage=count($answerById)/$perPage;
+else
+	$lastPage=1;
+
+	
+
+	$search=1;
+	
+//'answersById'=>$answerById
+return view('inclusive.beneficiarie.status',['search'=>$search, 'lastPage'=>ceil($lastPage),'page'=>$page,'perPage'=>$perPage,'id'=>$id,'page'=>$page,'answerById_paginate'=>$answerById_paginate, 'answers' => $storedAnswers]);
+}
+
+//funcion que busca por rut entre los resultados //cargar con rut de la persoan logeada
+public function beneficirieStatusSearch(Request $request){
+	
+
+	//validar usuario
+	/*$type= Auth::user()->type_id;
+	if( $type>3||is_null($type)){
+			Auth::logout();
+			return view('welcome');
+		}*/
+
+$id= $request->id;
+$perPage=100;
+$page = 1;
+$answerById=null;
+$answers = InclusiveAnswer::where('rut_persona', $request->Search)->groupBy('id_requerimiento')->pluck('id_requerimiento');
+foreach($answers as $answer){
+$answerById[$answer]=InclusiveAnswer::where('rut_persona', $request->Search)->where('id_requerimiento', $answer)->get();
+}
+
+
+$storedAnswers = InclusiveAnswer::where('rut_persona', $request->Search)->groupBy('id_requerimiento')->get();
+
+//no se contraron resultados
+if(count($storedAnswers)==0){
+$search='-1';
+$lastPage=0;
+$answerById_paginate=0;
+return view('inclusive.forms.responses',['search'=>$search, 'lastPage'=>ceil($lastPage),'page'=>$page,'perPage'=>$perPage,'id'=>$id,'page'=>$page,'answerById_paginate'=>$answerById_paginate, 'answers' => $storedAnswers]);
+}
+
+
+
+//paginador se le entrega el arreglo que hay que pagina, cuantos por pagina y la pagina
+$answerById_paginate= $this->paginate($answerById,$perPage, $page, $options = []);
+//obtener la ultima pagina
+if(count($answerById)>$perPage)
+$lastPage=count($answerById)/$perPage;
+else
+$lastPage=1;
+
+
+
+$search=1;
+
+//'answersById'=>$answerById
+return view('inclusive.beneficiarie.status',['search'=>$search, 'lastPage'=>ceil($lastPage),'page'=>$page,'perPage'=>$perPage,'id'=>$id,'page'=>$page,'answerById_paginate'=>$answerById_paginate, 'answers' => $storedAnswers]);
+}
+
+
 
 
 }

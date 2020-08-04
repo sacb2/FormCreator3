@@ -27,6 +27,9 @@ class CreateAnswerState extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('state_id');
+        
+        Schema::table('inclusive_answers', function (Blueprint $table) {
+            $table->dropColumn('state_id');
+        });
     }
 }

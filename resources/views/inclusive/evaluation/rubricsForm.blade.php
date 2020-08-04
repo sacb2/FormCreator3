@@ -22,7 +22,7 @@
 
 
                             <div class="card-body">
-                                <form method="POST" action="{{ route('QuestionsFormStore') }}">
+                                <form method="POST" action="{{ route('RubricsFormStore') }}">
                                     @csrf
 
 
@@ -57,54 +57,32 @@
                                     <input name="id" type="hidden" value="{{$form->id}}">
 
 
-                                    <div class="form-group row">
-
-                                        <label for="state"
-                                            class="col-md-4 col-form-label text-md-right">{{ __('Estado') }}</label>
-                                        <div class="col-md-6">
-                                            <select readonly class="custom-select" id="state" name="state"
-                                                value="{{$form->estado}}" ??"{{ old('state') }}">
-                                                @if($form->estado == 1)
-                                                <option value=''>Seleccionar...</option>
-                                                <option value='1' selected>Activo</option>
-                                                <option value='2'>Inactivo</option>
-
-                                                @elseif($form->estado== 2)
-                                                <option value=''>Seleccionar...</option>
-                                                <option value='1'>Activo</option>
-                                                <option value='2' selected>Inactivo</option>
-                                                @else
-                                                <option value='' selected>Seleccionar...</option>
-                                                <option value='1'>Activo</option>
-                                                <option value='2'>Inactivo</option>
-
-
-                                                @endif
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div>
                                         <p class="text-justify">Seleccione las preguntas que desea agregar al formulario
                                         </p>
                                         <div>
 
-                                            @foreach($questions as $question)
-                                            @php
-                                            $a=0;
-                                            @endphp
+                                           
                                             @foreach($form->questions as $selectedQ)
-                                            @if($question->id==$selectedQ->id_pregunta&&$selectedQ->estado==1)
-                                            <input checked type="checkbox" name="pickedDep[]" id="pickedDep1"
-                                                value='{{$question->id}}'> {{$question->nombre}}</input>
+                                            @if($selectedQ->estado==1)
+                                            
 
                                       
-                                               @if($form->grouped==1)
+                                               @if($form->evaluacion==1 & $selectedQ->question->tipo==2)
                                                     <label for="group"
-                                                        class="col-md-4 col-form-label text-md-right">{{ __('Agrupación') }}</label>
+                                                        class="col-md-4 col-form-label text-md-right">{{ __('Pregunta Rúbrica:') }} {{$selectedQ->question->nombre}}</label>
+                                                
+                                               
+                                                <br>
+                                                
+                                                @foreach($selectedQ->question->answers as  $answer)
+                                                {{$answer->texto_respuesta}} 
+                                                {{$answer->valor_respuesta}}
+                                                <div class="form-group row">
                                                     <div class="col-md-6">
                                                         <input id="group" type="number"
-                                                            class="form-control @error('group') is-invalid @enderror" name="groupDep[{{$question->id}}]"
-                                                            value='{{$selectedQ->group}}'  autocomplete="group" autofocus>
+                                                            class="form-control @error('rubric') is-invalid @enderror" name="rubricDep[{{$answer->id}}]"
+                                                            value=''  autocomplete="group" autofocus>
                                                         @error('group')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
@@ -112,37 +90,37 @@
                                                         @enderror
                                                 </div>
                                                
+
+                                                    <label for="state"
+                                                        class="col-md-4 col-form-label text-md-right">{{ __('Tipo de Rubrica') }}</label>
+                                                    <div class="col-md-6">
+                                                        <select class="custom-select" id="id_tipo" name="tipo[{{$answer->id}}]"
+                                                          >
+                                                         
+                                                            <option value='' >Seleccionar...</option>
+                                                            <option value='1'>Rango</option>
+                                                            <option value='2' selected>Exacto</option>
+            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                                @endforeach
+                                                 
+                       
                                                 @endif
-                                                <br>
-                                            @php
-                                            $a=1;
-                                            @endphp
                                             @endif
                                             @endforeach
-                                            @if($a==0)
+                                       
                                            
-                                            <input type="checkbox" name="pickedDep[]" id="pickedDep1"
-                                                value='{{$question->id}}'> {{$question->nombre}}</input>
-                                                @if($form->grouped==1)
-                                                    <label for="group"
-                                                        class="col-md-4 col-form-label text-md-right">{{ __('Agrupación') }}</label>
-                                                    <div class="col-md-6"> 
-                                                        <input id="group" type="number"
-                                                            class="form-control @error('group') is-invalid @enderror" name="groupDep[{{$question->id}}]"
-                                                            value='' autocomplete="group" autofocus>
-                                                        @error('group')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                        @enderror
-                                                </div>
+                                  
                                                
-                                                @endif
+                                           
                                                 <br>
-                                            @endif
+                                         
 
 
-                                            @endforeach
+                                         
                                         </div>
                                     </div>
 

@@ -24,4 +24,7 @@ class InclusiveFormQuestion extends Model
 		public function form(){
 					return $this-> belongsTo('App\InclusiveForm','id_formulario');
 				}
+		public function rubric(){
+					return $this-> hasOne('App\InclusiveRubric','id_formulario','id_formulario','id','id_pregunta');
+				}
 }

@@ -515,10 +515,10 @@ label {
                                 <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button" 
                                     class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver</a>
                                 @else
-                                <button  type="submit" name="previous" value="1" role="button" class="btn btn-warning"><i
+                        <!--        <button  type="submit" name="previous" value="1" role="button" class="btn btn-warning"><i
                                         class="glyphicon glyphicon-ok-circle"></i>
                                     {{ __('Anterior') }}
-                                </button>
+                                </button> -->
                                 @endif
                                 @if($formulario->questions->max('group')==$group)
                                 <button  type="submit" name="send" value="1" role="button" class="btn btn-info"><i

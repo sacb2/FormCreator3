@@ -62,6 +62,8 @@ Route::post('/AnswerFormUseStoreGroup', 'InclusiveFormController@answerFormUseSt
 Route::post('/AwesomerAnswersStoreGroup', 'InclusiveFormController@awesomerAnswersStoreGroup')->name('AwesomerAnswersStoreGroup');
 Route::post('/ConfirmAnswersStoreGroup', 'InclusiveFormController@confirmAnswersStoreGroup')->name('ConfirmAnswersStoreGroup');
 
+//Seleccion de Opciones
+Route::get('/OptionsForm', 'InclusiveFormController@optionsForm')->name('OptionsForm');
 
 Route::get('/UseFormAnswers/{id}', 'InclusiveFormController@useFormAnswers')->name('UseFormAnswers');
 
@@ -93,6 +95,12 @@ Route::post('/beneficiarieIndexPost', 'InclusiveFormController@beneficiarieIndex
 Route::post('/UseFormBeneficiariePost', 'InclusiveFormController@useFormBeneficiariePost')->name('UseFormBeneficiariePost');
 Route::get('/UseFormBeneficiariePost', 'InclusiveFormController@useFormBeneficiariePost')->name('UseFormBeneficiariePost');
 
+//OPTIONS
+Route::get('/UseFormBeneficiariePost', 'InclusiveFormController@useFormBeneficiariePost')->name('UseFormBeneficiariePost');
+//STATUS
+Route::get('/BeneficiarieStatus', 'InclusiveFormController@beneficirieStatus')->name('BeneficiarieStatus');
+Route::post('/BeneficiarieStatusSearch', 'InclusiveFormController@beneficirieStatusSearch')->name('BeneficiarieStatusSearch');
+
 //creación de profesionales
 
 Route::post('webStoreUsers', 'HomeController@storeUsers')->name('webStoreUsers')->middleware('auth');
@@ -102,6 +110,14 @@ Route::get('/userView/{id}', 'HomeController@userView')->name('UserView')->middl
 Route::post('/updateUsers', 'HomeController@updateUsers')->name('updateUsers')->middleware('auth');
 Route::get('/userCreate', 'HomeController@createUser')->name('UserCreate')->middleware('auth');
 Route::post('/storeUsers', 'HomeController@storeUsers')->name('storeUsers')->middleware('auth');
+
+//Evaluación
+Route::get('/Evaluations', 'EvaluationsController@evaluations')->name('Evaluations')->middleware('auth');
+Route::get('/Rubrics', 'EvaluationsController@rubrics')->name('Rubrics')->middleware('auth');
+Route::get('/RubricsForm/{form_id}', 'EvaluationsController@rubricsForm')->name('RubricsForm')->middleware('auth');
+Route::post('/RubricsFormStore','EvaluationsController@rubricsFormStore')->name('RubricsFormStore')->middleware('auth');
+
+
 
 
 

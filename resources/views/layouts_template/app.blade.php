@@ -34,6 +34,12 @@
             <a href="{{ route('ListAnswers') }}"><span class="fa fa-sticky-note"></span> Respuestas</a>
           </li>
           <li>
+            <a href="{{ route('Evaluations') }}"><span class="fa fa-sticky-note"></span> Evaluación</a>
+          </li>
+          <li>
+            <a href="{{ route('Rubrics') }}"><span class="fa fa-sticky-note"></span> Rubrics</a>
+          </li>
+          <li>
             <a href="#"><span class="fa fa-paper-plane"></span> Contacto</a>
           </li>
         </ul>

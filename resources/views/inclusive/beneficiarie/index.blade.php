@@ -153,7 +153,11 @@ label {
   <div id=colornew  class="table-responsive">
 	<a class="sr-only sr-only-focusable">Aqui debera seleccionar si quiere responser un formulario o ver el edatdo de las respuestas</a>
   <li class="page-item"><a  class="btn btn-primary btn-lg btn-block" href="{{URL::to('/BeneficiarieIndex/')}}">Responder Formularios</a></li>
-  <li class="page-item"><a  class="btn btn-secondary btn-lg btn-block" href="{{URL::to('/BeneficiarieStatus/')}}">Ver Estado de Respuestas</a></li>
+  @if( Auth::user()->rut)
+  <li class="page-item"><a  class="btn btn-secondary btn-lg btn-block" href="{{URL::to('/BeneficiarieStatus/')}}/{{ Auth::user()->rut }}">Ver Estado de Respuestas</a></li>
+  @else
+  No se ha actualizado el identificador de la persona, si desea revisar las respuesta debe tener un identificador válido.
+  @endif
 
 
     

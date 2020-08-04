@@ -20,6 +20,7 @@ use Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FormSendMail;
 use PharIo\Manifest\Requirement;
+use App\User;
 
 class InclusiveFormController extends Controller
 {
@@ -2413,9 +2414,9 @@ public function optionsForm(){
 }
 
 //funcion que busca por rut entre los resultados
-public function beneficirieStatus(Request $request){
+public function beneficirieStatus($rut){
 	
-
+	
 		//validar usuario
 		/*$type= Auth::user()->type_id;
 		if( $type>3||is_null($type)){
@@ -2423,43 +2424,24 @@ public function beneficirieStatus(Request $request){
 				return view('welcome');
 			}*/
 
-$id= $request->id;
-$perPage=100;
-$page = 1;
-$answerById=null;
-$answers = InclusiveAnswer::where('rut_persona', $request->Search)->groupBy('id_requerimiento')->pluck('id_requerimiento');
+			$persona=User::where('id',Auth::user()->id)->first(['name','lastname','rut']);
+			
+$answers = InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_persona',Auth::user()->id)->where('state_id','!=','1')->groupBy('id_requerimiento')->pluck('id_requerimiento');
 foreach($answers as $answer){
-	$answerById[$answer]=InclusiveAnswer::where('rut_persona', $request->Search)->where('id_requerimiento', $answer)->get();
+	$answerById[$answer]=InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_persona',Auth::user()->id)->where('state_id','!=','1')->where('id_requerimiento', $answer)->get();
 }
 
+if(!isset($answerById))
+	return redirect()->back()->withErrors('No hay registros de formularior con respuestas validas');
 
-$storedAnswers = InclusiveAnswer::where('rut_persona', $request->Search)->groupBy('id_requerimiento')->get();
+$storedAnswers = InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_persona',Auth::user()->id)->get();
 
-
-//no se contraron resultados
-if(count($storedAnswers)==0){
-	$search='-1';
-	$lastPage=0;
-	$answerById_paginate=0;
-	return view('inclusive.forms.responses',['search'=>$search, 'lastPage'=>ceil($lastPage),'page'=>$page,'perPage'=>$perPage,'id'=>$id,'page'=>$page,'answerById_paginate'=>$answerById_paginate, 'answers' => $storedAnswers]);
-}
-
-
-
-//paginador se le entrega el arreglo que hay que pagina, cuantos por pagina y la pagina
-$answerById_paginate= $this->paginate($answerById,$perPage, $page, $options = []);
-//obtener la ultima pagina
-if(count($answerById)>$perPage)
-	$lastPage=count($answerById)/$perPage;
-else
-	$lastPage=1;
-
-	
-
-	$search=1;
-	
+//foreach($answerById as $answer)
+	//dd($answers);
+//dd(key($answerById),$storedAnswers);
+//dd($storedAnswers);
 //'answersById'=>$answerById
-return view('inclusive.beneficiarie.status',['search'=>$search, 'lastPage'=>ceil($lastPage),'page'=>$page,'perPage'=>$perPage,'id'=>$id,'page'=>$page,'answerById_paginate'=>$answerById_paginate, 'answers' => $storedAnswers]);
+return view('inclusive.beneficiarie.status',['answersId'=> $answers,'persona'=>$persona,'answerById'=>$answerById, 'answers' => $storedAnswers]);
 }
 
 //funcion que busca por rut entre los resultados //cargar con rut de la persoan logeada

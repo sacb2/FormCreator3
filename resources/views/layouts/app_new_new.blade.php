@@ -44,14 +44,17 @@
 	<!--		<nav id="sidebar" class="active"> -->
      <!-- Menú Lateral Izquierdo-->
     	<!--</nav> -->
-
+       
         <!-- Page Content  -->
       <div id="content" class="p-4 p-md-5">
-
+        
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
-
-           
+          <!--logo inicial -->
+            <h1><a href="{{ url('/OptionsForm') }}" class="logo">
+        <img src="{{ asset('img/header_logo.png') }}" alt="Logotipo de HTML5" width="80" height="50">
+        </a></h1>
+        <!--logo inicial -->
             <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fa fa-bars"></i>
             </button>

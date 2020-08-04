@@ -97,8 +97,9 @@ Route::get('/UseFormBeneficiariePost', 'InclusiveFormController@useFormBeneficia
 
 //OPTIONS
 Route::get('/UseFormBeneficiariePost', 'InclusiveFormController@useFormBeneficiariePost')->name('UseFormBeneficiariePost');
+Route::get('/OptionsForm', 'InclusiveFormController@optionsForm')->name('OptionsForm');
 //STATUS
-Route::get('/BeneficiarieStatus', 'InclusiveFormController@beneficirieStatus')->name('BeneficiarieStatus');
+Route::get('/BeneficiarieStatus/{rut}', 'InclusiveFormController@beneficirieStatus')->name('BeneficiarieStatus');
 Route::post('/BeneficiarieStatusSearch', 'InclusiveFormController@beneficirieStatusSearch')->name('BeneficiarieStatusSearch');
 
 //creación de profesionales

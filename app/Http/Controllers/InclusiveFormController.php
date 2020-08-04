@@ -2236,7 +2236,8 @@ if($value){
 
 		$storedAnswers = InclusiveAnswer::where('id_formulario', $id)->groupBy('id_requerimiento')->get();
 
-
+if($answerById==null)
+return redirect()->back()->withErrors(["Sin respuestas en el formulario"]);
 		//paginador se le entrega el arreglo que hay que pagina, cuantos por pagina y la pagina
 		$answerById_paginate = $this->paginate($answerById, $perPage, $page, $options = []);
 		//obtener la ultima pagina
@@ -2281,7 +2282,8 @@ if($value){
 		}
 		
 	
-	
+		if($answerById==null)
+		return redirect()->back()->withErrors(["Sin respuestas en el formulario"]);
 		//paginador se le entrega el arreglo que hay que pagina, cuantos por pagina y la pagina
 		$answerById_paginate= $this->paginate($answerById,$perPage, $page, $options = []);
 		//obtener la ultima pagina
@@ -2432,6 +2434,7 @@ foreach($answers as $answer){
 
 
 $storedAnswers = InclusiveAnswer::where('rut_persona', $request->Search)->groupBy('id_requerimiento')->get();
+
 
 //no se contraron resultados
 if(count($storedAnswers)==0){

@@ -34,26 +34,7 @@
 					@endif
 			@if(isset($answerById_paginate)&&$search>'-1')
 			
-			<div class="table-responsive">
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th scope="col">Id Respuesta</th>
-							<th scope="col">Fecha</th>
-                            <th scope="col">Id Persona</th>
-							<th scope="col">Nombre Pregunta</th>
-                            <th scope="col">Tipo</th>
-                            <th scope="col">Respuesta</th>
-							<th scope="col">Ver</th>
-							<th scope="col">Estado</th>
-							<th scope="col">Evaluación</th>
-							
-							
-							
-						</tr>
-					</thead>
-
-					<tbody>
+		
 					@foreach($answerById_paginate as $answersById)
 						@foreach($answersById as $answers)
 						
@@ -123,80 +104,10 @@
 							</div>
 					
 						  
-                            @foreach($answers->WhereNotIn('state_id',1) as $answer)
-						<tr>
-							
-						
-
-							<td>{{$answer->id_requerimiento}}</td>
-							<td>{{$answer->updated_at}}</td>
-                            <td>{{$answer->rut_persona}}</td>
-							<td>{{$answer->question->question->nombre}}</td>
-							@if($answer->question->question->tipo==1)
-							<td>Texto</td>
-							@elseif($answer->question->question->tipo==2)
-                            <td>Seleccion Múltiple</td>
-                            @elseif($answer->question->question->tipo==3)
-							<td>Imagen</td>
-							@else
-							<td>{{$answer->question->question->tipo}}</td>
-							@endif
-                            <td>
-								@if($answer->question->question->tipo==1)
-									@if(isset($answer->texto_respuesta))
-								{{$answer->texto_respuesta}}
-									@endif
-                                @elseif($answer->question->question->tipo==2)
-                                <!--{{$answer->respuesta_number}}-->
-                                @elseif($answer->question->question->tipo==3)
-                              <!--  {{$answer->respuesta_number}} -->
-								@else
-									@if(isset($answer->texto_respuesta))
-									{{$answer->texto_respuesta}}
-									@endif
-                                	<!--{{$answer->respuesta_number}}-->
-                                @endif
-                            </td>
-                            <td>
-								@if($answer->question->question->tipo==3)
-								@if(isset($answer->document->nombre))
-								<a href="/images/{{$answer->id_formulario}}/{{$answer->document->nombre}}" download='{{$answer->document->nombre}}'> 
-							   <img width="100" height="100" src="/images/{{$answer->id_formulario}}/{{$answer->document->nombre}}" alt="/images/{{$answer->id_formulario}}/{{$answer->document->nombre}}" class="img-thumbnail">
-								</a>
-								@endif
-							   
-							   @elseif($answer->question->question->tipo==2)
-							  
-							   @if(isset($answer->answer_number->texto_respuesta))
-							    {{$answer->answer_number->texto_respuesta}}
-								@endif
-							   
-							   @elseif($answer->question->question->tipo==1)
-							   {{$answer->respuesta_text}}
-
-                                @endif
-                            </td>
-							</td>
-							@if(isset($answer->questions))
-							<td>@foreach($answer->questions as $question)
-
-								@if($question->estado==1)
-								{{$question->question->nombre}},
-								@endif
-								@endforeach</td>
-							@endif
-							<td>{{$answer->state_id}}</td>
-							<td>{{$answer->evaluacion}}</td>
-						</tr>
-
-							@endforeach
-						</div>
-					</div>
+					
 						@endforeach
 					@endforeach
-					</tbody>
-
-				</table>
+				
 		
 @if($search==0&&$lastPage>1)
 				<nav aria-label="Page navigation example">

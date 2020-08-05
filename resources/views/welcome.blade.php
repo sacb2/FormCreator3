@@ -109,7 +109,7 @@
             
             <div>
             <h1>    <a href="{{URL::to('/home/')}}">Sistema de postulaciones:</a></h1>
-			<h1>    <a href="{{URL::to('/home/')}}">15° Concurso Metropolitano Inclusivo de Litratura</a></h1>
+			<h1>    <a href="{{URL::to('/home/')}}">15° Concurso Metropolitano Inclusivo de Literatura</a></h1>
 			
             </div>
     </div>

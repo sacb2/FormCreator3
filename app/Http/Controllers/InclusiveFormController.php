@@ -2426,13 +2426,14 @@ public function beneficirieStatus($rut){
 
 			$persona=User::where('id',Auth::user()->id)->first(['name','lastname','rut']);
 			
-$answers = InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_persona',Auth::user()->id)->where('state_id','!=','1')->groupBy('id_requerimiento')->pluck('id_requerimiento');
+$answers = InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_persona',Auth::user()->id)->where('state_id','2')->orWhere('state_id',NULL)->groupBy('id_requerimiento')->pluck('id_requerimiento');
+
 foreach($answers as $answer){
-	$answerById[$answer]=InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_persona',Auth::user()->id)->where('state_id','!=','1')->where('id_requerimiento', $answer)->get();
+	$answerById[$answer]=InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_persona',Auth::user()->id)->where('state_id','2')->orWhere('state_id',NULL)->where('id_requerimiento', $answer)->get();
 }
 
 if(!isset($answerById))
-	return redirect()->back()->withErrors('No hay registros de formularior con respuestas validas');
+	return redirect()->back()->withErrors('No hay registros en el formulario con respuestas validas');
 
 $storedAnswers = InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_persona',Auth::user()->id)->get();
 

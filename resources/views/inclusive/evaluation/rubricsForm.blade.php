@@ -78,11 +78,12 @@
                                                 @foreach($selectedQ->question->answers as  $answer)
                                                 {{$answer->texto_respuesta}} 
                                                 {{$answer->valor_respuesta}}
+                                                {{$rubric->where('id_respuesta',$answer->id)->pluck('id_evaluacion')->first()}}
                                                 <div class="form-group row">
                                                     <div class="col-md-6">
                                                         <input id="group" type="number"
                                                             class="form-control @error('rubric') is-invalid @enderror" name="rubricDep[{{$answer->id}}]"
-                                                            value=''  autocomplete="group" autofocus>
+                                                            value='{{$rubric->where('id_respuesta',$answer->id)->pluck('id_evaluacion')->first()}}'  autocomplete="group" autofocus>
                                                         @error('group')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>

@@ -443,7 +443,7 @@ label {
                                 else
                                 $pregunta_old=null;
                                 @endif
-                                preguntae{{$e}}
+                               
                                     <textarea class="form-control" rows="5" maxlength="6666"
                                         name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}">{{$pregunta_old}}</textarea>
                                     @endif

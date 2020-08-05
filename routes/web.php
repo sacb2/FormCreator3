@@ -117,6 +117,8 @@ Route::get('/Evaluations', 'EvaluationsController@evaluations')->name('Evaluatio
 Route::get('/Rubrics', 'EvaluationsController@rubrics')->name('Rubrics')->middleware('auth');
 Route::get('/RubricsForm/{form_id}', 'EvaluationsController@rubricsForm')->name('RubricsForm')->middleware('auth');
 Route::post('/RubricsFormStore','EvaluationsController@rubricsFormStore')->name('RubricsFormStore')->middleware('auth');
+Route::get('/FormStatus/{id}','EvaluationsController@formStatus')->name('FormStatus')->middleware('auth');
+Route::get('/AutoEvaluateForm/{id}','EvaluationsController@autoEvaluateForm')->name('AutoEvaluateForm')->middleware('auth');
 
 
 

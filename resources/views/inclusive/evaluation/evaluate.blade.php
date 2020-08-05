@@ -17,13 +17,16 @@
 						<tr>
 							<th scope="col">Nombre</th>
 							<th scope="col">Estado</th>
-							<th scope="col">Ver</th>
+                            <th scope="col">Ver</th>
+                            <th scope="col">Evaluación</th>
 						</tr>
 					</thead>
 
 					<tbody>
-						@foreach($forms as $form)
+                        @foreach($forms as $form)
+                        
 						<tr>
+                           
 							<td>{{$form->nombre}}</td>
 							@if($form->estado==1)
 							<td>Activo</td>
@@ -33,13 +36,13 @@
 							<td>{{$form->estado}}</td>
 							@endif
 
-							<td>
-								@if($form->evaluacion==1)
-								<a href="{{URL::to('/RubricsForm/')}}/{{$form->id}}">Rubrica</a>
-								@endif
-							</td>
-							<td><a href="{{URL::to('/QuestionsFormRelation/')}}/{{$form->id}}">Modificar Preguntas</a>
-							</td>
+                            <td><a href="{{URL::to('/RubricsForm/')}}/{{$form->id}}">Rubrica</a></td>
+                            <td>
+                            @if($form->evaluacion==1)
+							<a href="{{URL::to('/FormStatus/')}}/{{$form->id}}">Evaluar</a>
+                            
+                            @endif
+                        </td>
 							@if(isset($form->questions))
 							<td>@foreach($form->questions as $question)
 
@@ -47,10 +50,11 @@
 								{{$question->question->nombre}},
 								@endif
 								@endforeach</td>
-							@endif
+                            @endif
+                            <td>{{$form->evaluacion}}</td>
 						</tr>
 
-
+                       
 						@endforeach
 					</tbody>
 

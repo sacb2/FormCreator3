@@ -239,6 +239,71 @@ label {
 
 
                                 @if($pregunta->estado==1)
+
+
+
+<!-- Pregunta de números -->
+@if($pregunta->question->tipo==8)
+                                <!-- restriccion de edad -->
+                                    @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
+                                        @if($pregunta->question->required==1)
+                                            Requerida
+                                            <input name="text_req[]" type="hidden" value="{{$pregunta->id}}">
+                                @endif
+                                @php
+                                if(isset($old[$pregunta->id])){
+                                    $pregunta_old=$old[$pregunta->id];
+                                }else
+                                $pregunta_old=null;
+                                @endphp
+                                <input name="questions[]" type="hidden" value="answers_text[{{$pregunta->id}}]">
+                                            <div class="form-group row">
+                                            <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
+                                            class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
+                                            <div class="col-md-6">
+                                                <input id="group" type="number"
+                                                            class="form-control @error('group') is-invalid @enderror"  name="answers_text[{{$pregunta->id}}]'"
+                                                            value='{{$pregunta_old}}'  autocomplete="group" autofocus>
+                                                        @error('group')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                        @enderror
+                                            </div>
+                                        </div>
+                                    @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
+                                    <input name="questions[]" type="hidden" value="answers_text[{{$pregunta->id}}]">
+                                        @if($pregunta->question->required==1)
+                                            Requerida
+                                            <input name="text_req[]" type="hidden" value="{{$pregunta->id}}">
+                                @endif
+                                @php
+                                if(isset($old[$pregunta->id])){
+                                    $pregunta_old=$old[$pregunta->id];
+                                }else
+                                $pregunta_old=null;
+                                @endphp
+                                        <div class="form-group row">
+                                        <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
+                                        class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
+                                        <div class="col-md-6">
+                                      
+                                            <input id="group" type="number"
+                                                            class="form-control @error('group') is-invalid @enderror"  name="answers_text[{{$pregunta->id}}]'"
+                                                            value='{{$pregunta_old}}'  autocomplete="group" autofocus>
+                                                        @error('group')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                        @enderror
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endif
+
+
+
+<!-- Pregunta de números -->                                
 <!--- Pregunta selección multiple varias -->
                                 @if($pregunta->question->tipo==7)
                                 <!-- restriccion de edad -->
@@ -496,7 +561,7 @@ label {
                                     <label tabindex="0" role="contentinfo"
                                         for="comment">{{$pregunta->question->pregunta}}</label>
                                     @if(isset($pregunta->question->size)&&$pregunta->question->size>0)
-                                    <a class="hide">El tamaño maximo de la respuesta es {{$pregunta->question->size}}
+                                    <a class="hide">El tamaño máximo de la respuesta es {{$pregunta->question->size}}
                                         caracteres y a continuación hay un contador de caracteres.</a>
                                     <textarea  class="form-control" rows="5" maxlength="6666" value="{{$pregunta->id}}"
                                         onkeyup="wordCounter(this,'counter1{{$pregunta->id}}',{{$pregunta->question->size}});"

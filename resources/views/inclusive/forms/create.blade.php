@@ -76,12 +76,13 @@
                                                 value="{{ old('type') }}">
                                                 <option value='' selected>Seleccionar...</option>
                                                 <option value='1'>Texto</option>
-                                                <option value='2'>Selección múltiple unica</option>
+                                                <option value='2'>Selección única</option>
                                                 <option value='3'>Imagen</option>
                                                 <option value='4'>Documento</option>
                                                 <option value='5'>Archivo</option>
                                                 <option value='6'>Info</option>
-                                                <option value='7'>Selección múltiple varias</option>
+                                                <option value='7'>Selección múltiple</option>
+                                                <option value='8'>Número</option>
                                             </select>
                                         </div>
                                     </div>

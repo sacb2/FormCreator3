@@ -1011,9 +1011,15 @@ $error=null;
 		if (isset($request->answers_req)){
 			$error.=$this->validate_answer_int($request->answers_req,$request->answers_int);
 		}
+		if (isset($request->box_req)){
+			$error.=$this->validate_answer_box($request->box_req,$request->answers_box);
+		}
 			
 		if (isset($request->answers_text)&&$error==null){
 			$storeAnswer=$this->store_answer_text($request->answer_id,$request->answers_text,$request->id_form,$request->type_form,$request->rut);
+		}
+		if (isset($request->answers_box)&&$error==null){
+			$storeAnswer=$this->store_answer_box($request->answer_id,$request->answers_box,$request->id_form,$request->type_form,$request->rut);
 		}
 			
 		
@@ -1190,6 +1196,51 @@ public function store_answer_int($id,$answers_int, $id_form, $type_form,$rut=nul
 
 
 
+//guardar respuestas box
+public function store_answer_box($id,$answers_int, $id_form, $type_form,$rut=null){
+	//responde pregunta alternativas
+	if (isset($answers_int))
+	foreach ($answers_int as $key => $value) {
+//	dd($request->answers_int,$key,json_decode($value),json_decode($value)->value, json_decode($value)->id);
+	if($value){
+		$storeAnswer = new InclusiveAnswer;
+		$storeAnswer->id_pregunta = $key;
+		$storeAnswer->id_formulario = $id_form;
+		$storeAnswer->id_requerimiento = $id;
+		$storeAnswer->texto_respuesta=implode($value);
+		if(Auth::user())
+			$storeAnswer->id_persona=Auth::user()->id;
+		//$storeAnswer->valor_respuesta = json_decode($value)->value; //identificador unico de la respuesta
+		//$storeAnswer->answer_id= json_decode($value)->id; //valor de respuesta asignado en configuracion
+	
+	
+			
+		
+		$storeAnswer->tipo = '0';
+		if ($type_form == 1)
+			$storeAnswer->rut_persona = strtoupper($rut);
+
+		
+
+
+		try {
+			$storeAnswer->save();
+
+			//	Session::flash('alertSent', 'Derived');
+			//	Session::flash('message', "Respuestas guardadas exitosamente" );
+		} catch (\Exception $e) {
+			// do task when error
+			Session::flash('alert', 'error');
+			echo $e->getMessage();   // insert query
+
+		}
+	}
+}
+//return $storeAnswer->id;
+}
+
+
+
 
 
 //guardar repuesta de texto
@@ -1325,6 +1376,56 @@ foreach($tex_req as $tex_reqs){
 }
 return $error;
 }
+
+
+
+//revisar preguntas con alternativas
+//Revisar si la pregunta requerida fue respondida
+public function validate_answer_box($answers_req,$answers_int ){
+	$error=null;
+if (isset($answers_req))
+foreach($answers_req as $answers_reqs){
+	$key_answer=0;
+	if (isset($answers_int)){
+
+	
+		foreach ($answers_int as $key => $value) {
+			if($key==$answers_reqs)
+				$key_answer=1;
+		
+			if($key==$answers_reqs&&$value==null){
+				
+				//dd($key,$img_reqs,$value);
+				$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+				//dd("aqui");
+				//return redirect()->route('BeneficiarieIndex');
+
+			}
+				
+
+		}
+		if($key_answer==0){
+			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+			
+		}
+			
+		$key_answer=0;
+	}
+		else{
+			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+			
+		}
+		
+
+	
+}
+return $error;
+}
+
+
+
+
+
 //revisar preguntas con alternativas
 //Revisar si la pregunta requerida fue respondida
 public function validate_answer_int($answers_req,$answers_int ){

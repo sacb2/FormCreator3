@@ -266,7 +266,7 @@ label {
                                 @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
                                 @if($pregunta->question->required==1)
                                 Requerida
-                                <input name="answers_req[]" type="hidden" value="{{$pregunta->id}}">
+                                <input name="box_req[]" type="hidden" value="{{$pregunta->id}}">
                                 @endif
                                 <input name="questions[]" type="hidden" value="answers_int[{{$pregunta->id}}]">
 
@@ -279,9 +279,11 @@ label {
                                     <div class="col-md-6">
                                        
                                             @foreach($pregunta->question->answers as $answer)
-                                         
-                                            <input type="checkbox" name="pickedDep[{{$pregunta->id}}]" id="pickedDep{{$pregunta->id}}"
-                                                value="multiple[{{$answer->valor_respuesta}}][{{$answer->id}}]"> {{$answer->texto_respuesta}},
+                                            @php
+                                            $answer_data = json_encode(array('value'=>$answer->valor_respuesta,'id'=>$answer->id, 'texto'=>$answer->texto_respuesta));
+                                            @endphp
+                                            <input type="checkbox" name="answers_box[{{$pregunta->id}}][]" id="answers_box{{$pregunta->id}}"
+                                            value='{{$answer_data}}'> {{$answer->texto_respuesta}},
                                             </input><br>
                                             @endforeach
 
@@ -293,7 +295,7 @@ label {
                                 <input name="questions[]" type="hidden" value="answers_int[{{$pregunta->id}}]">
                                 @if($pregunta->question->required==1)
                                 Requerida
-                                <input name="answers_req[]" type="hidden" value="{{$pregunta->id}}">
+                                <input name="box_req[]" type="hidden" value="{{$pregunta->id}}">
                                 @endif
                                 <div class="form-group row">
 
@@ -304,10 +306,10 @@ label {
                                             @foreach($pregunta->question->answers as $answer)
                                            
                                             @php
-                                            $answer_data = json_encode(array('value'=>$answer->valor_respuesta,'id'=>$answer->id));
+                                            $answer_data = json_encode(array('value'=>$answer->valor_respuesta,'id'=>$answer->id, 'texto'=>$answer->texto_respuesta));
                                             @endphp
                                         
-                                            <input type="checkbox" name="pickedDep[{{$pregunta->id}}]" id="pickedDep{{$pregunta->id}}"
+                                            <input type="checkbox" name="answers_box[{{$pregunta->id}}][]" id="answers_box{{$pregunta->id}}"
                                                 value='{{$answer_data}}'> {{$answer->texto_respuesta}},
                                            </input><br>
                                             @endforeach

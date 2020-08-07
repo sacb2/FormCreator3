@@ -40,19 +40,19 @@ class LoginController extends Controller
         // Check user role
             switch ($role) {
                 case '0':
-                    return '/SelectForms';
+                    return '/OptionsForm';
                 break;
                 case '1':
-                    return '/SelectForms';
+                    return '/OptionsForm';
                 break;
                 case '2':
-                    return '/SelectForms';
+                    return '/OptionsForm';
                 break;
                 case '3':
                     return '/SelectForms';
                 break;
                  default:
-                    return '/BeneficiarieIndex'; 
+                    return '/OptionsForm'; 
                 break;
          
             }

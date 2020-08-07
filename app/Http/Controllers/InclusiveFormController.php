@@ -357,7 +357,7 @@ class InclusiveFormController extends Controller
 		try {
 			$answer->save();
 			Session::flash('alertSent', 'Derived');
-			Session::flash('message', "Pregunta actualizada exitosamente");
+			Session::flash('message', "Respuesta actualizada exitosamente: ".$answer->texto_respuesta);
 		} catch (\Exception $e) {
 			// do task when error
 			Session::flash('alert', 'error');
@@ -550,7 +550,7 @@ class InclusiveFormController extends Controller
 		try {
 			$form->save();
 			Session::flash('alertSent', 'Derived');
-			Session::flash('message', "Formulario creado" . $form->nombre . " exitosamente");
+			Session::flash('message', "Formulario creado " . $form->nombre . " exitosamente");
 		} catch (\Exception $e) {
 			// do task when error
 			Session::flash('alert', 'error');
@@ -1509,6 +1509,26 @@ public function validate_answer_img($answers_img,$img_req ){
 
 
 
+
+	//Visualización de formulario personalizado creado y respuestas 
+	//$id identificador de formulario
+	public function useFormBeneficiarieRUT($id,$rut,$fecha=null)
+	{
+
+	$edad=0;
+		//dd($id,$rut);
+		$formulario = InclusiveForm::find($id);
+		//		dd($formulario->products);
+
+		if($formulario->id_restriccion && isset(Auth::user()->rut))
+			$found=$this->evaluationList($id,Auth::user()->rut);
+		
+
+
+		return view('inclusive.get.answerGet', ['edad'=>$edad,'rut'=>$rut,'formulario' => $formulario]);
+	}
+
+
 	//Visualización de formulario personalizado creado y respuestas 
 	//$id identificador de formulario
 	public function useFormBeneficiarie($id)
@@ -2150,8 +2170,10 @@ else
 $request->style_font=Session::get('font');
 
 
-		//dd($request->style_color,$request->style_font);
-
+		//desde formulario embebido
+		if($request->embebed)
+		return view('inclusive.get.answerGet', ['errors'=>$error,'old'=>$old,'rut'=>$request->rut,'edad'=>$edad,'style_color'=>$request->style_color,'style_font'=>$request->style_font,'formulario' => $formulario])->withErrors($error);
+			
 return view('inclusive.beneficiarie.answer', ['errors'=>$error,'old'=>$old,'rut'=>$request->rut,'edad'=>$edad,'style_color'=>$request->style_color,'style_font'=>$request->style_font,'formulario' => $formulario])->withErrors($error);
 
 //			return redirect()->back()->withErrors($error);
@@ -2191,6 +2213,8 @@ return view('inclusive.beneficiarie.answer', ['errors'=>$error,'old'=>$old,'rut'
 				Session::flash('message', 'RUT ' . $request->rut . ' ya ha respondido '.$form->qanswer.' la cantidad máxima de respuestas');
 				$forms=InclusiveForm::all();
 				//return view('inclusive.beneficiarie.list', ['style_color'=>$request->style_color,'style_font'=>$request->style_font,'forms' => $forms]);
+				if($request->embebed)
+					return redirect()->back();
 				return redirect('home/');
 				//->route('home');
 
@@ -2202,6 +2226,9 @@ return view('inclusive.beneficiarie.answer', ['errors'=>$error,'old'=>$old,'rut'
 				Session::flash('message', 'El usuario logeado con RUT ' . $user->rut . ' ya ha respondido '.$form->qanswer.' la cantidad máxima de respuestas');
 				$forms=InclusiveForm::all();
 				//return view('inclusive.beneficiarie.list', ['style_color'=>$request->style_color,'style_font'=>$request->style_font,'forms' => $forms]);
+				//en el caso de que venga de solicitud por get
+				if($request->embebed)
+					return redirect()->back();
 				return redirect('home/');
 				//->route('home');
 			}
@@ -2212,7 +2239,9 @@ return view('inclusive.beneficiarie.answer', ['errors'=>$error,'old'=>$old,'rut'
 			if (!$rut_validation) {
 				Session::flash('alertSent', 'Alert');
 				Session::flash('message', 'RUT ' . $request->rut . ' formato no corresponde');
-
+				//en el caso de que venga de solicitud por get
+				if($request->embebed)
+					return redirect()->back();
 				return redirect('home/');
 			}
 		}
@@ -2373,7 +2402,9 @@ if($value){
 				$mail=Auth::user()->email;
 				$this->sendMailToTeam("Reporte automatico a mail",'Sistema de postulacion',$mail,'Reporte de envío de formulario con ID: '.$id,$request->id_form);
 			}
-	
+			//en el caso de que venga de solicitud por get
+			if($request->embebed)
+				return redirect()->route('Success');
 		return redirect()->route('BeneficiarieIndex');
 	}
 

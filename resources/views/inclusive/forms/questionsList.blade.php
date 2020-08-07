@@ -20,7 +20,8 @@
                             <th scope="col">Estado</th>
                             <th scope="col">Tipo</th>
                             <th scope="col">Orden</th>
-                            <th scope="col">Ver</th>
+                            <th scope="col">Opciones</th>
+                            <th scope="col">Alternativas</th>
                         </tr>
                     </thead>
 
@@ -39,16 +40,23 @@
                             <td>{{$question->tipo}}</td>
                             <td>{{$question->orden}}</td>
 
-                            <td><a href="{{URL::to('/ViewQuestions/')}}/{{$question->id}}">Editar</a>
+                            <td><a href="{{URL::to('/ViewQuestions/')}}/{{$question->id}}"><i class="fas fa-pen"></i> Editar</a>
+                                
                                 @if($question->tipo==2||$question->tipo==7)
-                                <a href="{{URL::to('/AnswersQuestionRelation/')}}/{{$question->id}}">Seleccionar
-                                    alternativas</a>
+                                <br>
+                                <a href="{{URL::to('/AnswersQuestionRelation/')}}/{{$question->id}}"><i class="fas fa-tasks"></i>Alternativas</a>
+                                    @endif
+                            </td>
+                            <td>
+                                @if($question->tipo==2||$question->tipo==7)
                                 @foreach($question->answers as $answer)
                                 {{$answer->valor_respuesta}}=
                                 {{$answer->texto_respuesta}};
                                 @endforeach
-
                                 @endif
+                            </td>
+
+                               
 
                             </td>
 

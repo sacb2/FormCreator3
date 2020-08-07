@@ -41,6 +41,35 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+
+
+    	//Valida RUT
+	function valida_rut($rut)
+	{
+		$rut = preg_replace('/[^k0-9]/i', '', $rut);
+		$dv  = substr($rut, -1);
+		$numero = substr($rut, 0, strlen($rut) - 1);
+		$i = 2;
+		$suma = 0;
+		foreach (array_reverse(str_split($numero)) as $v) {
+			if ($i == 8)
+				$i = 2;
+			$suma += $v * $i;
+			++$i;
+		}
+		$dvr = 11 - ($suma % 11);
+
+		if ($dvr == 11)
+			$dvr = 0;
+		if ($dvr == 10)
+			$dvr = 'K';
+		if ($dvr == strtoupper($dv))
+			return true;
+		else
+			return false;
+	}
+
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -55,9 +84,11 @@ class RegisterController extends Controller
             'address' => ['required', 'string', 'max:1000'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'birth_date' => ['required'],
-            'rut' => ['required', 'regex:/^[0-9]+[-|‐]{1}[0-9kK]{1}$/'],
+            'birth_date' => ['required','date'],
+            'rut' => ['required', 'unique:users','regex:/^[0-9]+[-|‐]{1}[0-9kK]{1}$/'],
         ]);
+
+
     }
 
     /**
@@ -68,6 +99,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        //agregar validacion al registrar
+        $validate= $this->valida_rut($data['rut']);
+      
+
         return User::create([
             'name' => $data['name'],
             'lastname' => $data['lastname'],

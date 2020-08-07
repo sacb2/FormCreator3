@@ -136,6 +136,14 @@ Route::get('/DeactivateRestriction/{id}','EvaluationsController@deactivateRestri
 Route::get('/ViewRestrictionFormsList/{id}','EvaluationsController@viewRestrictionFormsList')->name('ViewRestrictionFormsList')->middleware('auth');
 Route::post('/StoreRestrictionFormsList','EvaluationsController@storeRestrictionFormsList')->name('StoreRestrictionFormsList')->middleware('auth');
 
+//GetFormView
+Route::get('/UseFormBeneficiarieRUT/{id}/{rut}/{fecha}', 'InclusiveFormController@useFormBeneficiarieRUT')->name('UseFormBeneficiarieRUT');
+Route::get('/Success', function () {
+    return view('welcome');
+})->name('Success');
+Route::get('/BeneficiarieStatus/{rut}', 'InclusiveFormController@beneficirieStatus')->name('BeneficiarieStatus');
+
+
 
 
 

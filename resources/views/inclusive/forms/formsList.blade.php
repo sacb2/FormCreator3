@@ -17,7 +17,8 @@
 						<tr>
 							<th scope="col">Nombre</th>
 							<th scope="col">Estado</th>
-							<th scope="col">Ver</th>
+							<th scope="col">Opciones</th>
+							<th scope="col">Preguntas</th>
 						</tr>
 					</thead>
 
@@ -34,12 +35,14 @@
 							@endif
 							<td>
 							@if($form->id_restriccion==1)
-							<a href="{{URL::to('/ViewRestrictionFormsList/')}}/{{$form->id}}">Listas</a>
+							<a href="{{URL::to('/ViewRestrictionFormsList/')}}/{{$form->id}}"><i class="far fa-address-book"></i>Listas</a>
+							<br>
 							@endif
-							</td>
+							
 
-							<td><a href="{{URL::to('/ViewForms/')}}/{{$form->id}}">Editar</a></td>
-							<td><a href="{{URL::to('/QuestionsFormRelation/')}}/{{$form->id}}">Modificar Preguntas</a>
+							<a href="{{URL::to('/ViewForms/')}}/{{$form->id}}"><i class="fas fa-pen"></i>Editar</a>
+							<br>
+							<a href="{{URL::to('/QuestionsFormRelation/')}}/{{$form->id}}"><i class="fas fa-tasks"></i>Preguntas</a>
 
 							</td>
 							@if(isset($form->questions))

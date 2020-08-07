@@ -148,7 +148,7 @@
     <div id="outer">  
         <div id="inner">
             © 2020 Copyright:
-      <a href="http://www.lascodes.cl/"> lascondes.cl</a>
+      <a href="http://www.lascondes.cl/"> lascondes.cl</a>
 
         </div>
     </div>

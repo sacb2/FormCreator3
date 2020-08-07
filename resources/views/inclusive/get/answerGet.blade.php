@@ -1,4 +1,4 @@
-@extends('layouts.app_new_new')
+@extends('layouts.app_embebed')
 <!-- template -->
 <input name="formulario" type="hidden" value="{{$formulario}}">
 @section('content')
@@ -171,7 +171,7 @@ label {
         <div class="col-md-8">
             <div class="card">
                 <div id="colornew" class="card-body">
-                    <form method="POST" action="{{ route('AnswerFormUseStoreGroup') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('AnswerFormUseStore') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
 
@@ -187,63 +187,43 @@ label {
                         <input name="id_form" type="hidden" value="{{$formulario->id}}">
                         <input name="type_form" type="hidden" value="{{$formulario->tipo}}">
                         <input name="formulario" type="hidden" value="{{$formulario}}">
-                        <input name="group" type="hidden" value="{{$group}}">
-                        <input name="answer_id" type="hidden" value="{{$answer_id}}">
-                        @if(isset($answers_ind))
-                        <input name="answers_ind_stored" type="hidden" value="{{$answers_ind}}">
-                        @endif
+                        <input name="rut" type="hidden" value="{{$rut}}">
+                        <input name="embebed" type="hidden" value="1">
 
 
 
-                        @if($formulario->grouped==1)
-                    
-                         
-                            <nav class="nav nav-pills nav-justified">
-                            @for ($i = $formulario->questions->min('group'); $i <=$formulario->questions->max('group'); $i++)
-                            
-                            @if($i==$group)
-                                <a class="nav-item nav-link active" href="#">Paso {{$i}}</a>
-                            @else
-                                <a class="nav-item nav-link inactive" href="#">Paso {{$i}}</a>
-                            @endif
 
-                            @endfor
-                            </nav>
-
-                     
-                        
+                             
 
                         <div>
+                           
+
+
+
+                            <div>
+
+                                <div>
                             <p class="text-justify">Preguntas: </p>
 
 
 
                             <div>
 
-                                @if($formulario->tipo==1&&$formulario->questions->min('group')==$group)
-                                <a class="hide">Ingrese su número de rut sin puntos y con guión</a>
+                                @if($formulario->tipo==1)
                                 <div class="form-group">
                                     <label tabindex="0" role="contentinfo" for="id_label"
-                                        class="col-3 col-form-label">*R.U.T. (Ej:123456-0)</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon"><span
-                                                class="glyphicon glyphicon-list-alt"></span></div>
-                                        <input name="rut"
-                                            title="Sin puntos y con digito verificador Ejemplo:123456-0"
-                                            pattern="^[0-9]+[-|‐]{1}[0-9kK]{1}$" type="text" maxlength="10"
-                                            value="{{$rut ?? ''}}" style="text-transform:uppercase"
-                                            class="form-control" placeholder="rut">
-                                    </div>
-                                    <span class="help-block" id="error"></span>
+                                        class="col-3 col-form-label">R.U.T. {{$rut}}</label>
+                                  
                                 </div>
                                 @endif
+                                
 
 
 
                                 <input name="formQuestions" type="hidden" value="{{$formulario->questions}}">
 
 
-                                @foreach($formulario->questions->sortBy('orden')->where('group',$group) as $pregunta)
+                                @foreach($formulario->questions->sortBy('orden') as $pregunta)
 
 
 <!--Pregunta requerida -->
@@ -260,7 +240,10 @@ label {
 
 
                                 @if($pregunta->estado==1)
-                                <!-- Pregunta de números -->
+
+
+
+<!-- Pregunta de números -->
 @if($pregunta->question->tipo==8)
                                 <!-- restriccion de edad -->
                                     @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
@@ -321,25 +304,20 @@ label {
 
 
 
-<!-- Pregunta de números -->           
-                                <!--- Pregunta selección multiple varias -->
-@if($pregunta->question->tipo==7)
+<!-- Pregunta de números -->                                
+<!--- Pregunta selección multiple varias -->
+                                @if($pregunta->question->tipo==7)
                                 <!-- restriccion de edad -->
-                                @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
-                                @if($pregunta->question->required==1)
-                                Requerida
-                                <input name="box_req[]" type="hidden" value="{{$pregunta->id}}">
-                                @endif
-                                <input name="questions[]" type="hidden" value="answers_int[{{$pregunta->id}}]">
-
-
-
-                                <div class="form-group row">
-
-                                    <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
-                                        class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
-                                    <div class="col-md-6">
-                                       
+                                    @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
+                                        @if($pregunta->question->required==1)
+                                            Requerida
+                                            <input name="box_req[]" type="hidden" value="{{$pregunta->id}}">
+                                        @endif
+                                            <input name="questions[]" type="hidden" value="answers_int[{{$pregunta->id}}]">
+                                            <div class="form-group row">
+                                            <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
+                                            class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
+                                            <div class="col-md-6">
                                             @foreach($pregunta->question->answers as $answer)
                                             @php
                                             $answer_data = json_encode(array('value'=>$answer->valor_respuesta,'id'=>$answer->id, 'texto'=>$answer->texto_respuesta));
@@ -348,41 +326,36 @@ label {
                                             value='{{$answer_data}}'> {{$answer->texto_respuesta}},
                                             </input><br>
                                             @endforeach
-
-
-                                        
-                                    </div>
-                                </div>
-                                @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
-                                <input name="questions[]" type="hidden" value="answers_int[{{$pregunta->id}}]">
-                                @if($pregunta->question->required==1)
-                                Requerida
-                                <input name="box_req[]" type="hidden" value="{{$pregunta->id}}">
-                                @endif
-                                <div class="form-group row">
-
-                                    <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
+                                            </div>
+                                        </div>
+                                    @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
+                                        <input name="questions[]" type="hidden" value="answers_int[{{$pregunta->id}}]">
+                                        @if($pregunta->question->required==1)
+                                            Requerida
+                                            <input name="box_req[]" type="hidden" value="{{$pregunta->id}}">
+                                        @endif
+                                        <div class="form-group row">
+                                        <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
                                         class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
-                                    <div class="col-md-6">
+                                        <div class="col-md-6">
                                       
-                                            @foreach($pregunta->question->answers as $answer)
+                                        @foreach($pregunta->question->answers as $answer)
                                            
                                             @php
-                                            $answer_data = json_encode(array('value'=>$answer->valor_respuesta,'id'=>$answer->id, 'texto'=>$answer->texto_respuesta));
+                                            $answer_data = json_encode(array('value'=>$answer->valor_respuesta,'id'=>$answer->id,'texto'=>$answer->texto_respuesta));
                                             @endphp
                                         
                                             <input type="checkbox" name="answers_box[{{$pregunta->id}}][]" id="answers_box{{$pregunta->id}}"
                                                 value='{{$answer_data}}'> {{$answer->texto_respuesta}},
                                            </input><br>
-                                            @endforeach
-
-
-                                      
-                                    </div>
-                                </div>
+                                        @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
                                 @endif
-@endif
 <!-- Pregunta selección múltiple varias --->
+
+
                                 @if($pregunta->question->tipo==2)
                                 <!-- restriccion de edad -->
                                 @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
@@ -630,37 +603,42 @@ label {
                         <input name="style_color" type="hidden" value="{{$style_color}}">
 
                         <div class="form-group row mb-0">
-                            <div class="col-md-8">
-                           
+                            <div class="col-md-10">
+                            @if($style_font==1)
 
-
-                                @if($formulario->questions->min('group')==$group)
-                                <a href="{{ url('/BeneficiarieIndex/') }}" role="button" type="button" 
-                                    class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver</a>
-                                @else
-                        <!--        <button  type="submit" name="previous" value="1" role="button" class="btn btn-warning"><i
+                               
+                            
+                                <button  type="submit" role="button" class="btn btn-info" style="position: absolute; right: 0;"><i
                                         class="glyphicon glyphicon-ok-circle"></i>
-                                    {{ __('Anterior') }}
-                                </button> -->
-                                @endif
-                                @if($formulario->questions->max('group')==$group)
-                                <button  type="submit" name="send" value="1" role="button" class="btn btn-info"><i
+                                    {{ __('Enviar') }}
+                                </button>
+                                @elseif($style_font==2)
+                                
+                                <button  style="font-size : 20px; width: 50%; height: 50px;" type="submit" role="button" class="btn btn-info"><i
                                         class="glyphicon glyphicon-ok-circle"></i>
                                     {{ __('Enviar') }}
                                 </button>
 
+                                @elseif($style_font==3)
+                                
+                                <button style="font-size : 30px; width: 70%; height: 70px;" type="submit" role="button" class="btn btn-info"><i
+                                        class="glyphicon glyphicon-ok-circle"></i>
+                                    {{ __('Enviar') }}
+                                </button>
                                 @else
                                 
-                                <button  type="submit" name="next" value="1" role="button" class="btn btn-info"><i
+                                <button  type="submit" role="button" class="btn btn-info"><i
                                         class="glyphicon glyphicon-ok-circle"></i>
-                                    {{ __('Siguiente') }}
+                                    {{ __('Enviar') }}
                                 </button>
                                 @endif
+
+                                
 
 
                             </div>
                         </div>
-                        @endif
+                      
 
                 </div>
             </div>

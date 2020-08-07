@@ -94,7 +94,7 @@
             @if (Route::has('login'))
                 <div class="links">
                     @auth
-                        <a href="{{ url('/home') }}">Inicio</a>
+                        <a href="{{ url('/OptionsForm') }}">Inicio</a>
                     @else
                         <a class="btn btn-primary"  href="{{ route('login') }}" role="Ingresar">Ya estoy registrado</a>
                         @if (Route::has('register'))
@@ -108,7 +108,7 @@
        
             
             <div>
-            <h1>    <a href="{{URL::to('/home/')}}">Plataforma de postulaciones DECOM:</a></h1>
+            <h1>    <a href="{{URL::to('/OptionsForm/')}}">Plataforma de postulaciones DECOM:</a></h1>
 			
             </div>
     </div>
@@ -132,7 +132,7 @@
 
                     <div>
                       </div>
-                      <a href="{{URL::to('/home/')}}" > <img href="{{URL::to('/home/')}}"  src="lascondes.png" role="button" class="imageClip" alt="Logo de las condes." ></a>
+                      <a href="{{URL::to('/OptionsForm/')}}" > <img href="{{URL::to('/OptionsForm/')}}"  src="lascondes.png" role="button" class="imageClip" alt="Logo de las condes." ></a>
                       <div>
                     
                    
@@ -147,7 +147,7 @@
     <div id="outer">  
         <div id="inner">
             © 2020 Copyright:
-      <a href="http://www.lascodes.cl/"> lascondes.cl</a>
+      <a href="http://www.lascondes.cl/"> lascondes.cl</a>
 
         </div>
     </div>

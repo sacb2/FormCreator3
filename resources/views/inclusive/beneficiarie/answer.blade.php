@@ -6,7 +6,7 @@
     main {
         background-color: #fff;
         color: #636b6f;
-        font-family: 'Nunito', sans-serif;
+        font-family: 'Architect', sans-serif;
         font-weight: 300;
         font-size: 1em;
         height: 300vh;
@@ -261,7 +261,7 @@ label {
                                             <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
                                             class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
                                             <div class="col-md-6">
-                                                <input id="group" type="number"
+                                                <input id="group" type="number" min="0"
                                                             class="form-control @error('group') is-invalid @enderror"  name="answers_text[{{$pregunta->id}}]'"
                                                             value='{{$pregunta_old}}'  autocomplete="group" autofocus>
                                                         @error('group')
@@ -288,7 +288,7 @@ label {
                                         class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
                                         <div class="col-md-6">
                                       
-                                            <input id="group" type="number"
+                                            <input id="group" type="number" min="0"
                                                             class="form-control @error('group') is-invalid @enderror"  name="answers_text[{{$pregunta->id}}]'"
                                                             value='{{$pregunta_old}}'  autocomplete="group" autofocus>
                                                         @error('group')

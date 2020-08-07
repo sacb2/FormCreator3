@@ -35,7 +35,7 @@
                             <td>{{$answer->estado}}</td>
                             @endif
 
-                            <td><a href="{{URL::to('/ViewAnswers/')}}/{{$answer->id}}">Editar</a></td>
+                            <td><a href="{{URL::to('/ViewAnswers/')}}/{{$answer->id}}"><i class="fas fa-pen"></i>Editar</a></td>
 
                         </tr>
 

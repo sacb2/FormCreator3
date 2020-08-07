@@ -156,7 +156,7 @@
                                         <label for="edad_min"
                                             class="col-md-4 col-form-label text-md-right">{{ __('Edad>') }}</label>
                                         <div class="col-md-6">
-                                            <input id="edad_min" type="number"
+                                            <input id="edad_min" type="number" min="0"
                                                 class="form-control @error('edad_min') is-invalid @enderror" name="edad_min"
                                                 value="{{ old('edad_min') }}" required autocomplete="edad_min" autofocus>
                                             @error('edad_min')
@@ -189,7 +189,7 @@
 
                                     <div class="form-group row mb-0">
                                         <div class="col-md-8">
-                                            <a href="{{ URL::previous() }}" role="button" type="button" class="btn btn-warning"><i
+                                            <a href="{{ route('ListQuestions') }}" role="button" type="button" class="btn btn-warning"><i
                                                     class="glyphicon glyphicon-menu-left"></i> Volver</a>
                                             <button type="submit" role="button" class="btn btn-info"><i
                                                     class="glyphicon glyphicon-ok-circle"></i>

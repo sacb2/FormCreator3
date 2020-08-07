@@ -154,6 +154,33 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group row">
+                                   
+                                        <label for="grouped"
+                                            class="col-md-4 col-form-label text-md-right">{{ __('Evaluación de Listas') }}</label>
+                                        <div class="col-md-6">
+                                            <select class="custom-select" id="list" name="list"
+                                                value="{{$form->id_restriccion}}" ??"{{ old('list') }}">
+                                                @if($form->id_restriccion == 1)
+                                                <option value=''>Seleccionar...</option>
+                                                <option value='1' selected>Activo</option>
+                                                <option value='2'>Inactivo</option>
+
+                                                @elseif($form->id_restriccion== 2)
+                                                <option value=''>Seleccionar...</option>
+                                                <option value='1'>Activo</option>
+                                                <option value='2' selected>Inactivo</option>
+                                                @else
+                                                <option value='' selected>Seleccionar...</option>
+                                                <option value='1'>Activo</option>
+                                                <option value='2'>Inactivo</option>
+
+
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+
 
                                     <div class="form-group row">
                                    

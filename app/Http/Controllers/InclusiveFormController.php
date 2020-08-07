@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\FormSendMail;
 use PharIo\Manifest\Requirement;
 use App\User;
+use App\InclusiveRestrictionApplied;
+use App\InclusiveFormList;
 
 class InclusiveFormController extends Controller
 {
@@ -544,6 +546,7 @@ class InclusiveFormController extends Controller
 		$form->grouped = $request->grouped;
 		$form->qanswer = $request->qanswer;
 		$form->evaluacion = $request->evaluacion;
+		$form->id_restriccion = $request->list;
 		try {
 			$form->save();
 			Session::flash('alertSent', 'Derived');
@@ -625,6 +628,8 @@ class InclusiveFormController extends Controller
 		$form->grouped = $request->grouped;
 		$form->description = $request->description;
 		$form->evaluacion = $request->evaluacion;
+		$form->id_restriccion = $request->list;
+
 
 
 
@@ -883,9 +888,23 @@ class InclusiveFormController extends Controller
  
 		}
 
+	
+
 		//dd($request);
 		$formulario = InclusiveForm::find($request->id);
 		//ver formulario
+
+
+			//validacion de listas de restricción
+			$found=null;
+			if($formulario->id_restriccion && isset(Auth::user()->rut)){
+				$found=$this->evaluationList(Auth::user()->rut,$request->id);
+				if($found==2)
+					return redirect()->back()->withErrors('El usuario se encuentra restringido de postular.');
+				
+			}
+
+
 		if(isset($formulario))
 		Session::put('formulario', $formulario);
 		else
@@ -1396,7 +1415,28 @@ public function validate_answer_img($answers_img,$img_req ){
 	
 		$formulario = InclusiveForm::find($id);
 		//		dd($formulario->products);
+
+		if($formulario->id_restriccion && isset(Auth::user()->rut))
+			$found=$this->evaluationList($id,Auth::user()->rut);
+		
+
+
 		return view('inclusive.beneficiarie.answer', ['formulario' => $formulario]);
+	}
+
+	//Visualización de formulario directamente con RUT de usuario
+	//$id identificador de formulario
+	public function useFormBeneficiarieData($id,$rut)
+	{
+	
+		$formulario = InclusiveForm::find($id);
+		//		dd($formulario->products);
+		if($formulario->id_restriccion && isset($rut))
+			$found=$this->evaluationList($id,$rut);
+		
+
+
+		return view('inclusive.beneficiarie.answer', ['formulario' => $formulario,'rut'=>$rut]);
 	}
 
 
@@ -1790,6 +1830,7 @@ if($value){
 	//$request si el formlario fue creado con utilizacion de RUT de otra forma solo las respuesta
 	public function AnswerFormUseStore(Request $request)
 	{
+		
 		//foreach($request->answers_text as $key => $value)
 		//$a["old".$key]=$value;
 		//dd($a);
@@ -1838,6 +1879,47 @@ if($value){
 			
 		}
 //		dd("despues de validación",$key,$img_reqs,$value);	
+
+//Revisar si la pregunta checkbox fue respondida
+if (isset($request->box_req))
+foreach($request->box_req as $answers_reqs){
+	$key_answer=0;
+	if (isset($request->answers_box)){
+
+	
+		foreach ($request->answers_box as $key => $value) {
+			//dd($request->answers_box,$key,$value,$answers_reqs);		
+			if($key==$answers_reqs){
+				$key_answer=1;
+		}
+			if($key==$answers_reqs&&$value==null){
+				
+				//dd($key,$img_reqs,$value);
+				$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+				//dd("aqui");
+				//return redirect()->route('BeneficiarieIndex');
+
+			}
+				
+
+		}
+		
+		if($key_answer==0){
+			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+			
+		}
+			
+		$key_answer=0;
+	}
+		else{
+			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+			
+		}
+		
+
+	
+}
+
 
 
 //Revisar si la pregunta requerida fue respondida
@@ -2105,6 +2187,7 @@ return view('inclusive.beneficiarie.answer', ['errors'=>$error,'old'=>$old,'rut'
 
 				}
 			}
+			//respuesta con alternativa
 		if (isset($request->answers_int))
 			foreach ($request->answers_int as $key => $value) {
 //dd($request->answers_int,$key,json_decode($value),json_decode($value)->value, json_decode($value)->id);
@@ -2142,6 +2225,49 @@ if($value){
 }
 			}
 
+//Respuesta box
+
+			//respuesta con alternativa
+			if (isset($request->answers_box))
+			foreach ($request->answers_box as $key => $value) {
+			//	dd($request->answers_box,$key, $value,implode($value));
+//dd($request->answers_int,$key,json_decode($value),json_decode($value)->value, json_decode($value)->id);
+			if($value){
+				$storeAnswer = new InclusiveAnswer;
+				$storeAnswer->id_pregunta = $key;
+				$storeAnswer->id_formulario = $request->id_form;
+				$storeAnswer->id_requerimiento = $id;
+				if(Auth::user())
+				$storeAnswer->id_persona=Auth::user()->id;
+				$storeAnswer->texto_respuesta=implode($value);
+			//	$storeAnswer->valor_respuesta = json_decode($value)->value; //identificador unico de la respuesta
+			//	$storeAnswer->answer_id= json_decode($value)->id; //valor de respuesta asignado en configuracion
+			
+			
+					
+				//cambiar tipo a 7 
+				$storeAnswer->tipo = '0';
+				if ($request->type_form == 1)
+					$storeAnswer->rut_persona = strtoupper($request->rut);
+
+				
+
+
+				try {
+					$storeAnswer->save();
+
+					//	Session::flash('alertSent', 'Derived');
+					//	Session::flash('message', "Respuestas guardadas exitosamente" );
+				} catch (\Exception $e) {
+					// do task when error
+					Session::flash('alert', 'error');
+					echo $e->getMessage();   // insert query
+
+				}
+			}
+		}
+
+
 			Session::flash('alertSent', 'Alert');
 			Session::flash('message', "Formulario respondido exitosamente con ID: ".$id);
 			//return redirect()->back()->withErrors(["Formulario respondido exitosamente con ID: ".$id]);
@@ -2170,6 +2296,10 @@ if($value){
 		/*		foreach($storedAnswers as $storeAnswer)
 			dd($storeAnswer->question->question->nombre);//pregunta nombre
 			dd($storeAnswer->question->question->pregunta);//pregunta pregunta*/
+
+			
+
+
 		return view('inclusive.beneficiarie.answer', ['answers' => $storedAnswers, 'answersById' => $answerById]);
 
 		//dd($storedAnswers);
@@ -2494,7 +2624,32 @@ $search=1;
 return view('inclusive.beneficiarie.status',['search'=>$search, 'lastPage'=>ceil($lastPage),'page'=>$page,'perPage'=>$perPage,'id'=>$id,'page'=>$page,'answerById_paginate'=>$answerById_paginate, 'answers' => $storedAnswers]);
 }
 
-
+//Evaluar beneficiario en postulacion
+public function evaluationList($id_persona, $id_form){
+$found =0;
+//dd($id_persona, $id_form);
+	//verificar que se encuentre activado
+	$restrictions= InclusiveFormList::where('id_formulario',$id_form)->get();
+//	return $restrictions;
+ 	foreach($restrictions as $restriction){
+		//dd($restrictions,$restriction);
+		$list=null;
+		$list=InclusiveRestrictionApplied::where('id_restriccion',$restriction->id_lista)->where('id_persona',$id_persona)->where('id_status','1')->first();
+		if($list!=null&&$restriction->id_tipo==1){
+			if($found ==2)
+				return 3;
+			//encontrado en lista requerida
+			$found =1;
+		}
+		if($list!=null&&$restriction->id_tipo==2){
+			//encontrado en lista restringida
+			if($found ==1)
+				return 3;
+			$found =2;
+		}
+	}
+	return $found;
+}
 
 
 }

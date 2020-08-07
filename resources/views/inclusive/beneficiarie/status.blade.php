@@ -35,9 +35,24 @@
 							  
 							  <div id="collapseOne{{$answerId}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
 								<div class="card-body">
+									@php
+									$a=0;
+									@endphp
 									@foreach($answers as $answer)
 									@if($answer->id_requerimiento==$answerId)
+								
+
+									Estado:
+									@if($answer->evaluation==null&&$a!=$answerId)
+									Pendiente
+									@elseif($a!=$answerId)
+									{{$answer->evaluation->observacion}} Con Puntaje: {{$answer->evaluation->evaluacion}}
+									@endif
 									<br>
+									@php
+									$a=$answerId;
+									@endphp
+								
 									Pregunta: 
 									{{$answer->question->question->nombre}}
 									Tipo de Pregunta:

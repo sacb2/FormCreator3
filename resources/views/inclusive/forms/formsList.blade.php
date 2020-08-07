@@ -32,9 +32,15 @@
 							@else
 							<td>{{$form->estado}}</td>
 							@endif
+							<td>
+							@if($form->id_restriccion==1)
+							<a href="{{URL::to('/ViewRestrictionFormsList/')}}/{{$form->id}}">Listas</a>
+							@endif
+							</td>
 
 							<td><a href="{{URL::to('/ViewForms/')}}/{{$form->id}}">Editar</a></td>
 							<td><a href="{{URL::to('/QuestionsFormRelation/')}}/{{$form->id}}">Modificar Preguntas</a>
+
 							</td>
 							@if(isset($form->questions))
 							<td>@foreach($form->questions as $question)

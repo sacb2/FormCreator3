@@ -40,7 +40,7 @@
                             <td>{{$question->orden}}</td>
 
                             <td><a href="{{URL::to('/ViewQuestions/')}}/{{$question->id}}">Editar</a>
-                                @if($question->tipo==2)
+                                @if($question->tipo==2||$question->tipo==7)
                                 <a href="{{URL::to('/AnswersQuestionRelation/')}}/{{$question->id}}">Seleccionar
                                     alternativas</a>
                                 @foreach($question->answers as $answer)

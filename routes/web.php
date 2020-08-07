@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/index', function () {
+    return view('welcome_generic');
+});
+
+
 Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');
@@ -119,6 +124,20 @@ Route::get('/RubricsForm/{form_id}', 'EvaluationsController@rubricsForm')->name(
 Route::post('/RubricsFormStore','EvaluationsController@rubricsFormStore')->name('RubricsFormStore')->middleware('auth');
 Route::get('/FormStatus/{id}','EvaluationsController@formStatus')->name('FormStatus')->middleware('auth');
 Route::get('/AutoEvaluateForm/{id}','EvaluationsController@autoEvaluateForm')->name('AutoEvaluateForm')->middleware('auth');
+Route::post('/UpdateEvaluation','EvaluationsController@updateEvaluation')->name('UpdateEvaluation')->middleware('auth');
+
+//Listas de evaluación
+Route::get('/CreateRestrictionList','EvaluationsController@createRestrictionList')->name('CreateRestrictionList')->middleware('auth');
+Route::get('/ViewEvaluationList','EvaluationsController@viewEvaluationList')->name('ViewEvaluationList')->middleware('auth');
+Route::get('/ViewRestrictionList/{id}','EvaluationsController@viewRestrictionList')->name('ViewRestrictionList')->middleware('auth');
+Route::post('/StoreRestrictionList','EvaluationsController@storeRestrictionList')->name('StoreRestrictionList')->middleware('auth');
+Route::get('/ActivateRestriction/{id}','EvaluationsController@activateRestriction')->name('ActivateRestriction')->middleware('auth');
+Route::get('/DeactivateRestriction/{id}','EvaluationsController@deactivateRestriction')->name('DeactivateRestriction')->middleware('auth');
+Route::get('/ViewRestrictionFormsList/{id}','EvaluationsController@viewRestrictionFormsList')->name('ViewRestrictionFormsList')->middleware('auth');
+Route::post('/StoreRestrictionFormsList','EvaluationsController@storeRestrictionFormsList')->name('StoreRestrictionFormsList')->middleware('auth');
+
+
+
 
 
 

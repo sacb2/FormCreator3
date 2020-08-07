@@ -129,6 +129,7 @@
                                                 <option value='2'>Selección múltiple</option>
                                                 <option value='3'>Imagen</option>
                                                 <option value='6'>Info</option>
+                                                <option value='7'>Selección Multiple Varias</option>
 
                                                 @elseif($question->tipo== 2)
                                                 <option value=''>Seleccionar...</option>
@@ -136,24 +137,35 @@
                                                 <option value='2' selected>Selección múltiple</option>
                                                 <option value='3'>Imagen</option>
                                                 <option value='6'>Info</option>
+                                                <option value='7'>Selección Multiple Varias</option>
                                                 @elseif($question->tipo== 3)
                                                 <option value='' >Seleccionar...</option>
                                                 <option value='1'>Texto</option>
                                                 <option value='2'>Selección múltiple</option>
                                                 <option value='3' selected>Imagen</option>
                                                 <option value='6'>Info</option>
+                                                <option value='7'>Selección Multiple Varias</option>
                                                 @elseif($question->tipo== 6)
                                                 <option value='' >Seleccionar...</option>
                                                 <option value='1'>Texto</option>
                                                 <option value='2'>Selección múltiple</option>
                                                 <option value='3'>Imagen</option>
                                                 <option value='6' selected>Info</option>
+                                                <option value='7'>Selección Multiple Varias</option>
+                                                @elseif($question->tipo== 7)
+                                                <option value='' >Seleccionar...</option>
+                                                <option value='1'>Texto</option>
+                                                <option value='2'>Selección múltiple</option>
+                                                <option value='3'>Imagen</option>
+                                                <option value='6' >Info</option>
+                                                <option value='7' selected>Selección Multiple Varias</option>
                                                 @else
                                                 <option value='' selected>Seleccionar...</option>
                                                 <option value='1'>Texto</option>
                                                 <option value='2'>Selección múltiple</option>
                                                 <option value='3'>Imagen</option>
                                                 <option value='6'>Info</option>
+                                                <option value='7'>Selección Multiple Varias</option>
 
                                                 @endif
 

@@ -40,6 +40,9 @@
             <a href="{{ route('Rubrics') }}"><span class="fa fa-sticky-note"></span> Rubrics</a>
           </li>
           <li>
+            <a href="{{ route('ViewEvaluationList') }}"><span class="fa fa-sticky-note"></span> Listas</a>
+          </li>
+          <li>
             <a href="#"><span class="fa fa-paper-plane"></span> Contacto</a>
           </li>
         </ul>

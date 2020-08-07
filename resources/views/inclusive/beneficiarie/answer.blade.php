@@ -239,6 +239,57 @@ label {
 
 
                                 @if($pregunta->estado==1)
+<!--- Pregunta selección multiple varias -->
+                                @if($pregunta->question->tipo==7)
+                                <!-- restriccion de edad -->
+                                    @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
+                                        @if($pregunta->question->required==1)
+                                            Requerida
+                                            <input name="box_req[]" type="hidden" value="{{$pregunta->id}}">
+                                        @endif
+                                            <input name="questions[]" type="hidden" value="answers_int[{{$pregunta->id}}]">
+                                            <div class="form-group row">
+                                            <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
+                                            class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
+                                            <div class="col-md-6">
+                                            @foreach($pregunta->question->answers as $answer)
+                                            @php
+                                            $answer_data = json_encode(array('value'=>$answer->valor_respuesta,'id'=>$answer->id, 'texto'=>$answer->texto_respuesta));
+                                            @endphp
+                                            <input type="checkbox" name="answers_box[{{$pregunta->id}}][]" id="answers_box{{$pregunta->id}}"
+                                            value='{{$answer_data}}'> {{$answer->texto_respuesta}},
+                                            </input><br>
+                                            @endforeach
+                                            </div>
+                                        </div>
+                                    @elseif(($pregunta->question->edad_max==null||$pregunta->question->edad_max==0)&&($pregunta->question->edad_min==null||$pregunta->question->edad_min==0))
+                                        <input name="questions[]" type="hidden" value="answers_int[{{$pregunta->id}}]">
+                                        @if($pregunta->question->required==1)
+                                            Requerida
+                                            <input name="box_req[]" type="hidden" value="{{$pregunta->id}}">
+                                        @endif
+                                        <div class="form-group row">
+                                        <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
+                                        class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
+                                        <div class="col-md-6">
+                                      
+                                        @foreach($pregunta->question->answers as $answer)
+                                           
+                                            @php
+                                            $answer_data = json_encode(array('value'=>$answer->valor_respuesta,'id'=>$answer->id,'texto'=>$answer->texto_respuesta));
+                                            @endphp
+                                        
+                                            <input type="checkbox" name="answers_box[{{$pregunta->id}}][]" id="answers_box{{$pregunta->id}}"
+                                                value='{{$answer_data}}'> {{$answer->texto_respuesta}},
+                                           </input><br>
+                                        @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endif
+<!-- Pregunta selección múltiple varias --->
+
+
                                 @if($pregunta->question->tipo==2)
                                 <!-- restriccion de edad -->
                                 @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
@@ -383,7 +434,7 @@ label {
 
                                 </div>
                                 @endif
-                                @else
+                                @elseif($pregunta->question->tipo==1)
                                 <!-- restriccion de edad -->
                                 @if($pregunta->question->edad_max!=null&&$pregunta->question->edad_max!=0&&$pregunta->question->edad_max>$edad||$pregunta->question->edad_min!=null&&$pregunta->question->edad_min!=0&&$pregunta->question->edad_min<$edad)
                                 <input name="questions[]" type="hidden" value="answers_text[{{$pregunta->id}}]">
@@ -422,7 +473,7 @@ label {
                                 else
                                 $pregunta_old=null;
                                 @endif
-                                preguntae{{$e}}
+                               
                                     <textarea class="form-control" rows="5" maxlength="6666"
                                         name="answers_text[{{$pregunta->id}}]'" id="{{$pregunta->id}}">{{$pregunta_old}}</textarea>
                                     @endif

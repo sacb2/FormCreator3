@@ -31,6 +31,9 @@ class InclusiveAnswer extends Model
     public function persona(){
       return $this-> hasOne('App\User','id','id_persona');
   }
+  public function evaluation(){
+    return $this-> BelongsTo('App\InclusiveEvaluation','id_requerimiento','id_requerimiento');
+}
   
       public $timestaps = true;
 

@@ -78,6 +78,18 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label for="required"
+                                            class="col-md-4 col-form-label text-md-right">{{ __('Evaluación de Listas') }}</label>
+                                        <div class="col-md-6">
+                                            <select class="custom-select" id="list" name="list"
+                                                value="{{ old('list') }}">
+                                                <option value='' selected>Seleccionar...</option>
+                                                <option value='1'>Activo</option>
+                                                <option value='2'>Inactivo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <!--- fomas de relacionar --->
                                         <label for="state"
                                             class="col-md-4 col-form-label text-md-right">{{ __('Utilizar R.U.T.') }}</label>

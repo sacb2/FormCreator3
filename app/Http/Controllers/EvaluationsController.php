@@ -7,8 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use App\InclusiveQuestion;
 use App\InclusiveRubric;
 use App\InclusiveAnswer;
- 
-
+use App\InclusiveEvaluation;
+use App\InclusiveFormRestriction;
+use App\InclusiveRestriction;
+use App\InclusiveRestrictionApplied;
+use App\InclusiveFormList;
 
 class EvaluationsController extends Controller
     {
@@ -139,6 +142,202 @@ return redirect()->back()->withErrors('No hay registros en el formulario con res
 $storedAnswers = InclusiveAnswer::where('id_formulario', $id)->get();
 
 return view('inclusive.evaluation.evaluateForm',['form'=>$form,'answersId'=> $answers,'answerById'=>$answerById, 'answers' => $storedAnswers]);
+}
+//actualizar manualmente evaluacion
+public function updateEvaluation (Request $request){
+
+    $answers = InclusiveAnswer::where('id_requerimiento', $request->id_requirement)->get();
+
+//actualizar datos
+$points=0;
+
+    foreach($request->EvaluateDep as $key => $value ){
+
+   //     dd($key, $value, $request);
+        foreach($answers as $answer){
+            if($answer->id==$key){
+                $points=$points+$value;
+                $answer->evaluacion=$value;
+                $answer->save();
+            }
+
+
+        }
+
+    }
+
+    //Aceptar datos
+    if($request->estado == 'aceptar')
+    {
+        
+        $evaluation=InclusiveEvaluation::where('id_requerimiento',$request->id_requirement)->firstOrNew();
+      //  if(!isset($evaluation)){
+       //     $evaluation =New InclusiveEvaluation;
+       // }
+            $evaluation->evaluacion=$points;
+            $evaluation->id_requerimiento=$request->id_requirement;
+            $evaluation->observacion="Aceptado";
+            $evaluation->save();
+  }
+  if($request->estado == 'rechazar')
+  {
+      
+      $evaluation=InclusiveEvaluation::where('id_requerimiento',$request->id_requirement)->firstOrNew();
+    //  if(!isset($evaluation)){
+     //     $evaluation =New InclusiveEvaluation;
+     // }
+          $evaluation->evaluacion=$points;
+          $evaluation->id_requerimiento=$request->id_requirement;
+          $evaluation->observacion="Rechazado";
+          $evaluation->save();
+}
+if($request->estado == 'actualizar')
+{
+    
+    $evaluation=InclusiveEvaluation::where('id_requerimiento',$request->id_requirement)->firstOrNew();
+  //  if(!isset($evaluation)){
+   //     $evaluation =New InclusiveEvaluation;
+   // }
+        $evaluation->evaluacion=$points;
+        $evaluation->id_requerimiento=$request->id_requirement;
+        $evaluation->observacion="Actualizado";
+        $evaluation->save();
+}
+    
+
+
+    return redirect()->back();
+}
+
+public function viewEvaluationList(){
+
+    $lists= InclusiveRestriction::paginate(10);
+
+return view('inclusive.evaluation.list',['lists'=>$lists]);
+}
+
+
+public function createRestrictionList(Request $request){
+
+
+    
+    //$lists= InclusiveRestriction::paginate(10);
+
+return view('inclusive.evaluation.listForm');
+}
+
+public function viewRestrictionList($id){
+    $lists= InclusiveRestrictionApplied::where('id_restriccion',$id)->paginate(10);
+    return view('inclusive.evaluation.listRestriction',['lists'=>$lists]);
+
+   
+
+}
+
+public function storeRestrictionList(Request $request){
+
+
+    $list= new InclusiveRestriction;
+    $list->nombre= $request->name;
+    $list->id_status= $request->id_status;
+    $list->id_type= $request->id_type;
+    $list->save();
+
+
+ /*   request()->validate([
+        'csv_file' => 'required'
+    ]);*/
+
+    //get file from upload
+    $path = request()->file('csv_file')->getRealPath();
+    //turn into array
+    $file = file($path);
+    //extraer datos sin cabecera
+    $data = array_slice($file, 1);
+    $header=$file[0];
+    $body = array_map('str_getcsv', $data);
+    //dd($csv);
+    //$datos = fgetcsv($header, 1000, ",");
+    //dd($datos);
+    //dd($body);
+    foreach($body as $line){
+        //dd($line);
+        
+        $publicaionData= New InclusiveRestrictionApplied;
+        $publicaionData->id_persona=$line[0];
+        $publicaionData->id_restriccion=$list->id;
+        $publicaionData->id_status=$line[1];
+        $publicaionData->save();
+       
+    }
+
+
+ return redirect()->back();
+
+}
+
+public function activateRestriction($id){
+    $restriction= InclusiveRestrictionApplied::find($id);
+    $restriction->id_status=1;
+    $restriction->save();
+
+    
+    return redirect()->back();
+   
+
+}
+public function deactivateRestriction($id){
+    $restriction= InclusiveRestrictionApplied::find($id);
+    $restriction->id_status=2;
+    $restriction->save();
+
+    
+    return redirect()->back();
+   
+
+}
+
+public function viewRestrictionFormsList($id){
+
+    $form=InclusiveForm::find($id);
+    $lists= InclusiveRestriction::all();
+    $restrictions= InclusiveFormList::where('id_formulario',$id)->get();
+    
+
+    return view('inclusive.evaluation.listRelationForm',['restrictions'=>$restrictions,'lists'=>$lists,'form'=>$form ]);
+
+
+}
+
+public function storeRestrictionFormsList(Request $request){
+
+    
+    if(isset($request->pickedDep)){
+        foreach($request->pickedDep as $key => $value)
+       // dd($key, $value);
+            foreach($request->groupDep as $key2 => $value2)
+            if($key==$key2){
+                
+
+                $restriction= InclusiveFormList::where('id_formulario',$request->id_form)->where('id_lista',$key)->where('id_tipo',$value2)->first();
+                if(!isset($restriction)){
+                    $restriction=new InclusiveFormList;
+                }
+                $restriction->id_formulario=$request->id_form;
+                $restriction->id_lista=$key;
+                $restriction->id_tipo=$value2;
+                $restriction->save();
+
+
+            }
+
+                
+
+    }else
+    return redirect()->back()->withErrors('No ha seleccionado una lista');
+    
+    return redirect()->back();
+    //dd($request);
 }
 
 

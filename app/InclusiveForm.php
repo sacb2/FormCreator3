@@ -23,4 +23,9 @@ class InclusiveForm extends Model
     public function document(){
                 return $this-> hasOne('App\InclusiveDocument','id','document_id');
             }
+    public function restrictions(){
+                return $this-> hasMany('App\InclusiveFormRestriction','id_formulario');
+            }
+
+
 }

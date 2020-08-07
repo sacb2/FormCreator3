@@ -1641,6 +1641,8 @@ foreach($request->answers_req as $answers_reqs){
 
 
 //Revisar si la pregunta requerida fue respondida
+
+
 if (isset($request->tex_req))
 foreach($request->tex_req as $tex_reqs){
 	$key_answer=0;
@@ -1919,18 +1921,12 @@ if($value){
 
 
 
-	
-
-
-
-
-
-
 
 	//guardar respuestas en el caso de responder un formulario personalizado
 	//$request si el formlario fue creado con utilizacion de RUT de otra forma solo las respuesta
 	public function AnswerFormUseStore(Request $request)
 	{
+		
 		
 		//foreach($request->answers_text as $key => $value)
 		//$a["old".$key]=$value;
@@ -2061,10 +2057,11 @@ foreach($request->answers_req as $answers_reqs){
 	
 }
 
-
+//dd($request,$request->tex_req,$request->answers_text);
 //Revisar si la pregunta requerida fue respondida
-if (isset($request->tex_req))
-foreach($request->tex_req as $tex_reqs){
+if (isset($request->text_req))
+foreach($request->text_req as $tex_reqs){
+	
 	$key_answer=0;
 	if (isset($request->answers_text)){
 

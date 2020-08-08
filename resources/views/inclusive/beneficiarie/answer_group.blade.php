@@ -276,7 +276,7 @@ label {
                                 @endphp
                                 <input name="questions[]" type="hidden" value="answers_text[{{$pregunta->id}}]">
                                             <div class="form-group row">
-                                            <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
+                                            <label role="contentinfo" for="answers[{{$pregunta->id}}]"
                                             class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
                                             <div class="col-md-6">
                                                 <input id="group" type="number" min="0"
@@ -302,7 +302,7 @@ label {
                                 $pregunta_old=null;
                                 @endphp
                                         <div class="form-group row">
-                                        <label role="contentinfo" tabindex="0" for="answers[{{$pregunta->id}}]"
+                                        <label role="contentinfo" for="answers[{{$pregunta->id}}]"
                                         class="col-md-4 col-form-label">{{$pregunta->question->pregunta}}</label>
                                         <div class="col-md-6">
                                       

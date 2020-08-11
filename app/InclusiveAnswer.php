@@ -34,6 +34,9 @@ class InclusiveAnswer extends Model
   public function evaluation(){
     return $this-> BelongsTo('App\InclusiveEvaluation','id_requerimiento','id_requerimiento');
 }
+public function form(){
+  return $this-> BelongsTo('App\InclusiveForm','id_formulario','id');
+}
   
       public $timestaps = true;
 

@@ -28,18 +28,20 @@
 							  <div class="card-header" id="headingOne">
 								<h5 class="mb-0">
 								  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne{{$answerId}}" aria-expanded="true" aria-controls="collapseOne{{$answerId}}">
-									Requerimiento: {{$answerId}}
+									Requerimiento: {{$answerId}} 
 								  </button>
 								</h5>
 							  </div>
 							  
 							  <div id="collapseOne{{$answerId}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
 								<div class="card-body">
+									<a href="{{URL::to('/EditAnswerRUT/')}}/{{$answerId}}"><i class="fas fa-pen"></i>Editar</a>
 									@php
 									$a=0;
 									@endphp
 									@foreach($answers as $answer)
-									@if($answer->id_requerimiento==$answerId)
+									
+									@if($answer->id_requerimiento==$answerId&&$answer->state_id!=4)
 								
 
 									Estado:
@@ -102,17 +104,19 @@
 								@endif
 								<!-- Respuesta Imagen -->
 								@endif
+								
 								@endforeach
 								</div>
 							  </div>
 						
-
+							  
 
 							</div>
+							
 							</div>
 					
 						  
-					
+							
 						@endforeach
 			
 				

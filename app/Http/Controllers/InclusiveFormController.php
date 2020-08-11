@@ -632,10 +632,6 @@ class InclusiveFormController extends Controller
 		$form->visibilidad = $request->visibilidad;
 		$form->id_restriccion = $request->list;
 
-
-
-
-
 		try {
 			$form->save();
 			Session::flash('alertSent', 'Derived');
@@ -1515,10 +1511,10 @@ public function validate_answer_img($answers_img,$img_req ){
 
 	//Visualización de formulario personalizado creado y respuestas 
 	//$id identificador de formulario
-	public function useFormBeneficiarieRUT($id,$rut,$fecha=null)
+	public function useFormBeneficiarieRUT($id,$rut,$edad=444)
 	{
 
-	$edad=0;
+	
 		//dd($id,$rut);
 		$formulario = InclusiveForm::find($id);
 		//		dd($formulario->products);
@@ -2707,6 +2703,40 @@ $storedAnswers = InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_person
 return view('inclusive.beneficiarie.status',['answersId'=> $answers,'persona'=>$persona,'answerById'=>$answerById, 'answers' => $storedAnswers]);
 }
 
+
+//funcion que busca por rut entre los resultados
+public function beneficirieStatusRUT($rut){
+	
+	
+	//validar usuario
+	/*$type= Auth::user()->type_id;
+	if( $type>3||is_null($type)){
+			Auth::logout();
+			return view('welcome');
+		}*/
+		$user=User::where('rut',$rut)->first();
+		$persona=User::where('id',$user->id)->first(['name','lastname','rut']);
+		
+$answers = InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_persona',$user->id)->where('state_id','2')->orWhere('state_id',NULL)->groupBy('id_requerimiento')->pluck('id_requerimiento');
+
+foreach($answers as $answer){
+$answerById[$answer]=InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_persona',$user->id)->where('state_id','2')->orWhere('state_id',NULL)->where('id_requerimiento', $answer)->get();
+}
+
+if(!isset($answerById))
+return redirect()->back()->withErrors('No hay registros en el formulario con respuestas validas');
+
+$storedAnswers = InclusiveAnswer::where('rut_persona', $rut)->orWhere('id_persona',$user->id)->get();
+
+//foreach($answerById as $answer)
+//dd($answers);
+//dd(key($answerById),$storedAnswers);
+//dd($storedAnswers);
+//'answersById'=>$answerById
+return view('inclusive.beneficiarie.status',['answersId'=> $answers,'persona'=>$persona,'answerById'=>$answerById, 'answers' => $storedAnswers]);
+}
+
+
 //funcion que busca por rut entre los resultados //cargar con rut de la persoan logeada
 public function beneficirieStatusSearch(Request $request){
 	
@@ -2782,6 +2812,498 @@ $found =0;
 	}
 	return $found;
 }
+ public function editAnswerRUT($id){
+
+	$edad=0;
+	
+		$style_color=1;
+	
+			$style_font=1;
+	$answers = InclusiveAnswer::where('id_requerimiento', $id)->get();
+	$formulario=$answers->first()->form;
+	$rut=$answers->first()->rut_persona;
+
+//	foreach($formulario->questions->sortBy('orden')->values() as $pregunta)
+//					dd($pregunta);
+	return view('inclusive.beneficiarie.answerEdit', ['id'=>$id,'rut'=>$rut,'edad'=>$edad,'style_color'=>$style_color,'style_font'=>$style_font,'formulario' => $formulario]);
+
+
+ }
+
+
+
+
+///FUncion que permite guardar las respuestas
+
+public function storeEditAnswerRUT(Request $request)
+{
+	$answers = InclusiveAnswer::where('id_requerimiento', $request->id)->where('rut_persona',$request->rut)->where('state_id','2')->orWhere('state_id',NULL)->get();
+	//$answers = InclusiveAnswer::where('id_requerimiento', $request->id)->get();
+	//descativar respuestas anteriores
+
+	foreach($answers as $answer){
+		$answer->state_id=4;
+		$answer->save();
+	}
+
+		$user=User::where('rut',$request->rut)->first();
+	
+	//foreach($request->answers_text as $key => $value)
+	//$a["old".$key]=$value;
+	//dd($a);
+//	dd(json_decode($request->questions));
+		
+//foreach($request->answers_text as $key => $value)
+
+$error=null;
+//Revisar si la pregunta requerida fue respondida
+if (isset($request->img_req))
+	foreach($request->img_req as $img_reqs){
+		$key_answer=0;
+		if (isset($request->answers_img)){
+
+		
+			foreach ($request->answers_img as $key => $value) {
+				if($key==$img_reqs)
+					$key_answer=1;
+			
+				if($key==$img_reqs&&$value==null){
+					
+					//dd($key,$img_reqs,$value);
+					$error.="Cargar las imagenes requeridas ".$img_reqs.".\n";
+				//	dd("aqui");
+				//	return redirect()->route('BeneficiarieIndex');
+
+				}
+					
+
+			}
+			if($key_answer==0){
+				$error.="Cargar las imagenes requeridas ".$img_reqs.".\n";
+				//dd("aca");
+				//return redirect()->route('BeneficiarieIndex');
+			}
+				
+			$key_answer=0;
+		}
+			else{
+				$error.="Cargar las imagenes requeridas ".$img_reqs.".\n";
+				//dd("ahí");
+				//return redirect()->route('BeneficiarieIndex');
+			}
+			
+
+		
+	}
+//		dd("despues de validación",$key,$img_reqs,$value);	
+
+//Revisar si la pregunta checkbox fue respondida
+if (isset($request->box_req))
+foreach($request->box_req as $answers_reqs){
+$key_answer=0;
+if (isset($request->answers_box)){
+
+
+	foreach ($request->answers_box as $key => $value) {
+		//dd($request->answers_box,$key,$value,$answers_reqs);		
+		if($key==$answers_reqs){
+			$key_answer=1;
+	}
+		if($key==$answers_reqs&&$value==null){
+			
+			//dd($key,$img_reqs,$value);
+			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+			//dd("aqui");
+			//return redirect()->route('BeneficiarieIndex');
+
+		}
+			
+
+	}
+	
+	if($key_answer==0){
+		$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+		
+	}
+		
+	$key_answer=0;
+}
+	else{
+		$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+		
+	}
+	
+
+
+}
+
+
+
+//Revisar si la pregunta requerida fue respondida
+if (isset($request->answers_req))
+foreach($request->answers_req as $answers_reqs){
+$key_answer=0;
+if (isset($request->answers_int)){
+
+
+	foreach ($request->answers_int as $key => $value) {
+		if($key==$answers_reqs)
+			$key_answer=1;
+	
+		if($key==$answers_reqs&&$value==null){
+			
+			//dd($key,$img_reqs,$value);
+			$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+			//dd("aqui");
+			//return redirect()->route('BeneficiarieIndex');
+
+		}
+			
+
+	}
+	if($key_answer==0){
+		$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+		
+	}
+		
+	$key_answer=0;
+}
+	else{
+		$error.="Responder preguntas con alternativa ".$answers_reqs.".\n";
+		
+	}
+	
+
+
+}
+
+//dd($request,$request->tex_req,$request->answers_text);
+//Revisar si la pregunta requerida fue respondida
+if (isset($request->text_req))
+foreach($request->text_req as $tex_reqs){
+
+$key_answer=0;
+if (isset($request->answers_text)){
+
+
+	foreach ($request->answers_text as $key => $value) {
+		if($key==$tex_reqs)
+			$key_answer=1;
+	
+		if($key==$tex_reqs&&$value==null){
+			
+			$error.="Responder preguntas de text ".$key.".\n";
+			//dd($key,$img_reqs,$value);
+			//dd("aqui");
+			//return redirect()->route('BeneficiarieIndex');
+
+		}
+			
+
+	}
+	if($key_answer==0){
+		$error.="Responder preguntas de text ".$tex_reqs.".\n";
+		//dd("aca");
+		//return redirect()->route('BeneficiarieIndex');
+	}
+		
+	$key_answer=0;
+}
+	else{
+		$error.="Responder preguntas de text ".$tex_reqs.".\n";
+		//dd("ahí");
+		//return redirect()->route('BeneficiarieIndex');
+	}
+	
+
+
+}
+
+//$a[0]=['rut' => $request->rut];
+$a['rut']=$request->rut;
+//foreach($request->answers_text as $key => $value)
+if(isset($request->answers_text))
+foreach($request->answers_text as $key => $value)
+$a['old'.$key]=$value;
+$old=null;
+//foreach($request->answers_text as $key => $value)
+if(isset($request->answers_text))
+foreach($request->answers_text as $key => $value)
+$old[$key]=$value;
+//dd($a);
+
+//$a[1]=['rut' => $request->rut];
+//foreach( $request->img_req)
+if($error!=null){
+//return back()->withInput($a)->withErrors($error);
+
+//cargar nuevamente los datos 
+
+//edad de la persona registrada
+$edad=null;
+$edad=$request->edad;
+
+
+
+//dd($request);
+$formulario = InclusiveForm::find($request->id_form);
+
+//ver formulario
+if(isset($formulario))
+Session::put('formulario', $formulario);
+else
+$formulario=Session::get('formulario');
+
+if(isset($request->style_color))
+Session::put('color', $request->style_color);
+else 
+$request->style_color=Session::get('color');
+if(isset($request->style_font))
+Session::put('font', $request->style_font);
+else
+$request->style_font=Session::get('font');
+
+
+	//desde formulario embebido
+	if($request->embebed)
+	return view('inclusive.get.answerGet', ['errors'=>$error,'old'=>$old,'rut'=>$request->rut,'edad'=>$edad,'style_color'=>$request->style_color,'style_font'=>$request->style_font,'formulario' => $formulario])->withErrors($error);
+		
+return view('inclusive.beneficiarie.answer', ['errors'=>$error,'old'=>$old,'rut'=>$request->rut,'edad'=>$edad,'style_color'=>$request->style_color,'style_font'=>$request->style_font,'formulario' => $formulario])->withErrors($error);
+
+//			return redirect()->back()->withErrors($error);
+}
+
+
+	$imageName = "imagen";
+	$path = request()->answers_img;
+	//	dd($request,$path);
+	//	\Log::channel('decomlog')->info($request);
+	//si requiere rut
+	if ($request->type_form == '1') {
+		
+
+		$validate_response = $request->validate([
+			'rut' => ['required', 'regex:/^[0-9]+[-|‐]{1}[0-9kK]{1}$/'],
+		
+
+		]);
+
+
+	//	$formsq_rut= InclusiveAnswer::where('id_formulario',$request->id_form)->where('rut_persona',$request->rut)->distinct('id_requerimiento')->count('id_requerimiento');
+	//	$formsq_id= InclusiveAnswer::where('id_formulario',$request->id_form)->where('id_persona',Auth::user()->id)->distinct('id_requerimiento')->count('id_requerimiento');
+/*	
+		$form=InclusiveForm::find($request->id_form);
+	
+		
+		
+		if((int)$form->qanswer<(int)$formsq_rut && $form->qanswer!='0'){
+			
+		
+			//['errors'=>$error
+			Session::flash('alertSent', 'Alert');
+			Session::flash('message', 'RUT ' . $request->rut . ' ya ha respondido '.$form->qanswer.' la cantidad máxima de respuestas');
+			$forms=InclusiveForm::all();
+			//return view('inclusive.beneficiarie.list', ['style_color'=>$request->style_color,'style_font'=>$request->style_font,'forms' => $forms]);
+			if($request->embebed)
+				return redirect()->back();
+			return redirect('home/');
+			//->route('home');
+
+		}
+		if((int)$form->qanswer<(int)$formsq_id && $form->qanswer!='0'){
+			$user=find(Auth::user()->id);
+			//['errors'=>$error
+			Session::flash('alertSent', 'Alert');
+			Session::flash('message', 'El usuario logeado con RUT ' . $user->rut . ' ya ha respondido '.$form->qanswer.' la cantidad máxima de respuestas');
+			$forms=InclusiveForm::all();
+			//return view('inclusive.beneficiarie.list', ['style_color'=>$request->style_color,'style_font'=>$request->style_font,'forms' => $forms]);
+			//en el caso de que venga de solicitud por get
+			if($request->embebed)
+				return redirect()->back();
+			return redirect('home/');
+			//->route('home');
+		}
+			
+*/
+		$rut = $request->rut;
+		$rut_validation = $this->valida_rut($request->rut);
+		if (!$rut_validation) {
+			Session::flash('alertSent', 'Alert');
+			Session::flash('message', 'RUT ' . $request->rut . ' formato no corresponde');
+			//en el caso de que venga de solicitud por get
+			if($request->embebed)
+				return redirect()->back();
+			return redirect('home/');
+		}
+	}
+
+	$id = $request->id;
+	//archivo adjunto
+	if (isset($request->answers_img)){
+		foreach ($request->answers_img as $key => $value) {
+
+			//dd($request->answers_img,$key,$value);
+			$img_id = $this->fileStore($value, '3', $request->id_form, $id);
+			$storeAnswer = new InclusiveAnswer;
+			$storeAnswer->id_pregunta = $key;
+			$storeAnswer->id_formulario = $request->id_form;
+			$storeAnswer->id_requerimiento = $id;
+			if(Auth::user())
+			$storeAnswer->id_persona=Auth::user()->id;
+			$storeAnswer->valor_respuesta = $img_id;
+			$storeAnswer->tipo = '3';
+			if ($request->type_form == 1)
+				$storeAnswer->rut_persona = strtoupper($request->rut);
+
+
+
+
+			try {
+				$storeAnswer->save();
+
+				//	Session::flash('alertSent', 'Derived');
+				//	Session::flash('message', "Respuestas guardadas exitosamente" );
+			} catch (\Exception $e) {
+				// do task when error
+				Session::flash('alert', 'error');
+				echo $e->getMessage();   // insert query
+
+			}
+		}
+
+	}
+
+
+	if (isset($request->answers_text))
+		foreach ($request->answers_text as $key => $value) {
+
+			//			'id','id_pregunta','id_formulario','id_requerimiento','id_persona','respuesta_text','respuesta_number','tipo','estado'
+
+			$storeAnswer = new InclusiveAnswer;
+			$storeAnswer->id_pregunta = $key;
+			$storeAnswer->id_formulario = $request->id_form;
+			$storeAnswer->id_requerimiento = $id;
+			$storeAnswer->texto_respuesta = $value;
+			if(Auth::user())
+			$storeAnswer->id_persona=Auth::user()->id;
+			$storeAnswer->tipo = '0';
+			if ($request->type_form ==1)
+				$storeAnswer->rut_persona = strtoupper($request->rut);
+
+
+
+
+			try {
+				$storeAnswer->save();
+
+				//	Session::flash('alertSent', 'Derived');
+				//	Session::flash('message', "Respuestas guardadas exitosamente" );
+			} catch (\Exception $e) {
+				// do task when error
+				Session::flash('alert', 'error');
+				echo $e->getMessage();   // insert query
+
+			}
+		}
+		//respuesta con alternativa
+	if (isset($request->answers_int))
+		foreach ($request->answers_int as $key => $value) {
+//dd($request->answers_int,$key,json_decode($value),json_decode($value)->value, json_decode($value)->id);
+if($value){
+			$storeAnswer = new InclusiveAnswer;
+			$storeAnswer->id_pregunta = $key;
+			$storeAnswer->id_formulario = $request->id_form;
+			$storeAnswer->id_requerimiento = $id;
+			if(Auth::user())
+			$storeAnswer->id_persona=Auth::user()->id;
+			$storeAnswer->valor_respuesta = json_decode($value)->value; //identificador unico de la respuesta
+			$storeAnswer->answer_id= json_decode($value)->id; //valor de respuesta asignado en configuracion
+		
+		
+				
+			
+			$storeAnswer->tipo = '2';
+			if ($request->type_form == 1)
+				$storeAnswer->rut_persona = strtoupper($request->rut);
+
+			
+
+
+			try {
+				$storeAnswer->save();
+
+				//	Session::flash('alertSent', 'Derived');
+				//	Session::flash('message', "Respuestas guardadas exitosamente" );
+			} catch (\Exception $e) {
+				// do task when error
+				Session::flash('alert', 'error');
+				echo $e->getMessage();   // insert query
+
+			}
+}
+		}
+
+//Respuesta box
+
+		//respuesta con alternativa
+		if (isset($request->answers_box))
+		foreach ($request->answers_box as $key => $value) {
+		//	dd($request->answers_box,$key, $value,implode($value));
+//dd($request->answers_int,$key,json_decode($value),json_decode($value)->value, json_decode($value)->id);
+		if($value){
+			$storeAnswer = new InclusiveAnswer;
+			$storeAnswer->id_pregunta = $key;
+			$storeAnswer->id_formulario = $request->id_form;
+			$storeAnswer->id_requerimiento = $id;
+			if(Auth::user())
+			$storeAnswer->id_persona=Auth::user()->id;
+			$storeAnswer->texto_respuesta=implode($value);
+		//	$storeAnswer->valor_respuesta = json_decode($value)->value; //identificador unico de la respuesta
+		//	$storeAnswer->answer_id= json_decode($value)->id; //valor de respuesta asignado en configuracion
+		
+		
+				
+			//cambiar tipo a 7 
+			$storeAnswer->tipo = '0';
+			if ($request->type_form == 1)
+				$storeAnswer->rut_persona = strtoupper($request->rut);
+
+			
+
+
+			try {
+				$storeAnswer->save();
+
+				//	Session::flash('alertSent', 'Derived');
+				//	Session::flash('message', "Respuestas guardadas exitosamente" );
+			} catch (\Exception $e) {
+				// do task when error
+				Session::flash('alert', 'error');
+				echo $e->getMessage();   // insert query
+
+			}
+		}
+	}
+
+
+		Session::flash('alertSent', 'Alert');
+		Session::flash('message', "Formulario respondido exitosamente con ID: ".$id);
+		//return redirect()->back()->withErrors(["Formulario respondido exitosamente con ID: ".$id]);
+		if(Auth::user()){
+			$mail=Auth::user()->email;
+			$this->sendMailToTeam("Reporte automatico a mail",'Sistema de postulacion',$mail,'Reporte de envío de formulario con ID: '.$id,$request->id_form);
+		}
+		//en el caso de que venga de solicitud por get
+		if($request->embebed)
+			return redirect()->route('Success');
+	return redirect()->route('BeneficiarieIndex');
+}
+
+
+
+
+
+
 
 
 }

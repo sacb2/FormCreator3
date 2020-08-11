@@ -74,7 +74,8 @@ return \Excel::download(new  RequirementExport($request->request_ini_date,$reque
 			return redirect()->route('requestsExport');
 	}
 	
-	 $requirements= Requirements::where('request_date','>=',$request->request_ini_date)->where('request_date', '<=',$request->request_end_date)->get();
+	//constructed by Sebastián Acevedo ac@akasha.ink
+	$requirements= Requirements::where('request_date','>=',$request->request_ini_date)->where('request_date', '<=',$request->request_end_date)->get();
 	foreach($requirements as $requirement)
 		foreach($requirement->meds as $med){
 				//dd($med->medicament_data);//informacion de medicamento

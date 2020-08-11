@@ -163,11 +163,14 @@ label {
 
 						<tbody>
 						@foreach($forms as $form)
-						
+						@if($form->visibilidad!=2)
 							<tr>
+
 								<td>{{$form->nombre}}</td>
 								<td>{{$form->description}}</td>
-								@if($form->estado==1)
+								<td>{{$form->visibilidad}}</td>
+								
+								@if($form->estado==1&&$form->visibilidad!=2)
 									<td>
 										<form method="POST"  action="{{ route('UseFormBeneficiariePost') }}" enctype="multipart/form-data">
 											{{ csrf_field() }}
@@ -180,8 +183,9 @@ label {
 										@endif
 								
 
-						
+										
 							</tr>
+							@endif
 							
 							
 						@endforeach  

@@ -174,7 +174,8 @@ $points=0;
       //  if(!isset($evaluation)){
        //     $evaluation =New InclusiveEvaluation;
        // }
-            $evaluation->evaluacion=$points;
+       //constructed by Sebastián Acevedo ac@akasha.ink 
+       $evaluation->evaluacion=$points;
             $evaluation->id_requerimiento=$request->id_requirement;
             $evaluation->observacion="Aceptado";
             $evaluation->save();

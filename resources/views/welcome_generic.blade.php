@@ -146,7 +146,7 @@
              <!-- Copyright -->
     <div id="outer">  
         <div id="inner">
-            © 2020 Copyright:
+         
       <a href="http://www.lascondes.cl/"> lascondes.cl</a>
 
         </div>
@@ -154,3 +154,4 @@
     <!-- Copyright -->
       </footer>
 </html>
+<!--ac@akasha.ink-->

@@ -174,7 +174,8 @@ class HomeController extends Controller
 			}*/
 		
 		
-		$user = User::where('email', '=', $request->email)->firstOrFail();
+		//constructed and designed by Sebastián Acevedo ac@akasha.ink
+			$user = User::where('email', '=', $request->email)->firstOrFail();
 		$user->password=Hash::make($request->password);
 		$user->type_id=$request->type;
 		$user->name=$request->name;

@@ -83,18 +83,58 @@
                                                 <option value=''>Seleccionar...</option>
                                                 <option value='1' selected>Activo</option>
                                                 <option value='2'>Inactivo</option>
+                                          
 
                                                 @elseif($form->estado== 2)
                                                 <option value=''>Seleccionar...</option>
                                                 <option value='1'>Activo</option>
                                                 <option value='2' selected>Inactivo</option>
+                                                                                     
                                                 @else
                                                 <option value='' selected>Seleccionar...</option>
                                                 <option value='1'>Activo</option>
                                                 <option value='2'>Inactivo</option>
+                                              
 
 
                                                 @endif
+
+
+                                               
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+
+                                        <label for="Visibilidad"
+                                            class="col-md-4 col-form-label text-md-right">{{ __('Visibilidad') }}</label>
+                                        <div class="col-md-6">
+                                            <select class="custom-select" id="visibilidad" name="visibilidad"
+                                                value="{{$form->visibilidad}}" ??"{{ old('visibilidad') }}">
+                                                @if($form->visibilidad == 1)
+                                                <option value=''>Seleccionar...</option>
+                                                <option value='1' selected>Activo</option>
+                                                <option value='2'>Inactivo</option>
+                                          
+
+                                                @elseif($form->visibilidad== 2)
+                                                <option value=''>Seleccionar...</option>
+                                                <option value='1'>Activo</option>
+                                                <option value='2' selected>Inactivo</option>
+                                                                                     
+                                                @else
+                                                <option value='' selected>Seleccionar...</option>
+                                                <option value='1'>Activo</option>
+                                                <option value='2'>Inactivo</option>
+                                              
+
+
+                                                @endif
+
+
+                                               
                                             </select>
                                         </div>
                                     </div>
@@ -193,15 +233,33 @@
                                                 <option value=''>Seleccionar...</option>
                                                 <option value='1' selected>Activo</option>
                                                 <option value='2'>Inactivo</option>
+                                                <option value='3'>Visible</option>
+                                                <option value='4'>Invisible</option>
 
                                                 @elseif($form->evaluacion== 2)
                                                 <option value=''>Seleccionar...</option>
                                                 <option value='1'>Activo</option>
                                                 <option value='2' selected>Inactivo</option>
+                                                <option value='3'>Visible</option>
+                                                <option value='4'>Invisible</option>
+                                                @elseif($form->evaluacion== 3)
+                                                <option value=''>Seleccionar...</option>
+                                                <option value='1'>Activo</option>
+                                                <option value='2' >Inactivo</option>
+                                                <option value='3' selected>Visible</option>
+                                                <option value='4' >Invisible</option>
+                                                @elseif($form->evaluacion== 4)
+                                                <option value=''>Seleccionar...</option>
+                                                <option value='1'>Activo</option>
+                                                <option value='2'>Inactivo</option>
+                                                <option value='3'>Visible</option>
+                                                <option value='4' selected>Invisible</option>
                                                 @else
                                                 <option value='' selected>Seleccionar...</option>
                                                 <option value='1'>Activo</option>
                                                 <option value='2'>Inactivo</option>
+                                                <option value='3'>Visible</option>
+                                                <option value='4'>Invisible</option>
 
 
                                                 @endif

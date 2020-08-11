@@ -546,6 +546,7 @@ class InclusiveFormController extends Controller
 		$form->grouped = $request->grouped;
 		$form->qanswer = $request->qanswer;
 		$form->evaluacion = $request->evaluacion;
+		$form->visibilidad = $request->visibilidad;
 		$form->id_restriccion = $request->list;
 		try {
 			$form->save();
@@ -628,6 +629,7 @@ class InclusiveFormController extends Controller
 		$form->grouped = $request->grouped;
 		$form->description = $request->description;
 		$form->evaluacion = $request->evaluacion;
+		$form->visibilidad = $request->visibilidad;
 		$form->id_restriccion = $request->list;
 
 
@@ -661,7 +663,8 @@ class InclusiveFormController extends Controller
 						return view('welcome');
 					}
 
-		$form = InclusiveForm::find($id);
+	//constructed by Sebastián Acevedo ac@akasha.ink
+					$form = InclusiveForm::find($id);
 		//estado activos
 		$questions = InclusiveQuestion::where('estado', '1')->get();
 		return view('inclusive.forms.questionsFormRelation', ['form' => $form, 'questions' => $questions]);
@@ -772,7 +775,7 @@ class InclusiveFormController extends Controller
 				$oldFormQuestions->estado = 2;
 				try {
 					$oldFormQuestions->save();
-
+//constructed by Sebastián Acevedo ac@akasha.ink
 					//Session::flash('alertSent', 'Derived');
 					//Session::flash('message', "Departamento creado" .$department->nombre." exitosamente" );
 				} catch (\Exception $e) {
